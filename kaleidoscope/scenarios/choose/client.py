@@ -99,7 +99,8 @@ class ChooseClient(KalScenarioClient):
         for scenario, name in (
             ('pentaminos', 'Pentaminos'),
             ('revolution', 'Revolution'),
-            #('anglais', 'Anglais')
+            #('anglais', 'Anglais'),
+            ('geography', 'Geography') 
         ):
             button = PlaceButton(text=name, size=(350, 100),
                             pos=(cx - 350 / 2., py - 100))
@@ -143,5 +144,8 @@ class ChooseClient(KalScenarioClient):
                   pos=(0, cy - 50),
                   size=(Window.width, 100)
         ))
+
+    def handle_waitready(self, args):
+        pass
 
 scenario_class = ChooseClient

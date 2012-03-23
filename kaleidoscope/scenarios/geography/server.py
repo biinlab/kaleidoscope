@@ -241,6 +241,7 @@ class MapServer(KalScenarioServer):
         self.scat.add_widget(thumb)
         if index in self.thumbs.keys() and thumb != None:
             thumb.center = self.thumbs[index][1]
+        thumb.locked = True
         return thumb
 
     def do_client_pos(self, client, args):
@@ -438,8 +439,6 @@ class MapServer(KalScenarioServer):
     def run_reset_for_game2(self):
         '''Order imagemap !
         '''
-        self.send_all('GAME2')
-
         # order !
         index_sent = []
         for thumb in self.scat.children:
@@ -462,12 +461,10 @@ class MapServer(KalScenarioServer):
                 continue
             if filename == thumb.item['filename'] : #, thumb.item['filename']
                 for client in self.controler.clients:
-                    thumb.auto_color = True
                     thumb.update_color(True)
                     self.send_to(client, 'THVALID %d' % thumb.index)
             else :
                 for client in self.controler.clients:
-                    thumb.auto_color = True
                     thumb.update_color(False)
                     thumb.shake()
                     self.send_to(client, 'THNOTVALID %d' % thumb.index)
@@ -481,6 +478,7 @@ class MapServer(KalScenarioServer):
         # do game 2
         self.timeout = time() + TIMER_2
         self.send_all('TIME %d %d' % (time(), int(self.timeout)))
+        self.send_all('GAME2')
         self.state = 'game2'
 
     def run_game2(self):
@@ -520,10 +518,12 @@ class MapServer(KalScenarioServer):
             if self.imagemap.filename_match_layer(filename):
                 self.imagemap.display_mapitem(filename, True, (0,0,0,1))    
             item = self.create_and_add_item(clients.keys()[0] ,index)
+            item.auto_color = False
             index +=1
         
         #move thumbs to the right position
         self.send_all('PLACETHUMBS')
+        self.send_all('GAME2')
         self.state = 'game3'
         self.timeout = time() + 25
         self.send_all('TIME %d %d' % (time(), int(self.timeout)))

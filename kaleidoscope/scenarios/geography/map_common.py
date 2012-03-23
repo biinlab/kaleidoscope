@@ -114,22 +114,28 @@ class MapThumbnail(Scatter):
 
         #if self.x < 2*self.width:
         #    return
-        x1,y1 = self.pos
-        x2,y2 = self.right_pos
-        x1 -= self.imagemap.x 
-        y1 -= self.imagemap.y
-        win = Window.width + Window.height
-        diff = (abs(x2-x1) + abs(y2-y1)) / win
-        print diff, x2 - x1, y2 - y1 
-        
         color = Color(71 / 360., 71 / 100., 87 / 100., mode='hsv')
-        if diff < 0.05:
-            color.h = 106 / 360.
-            #self.place_correctly = True
-        else:
-            h = (71 - 71 * (min(2., 10*(diff - 0.01)) / 2.)) / 360.
-            color.h = h
-            #self.place_correctly = False
+        if self.auto_color == True :
+            x1,y1 = self.pos
+            x2,y2 = self.right_pos
+            x1 -= self.imagemap.x 
+            y1 -= self.imagemap.y
+            wind = Window.width + Window.height
+            diff = (abs(x2-x1) + abs(y2-y1)) / wind
+            #print diff, x2 - x1, y2 - y1 
+        
+            if diff < 0.05:
+                color.h = 106 / 360.
+                #self.place_correctly = True
+            else:
+                h = (71 - 71 * (min(2., 10*(diff - 0.01)) / 2.)) / 360.
+                color.h = h
+                #self.place_correctly = False
+        else : 
+            if win == True : 
+                color.h = 106 / 360.
+            else : 
+                color.h = 0
         self.color = color.rgba
         
     """
@@ -171,6 +177,7 @@ class MapThumbnail(Scatter):
         return ret
     
     def on_touch_move(self,touch):
+        if self.locked : return
         ret = super(MapThumbnail, self).on_touch_move(touch)
         if self.auto_color : 
             self.update_color(False)
@@ -531,7 +538,7 @@ class Map(FloatLayout):
         """
         x -= self.x
         y -= self.y
-        print self.pos, x,y
+        #print self.pos, x,y
         cf = ''
         for child in self.children :
             if child.flag(flag_id, x,y) : 
@@ -784,7 +791,20 @@ class MapClientLayout(FloatLayout):
                 y += self.imagemap.y
                 if pos is not None:
                     child.move_to_pos( (x,y) )
+                #convert to green 
+                child.auto_color = False
+                child.update_color(True)
         self.imagemap.update_images(1)
+
+    def auto_color_thumbs(self):
+        for child in self.items:
+            if isinstance(child, MapThumbnail):
+                child.auto_color = True
+
+    def lock_thumbs(self, boole):
+        for child in self.items:
+            if isinstance(child, MapThumbnail):
+                child.locked = boole
                 
 
 

@@ -79,8 +79,14 @@ class MapClient(KalScenarioClient):
         self.map_handler.bind(rotation = self.send_rotatemap)
 
     def handle_game2(self, args):
-        pass
+        #pass
+        self.layout.auto_color_thumbs()
+        #self.layout.lock_thumbs(False)
         #self.layout.hide_places()
+
+    def handle_game3(self, args):
+        self.layout.lock_thumbs(True)
+        self.layout.hide_places()
 
     def handle_give(self, args):
         # create thumbnail in the gridlayout
@@ -97,7 +103,7 @@ class MapClient(KalScenarioClient):
         thumb = self.layout.get_thumb_from_index(index)
         if not thumb:
             return
-        thumb.auto_color = True
+        #thumb.auto_color = True
         thumb.update_color(False)
         #shake !
         thumb.shake()
@@ -108,12 +114,12 @@ class MapClient(KalScenarioClient):
         if not thumb:
             return
         #self.fresco.set_pos_by_date(thumb, thumb.item['date'])
-        thumb.auto_color = True
+        #thumb.auto_color = True
         thumb.update_color(True)
         #thumb.do_translation = False 
 
     def handle_hideth(self, args):
-        print 'hideth'
+        #print 'hideth'
         index = int(args)
         thumb = self.layout.get_thumb_from_index(index)
         if not thumb:
@@ -121,23 +127,23 @@ class MapClient(KalScenarioClient):
         self.layout.remove_widget(thumb)
 
     def handle_displayth(self, args):
-        print 'displayth'
+        #print 'displayth'
         index = int(args)
-        print index
+        #print index
         thumb = self.layout.get_thumb_from_index(index)
-        print thumb
+        #print thumb
         if not thumb:
             return
         self.layout.add_widget(thumb)
         #thumb.move_to_origin()
 
     def handle_displaymapitem(self, args):
-        print 'displaymapitem'
+        #print 'displaymapitem'
         filename = str(args)
         self.layout.imagemap.display_mapitem(filename, True, (1,1,1,1))
 
     def handle_hidemapitem(self, args):
-        print 'hidemapitem'
+        #print 'hidemapitem'
         filename = str(args)
         self.layout.imagemap.hide_mapitem(filename)
 
