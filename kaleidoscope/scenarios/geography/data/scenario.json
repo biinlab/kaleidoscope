@@ -1,0 +1,162 @@
+{
+	"layers": ["mountains","rivers","cities","regions"],
+	"items": [
+		{
+			"title": "Alpes",
+			"filename": "mountains-alpes.png"
+		},{
+			"title": "Jura",
+			"filename": "mountains-jura.png"
+		},{
+			"title": "Massif Armoricain",
+			"filename": "mountains-massif_armoricain.png"
+		},{
+			"title": "Massif Central",
+			"filename": "mountains-massif_central.png"
+		},{
+			"title": "Pyrennees",
+			"filename": "mountains-pyrennees.png"
+		},{
+			"title": "Vosges",
+			"filename": "mountains-vosges.png"
+		},{
+			"title": "Corse",
+			"filename": "mountains-corse.png"
+		},{
+			"title": "Charente",
+			"filename": "rivers-charente.png"
+		},{
+			"title": "Dordogne",
+			"filename": "rivers-dordogne.png"
+		},{
+			"title": "Garonne",
+			"filename": "rivers-garonne.png"
+		},{
+			"title": "Marne",
+			"filename": "rivers-marne.png"
+		},{
+			"title": "Loire",
+			"filename": "rivers-loire.png"
+		},{
+			"title": "Meuse",
+			"filename": "rivers-meuse.png"
+		},{
+			"title": "Rhin",
+			"filename": "rivers-rhin.png"
+		},{
+			"title": "Rhone",
+			"filename": "rivers-rhone.png"
+		},{
+			"title": "Saone",
+			"filename": "rivers-saone.png"
+		},{
+			"title": "Seine",
+			"filename": "rivers-seine.png"
+		},{
+			"title": "Bastia",
+			"filename": "cities-bastia.png"
+		},{
+			"title": "Bordeaux",
+			"filename": "cities-bordeaux.png"
+		},{
+			"title": "Brest",
+			"filename": "cities-brest.png"
+		},{
+			"title": "Le Havre",
+			"filename": "cities-lehavre.png"
+		},{
+			"title": "Lille",
+			"filename": "cities-lille.png"
+		},{
+			"title": "Lyon",
+			"filename": "cities-lyon.png"
+		},{
+			"title": "Marseille",
+			"filename": "cities-marseille.png"
+		},{
+			"title": "Nantes",
+			"filename": "cities-nantes.png"
+		},{
+			"title": "Paris",
+			"filename": "cities-paris.png"
+		},{
+			"title": "Perpignan",
+			"filename": "cities-perpignan.png"
+		},{
+			"title": "Rennes",
+			"filename": "cities-rennes.png"
+		},{
+			"title": "Strasbourg",
+			"filename": "cities-strasbourg.png"
+		},{
+			"title": "Toulouse",
+			"filename": "cities-toulouse.png"
+		},{
+			"title": "Alsace",
+			"filename": "regions-alsace.png"
+		},{
+			"title": "Aquitaine",
+			"filename": "regions-aquitaine.png"
+		},{
+			"title": "Auvergne",
+			"filename": "regions-auvergne.png"
+		},{
+			"title": "Basse Normandie",
+			"filename": "regions-basse_normandie.png"
+		},{
+			"title": "Bourgogne",
+			"filename": "regions-bourgogne.png"
+		},{
+			"title": "Bretagne",
+			"filename": "regions-bretagne.png"
+		},{
+			"title": "Centre",
+			"filename": "regions-centre.png"
+		},{
+			"title": "Champagne Ardenne",
+			"filename": "regions-champagne_ardenne.png"
+		},{
+			"title": "Corse",
+			"filename": "regions-corse.png"
+		},{
+			"title": "Franche Comte",
+			"filename": "regions-franche_comte.png"
+		},{
+			"title": "Haute Normandie",
+			"filename": "regions-haute_normandie.png"
+		},{
+			"title": "Ile de France",
+			"filename": "regions-idf.png"
+		},{
+			"title": "Languedoc Roussillon",
+			"filename": "regions-languedoc_roussillon.png"
+		},{
+			"title": "Limousin",
+			"filename": "regions-limousin.png"
+		},{
+			"title": "Lorraine",
+			"filename": "regions-lorraine.png"
+		},{
+			"title": "Midi Pyrennees",
+			"filename": "regions-midi_pyrennees.png"
+		},{
+			"title": "Nord Pas-de-Calais",
+			"filename": "regions-nord_pas_de_calais.png"
+		},{
+			"title": "Provence Alpes Côte d'Azur",
+			"filename": "regions-paca.png"
+		},{
+			"title": "Pays de la Loire",
+			"filename": "regions-pays_de_la_loire.png"
+		},{
+			"title": "Picardie",
+			"filename": "regions-picardie.png"
+		},{
+			"title": "Poitou Charente",
+			"filename": "regions-poitou_charente.png"
+		},{
+			"title": "Rhone Alpes",
+			"filename": "regions-rhone_alpes.png"
+		}
+		]
+}

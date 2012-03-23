@@ -1,0 +1,181 @@
+#:kivy 1.0.8
+
+<ScenarioSelector>:
+	spacing:30
+	padding:15
+
+<MapHandler>:
+	do_scale: False
+	do_translation: False
+	auto_bring_to_front: True
+	canvas.before:
+		Rectangle:
+			size: (128,128)
+			source: 'plane_disable.png'
+			pos: self.pos
+
+<MapThumbnail>:
+	do_scale: False
+	do_rotation: False
+	size_hint: (None, None)
+	size: (130, 60 if self.controled else 60)
+	length_flag: (root.imagemap.center_y - self.center_y)
+
+	canvas:
+		Color:
+			rgb: self.color
+		BorderImage:
+			size: root.size
+			source: 'small_flag2.png'
+
+	Label:
+		text: root.title
+		font_name: 'Georgia_Italic.ttf'
+		font_size: 16
+		color: (.4, .4, .4, .7)
+		text_size: self.width - 20, self.height
+		size: root.width, 40
+		halign: 'left'
+		valign: 'bottom'
+		y: 10
+		x: 1
+
+	Label:
+		text: root.title
+		font_name: 'Georgia_Italic.ttf'
+		font_size: 16
+		color: (.05, .05, .05, 1)
+		text_size: self.width - 20, self.height
+		size: root.width, 40
+		halign: 'left'
+		valign: 'bottom'
+		y: 9
+
+	Label:
+		font_name: 'Georgia_Italic.ttf'
+		font_size: 16
+		color: (.3, .3, .3, .7)
+		text_size: self.width - 20, self.height - 20
+		size: root.width, 100
+		halign: 'left'
+		valign: 'bottom'
+		text: root.item.get('title')
+		x: 1
+
+	Label:
+		font_name: 'Georgia_Italic.ttf'
+		font_size: 16
+		color: (1, 1, 1, 1)
+		text_size: self.width - 20, self.height - 20
+		size: root.width, 100
+		halign: 'left'
+		valign: 'bottom'
+		text: root.item.get('title')
+
+<MapEmptyPlace>:
+	size_hint: (None, None)
+	size: (130,60)
+	canvas.before:
+		Rectangle:
+			size: self.size
+			source: 'freeplace.png'
+			pos: self.pos
+
+<MapClientLayout>:
+	imagemap: imagemap
+	
+	canvas.before:
+		Color:
+			rgb: 1, 1, 1
+		Rectangle:
+			size: self.size
+			pos: self.pos
+			source: 'background.png'
+		Color:
+			rgb: 0, 0, 0
+		Rectangle:
+			pos: root.right - 230 + 10, self.top - 10 - 64
+			size: 64, 64
+			source: root.logo + '_enable.png'
+
+		# XXX dont duplicate image to make it darker >_<
+		Rectangle:
+			pos: root.right - 230 + 10, self.top - 10 - 64
+			size: 64, 64
+			source: root.logo + '_enable.png'
+
+	Label:
+		size_hint: (None, None)
+		font_size: 43
+		height: 43
+		y: root.top - 10 - 32 - 22
+		x: root.right - 230 + 90
+		color: (.05, .05, .05, .6)
+		text: str(int(root.time)) + '"'
+		font_name: 'data/fonts/DroidSans-Bold.ttf'
+
+	Label:
+		size_hint: (None, None)
+		font_size: 43
+		height: 43
+		y: root.top - 10 - 32 - 22
+		x: root.right - 230 + 90
+		color: root.color + [1]
+		text: str(int(root.time)) + '"'
+		font_name: 'data/fonts/DroidSans-Bold.ttf'
+
+		canvas.before:
+			StencilPush
+			Rectangle:
+				pos: self.pos
+				size: self.width, self.height * (1 - (root.time / float(root.timelimit)))
+			StencilUse
+
+		canvas.after:
+			StencilPop
+
+	Map:
+		id: imagemap
+		
+
+<MapDescription>:
+	layout: layout
+
+	ScrollView:
+		pos: root.pos
+		size: root.width, root.height - 50
+		do_scroll_x: True
+		GridLayout:
+			rows: 1
+			cols: 2
+			size_hint: (1, None)
+			padding: 10
+			spacing: 10
+			id: layout
+
+	Button:
+		size_hint: (None, None)
+		size: (100, 40)
+		text: '<< Retour'
+		pos: root.x - 5, root.y - 50
+
+<MapServerLayout>:
+
+	canvas.before:
+		Color:
+			rgb: 1, 1, 1
+		Rectangle:
+			size: self.size
+			pos: self.pos
+			source: 'background.png'
+
+<MapAudio>:
+	AnchorLayout:
+		pos: root.x, root.y + 50
+		size_hint: (None, None)
+		size: root.width, root.height - 50
+		Button:
+			size_hint: (None, None)
+			size: (200, 100)
+			text: 'Lire le fichier audio'
+			on_release: root.play_audio()
