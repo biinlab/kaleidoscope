@@ -1,18 +1,29 @@
 #:kivy 1.0.8
 
-<ScenarioSelector>:
-	spacing:30
-	padding:15
+<ScenarioSelectorButton>:
+	pos:self.pos
+	canvas:
+		Color:
+			rgb: (1,1,1)
+		BorderImage:
+			pos:self.pos
+			size: self.size
+			source: self.source	
+
+<ScenarioSelector>:		
+	cols:2
+	size_hint:(None,None)
+	size:(512,163)
+	center: self.center
+	spacing:0
+	padding:0
 
 <MapHandler>:
-	do_scale: False
-	do_translation: False
+	cols:2
+	size_hint:(None,None)
+	size: (128,56)
+	pos_hint:{'right':0.98,'y':0.03}
 	auto_bring_to_front: True
-	canvas.before:
-		Rectangle:
-			size: (128,128)
-			source: 'plane_disable.png'
-			pos: self.pos
 
 <MapThumbnail>:
 	do_scale: False

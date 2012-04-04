@@ -3,6 +3,7 @@ from os import walk
 from kaleidoscope.scenario import KalScenarioServer
 from time import time, sleep
 from json import load
+from random import random
 
 from kivy.core.window import Window
 from kivy.uix.widget import Widget
@@ -38,7 +39,7 @@ map_logos = (
     'plane',
     'ying',
 )
-layers = ["mountains","rivers","cities","regions"]
+layers = ["regions","mountains","rivers","cities"]
 
 map_coordinates = (
     (200,20),
@@ -146,7 +147,6 @@ class MapServer(KalScenarioServer):
                 size_hint=(None, None),
                 size = size,
                 layers = layers2
-                #pos_hint={'x': .1, 'y': .1}
                 )
         self.map_background = ImageWidget(
                  source = 'data/map.png',
@@ -156,8 +156,7 @@ class MapServer(KalScenarioServer):
         self.scat = Scatter(
                 size_hint = imagemap.size_hint,
                 size = imagemap.size,
-                #pos_hint={'x':.3, 'y':.1},
-                center = pos, #self.layout.get_parent_window().center,
+                center = pos, 
                 scale = .8,
                 rotation = 0,
                 do_translation = False,
@@ -195,7 +194,6 @@ class MapServer(KalScenarioServer):
         c = self.mapitems[filename][1]
         #hide from screen and free current thumb_index 
         if thumb_index == -1 :
-            #self.thumbs[c] = [None, None]
             #remove mapitem from screen
             self.imagemap.hide_mapitem(filename)
             thumb = self.index2thumb(c)
@@ -224,11 +222,7 @@ class MapServer(KalScenarioServer):
 
     def create_and_add_item(self, client, index):
         th = self.index2thumb(index) 
-        #if th != None :
-        #    return th
         thumb = self.imagemap.get_thumb(index)
-        #if thumb is None : 
-        #    return None
         player_place = int(self.players[client]["place"])-1
         r,g,b = map_colors[ player_place ]
         thumb.color = [r/255.,g/255.,b/255.,1.]
@@ -258,36 +252,11 @@ class MapServer(KalScenarioServer):
         a = int(args[1])/255.
         b = int(args[2])/255.
         c = int(args[3])/255.
-        #d = int(args[4])
         thumb = self.index2thumb(index)
         if thumb is not None :
             thumb.color = (a,b,c)
             
-        """
-        date = float(args[1])
-        thumb = None
-        for child in self.layout.children:
-            if not isinstance(child, MapThumbnail):
-                continue
-            if child.index != index:
-                continue
-            thumb = child
-            break
-        if thumb is None:
-            thumb = self.imagemap.get_thumb(index)
-            thumb.client = client
-            place = int(self.players[client]['place']) - 1
-            thumb.color = map(lambda x: x / 255., map_colors[place])
-        if date == -1:
-            if thumb.parent is not None:
-                thumb.parent.remove_widget(thumb)
-        else:
-            if thumb.parent is None:
-                self.layout.add_widget(thumb, -1)
-            alpha = self.imagemap.get_alpha_from_realdate(date)
-            self.imagemap.set_date_by_alpha(thumb, alpha)
-            self.imagemap.set_pos_by_alpha(thumb, alpha)
-        """
+        
     def index2thumb(self,index):
         for child in self.scat.children:
             if isinstance(child,MapThumbnail) and child.index == index:
@@ -366,7 +335,8 @@ class MapServer(KalScenarioServer):
         self.init_ui()
         self.items_given = []
         
-
+        affected = [-1]
+        self.imagemap.layers = []
         for client in self.controler.clients:
             place = int(self.players[client]['place']) - 1
             self.send_to(client, 'COLOR %d %d %d' % map_colors[place])
@@ -376,44 +346,23 @@ class MapServer(KalScenarioServer):
                 layer = str(layers[scenariol])
             else :
                 l = len(layers) - 1
-                if place > l : place = l 
-                layer = str(layers[place]) 
-            self.send_to(client, 'LAYER %s' % str(layers[scenariol]))
+                r = -1
+                if place > l : place = 0
+                else : 
+                    while r in affected :
+                        r = int( random() * l )
+                affected.append(r)
+                print affected
+                place = r 
+                layer = str(layers[place])
+                self.imagemap.layers = self.imagemap.layers + [layer] 
+            self.send_to(client, 'LAYER %s' % layer)
             self.send_to(client, 'MAPSIZE %d %d' % map_coordinates[1] )
             self.send_to(client, 'MAPPOS %d %d' % map_coordinates[0])
 
         #create map
         self.send_all('MAP')
-        """ 
-        # deliver randomly index
-        litems = len(self.imagemap.data)
-        if litems:
-            r = range(litems)
-            allfinished = False
-            while not allfinished:
-                allfinished = True
-                for client in self.controler.clients:
-                    player = self.players[client]
-                    if player['ready'] is False:
-                        continue
-                    if player['count'] > MAX_CLIENT_ITEMS - 1:
-                        continue
-                    index = r.pop(randint(0, litems - 1))
-                    litems -= 1
-                    self.send_to(client, 'GIVE %d' % index)
-                    allfinished = allfinished and False
-                    player['count'] += 1
-                    self.items_given.append((client, index))
-         
-            
-            for i in litems:
-                for client in self.controler.clients:
-                    player = self.players[client]
-                    if player['ready'] is False:
-                        continue
-                    if player['count'] > MAX_CLIENT_ITEMS - 1:
-                        continue
-        """
+        
         index = 0
         for item in self.imagemap.data :     
             for client in self.controler.clients:
@@ -446,17 +395,9 @@ class MapServer(KalScenarioServer):
                 continue
             #print thumb.item
             # are we far ? Check if thumb matches the place
-            #thumb.control_if_right()
             x,y = thumb.pos
             x += thumb.width/2. 
             filename = self.imagemap.pos2mapitem(x,y)
-            """
-            filename == False
-            for filename1, client-thumb_index in self.mapitems.iteritems():
-                if thumb.index == client-thumb_index[1]:
-                    filename == filename1
-                    break
-            """
             if filename is False :
                 continue
             if filename == thumb.item['filename'] : #, thumb.item['filename']
@@ -469,7 +410,7 @@ class MapServer(KalScenarioServer):
                     thumb.shake()
                     self.send_to(client, 'THNOTVALID %d' % thumb.index)
             index_sent.append(thumb.index)
-            
+
         for client, index in self.items_given:
             if index in index_sent:
                 continue
@@ -488,23 +429,7 @@ class MapServer(KalScenarioServer):
 
     def run_reset_for_game3(self):
         #move all thumbs to the right location on map
-        """
-        #print self.items_given
-        #for client, index in self.items_given:
-        for index, item in self.thumbs.iteritems():
-            #client, pos = item
-            print index
-            #thumb 2 filename
-            #thumb = self.index2thumb(index)
-            #filename = thumb.mapitem
-            filename = self.index2filename(index)
-            print filename
-            pos = self.imagemap.retrieve_pixels_location(filename)
-            print pos
-            if pos is not None : 
-                print index, filename, pos
-            #self.send_to(client, 'THVALID %d' % index)
-        """
+        
         #delete all existing items
         for child in self.scat.children[:]:
             if isinstance(child,MapThumbnail):
@@ -532,5 +457,7 @@ class MapServer(KalScenarioServer):
         if time() > self.timeout:
             self.controler.switch_scenario('choose')
             self.controler.load_all()
+    
+           
 
 scenario_class = MapServer

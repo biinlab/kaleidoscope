@@ -64,8 +64,7 @@ class MapClient(KalScenarioClient):
         pass
 
     def handle_game1(self, args):
-        self.layout = MapClientLayout(mapclient = self)
-        #self.imagemap = imagemap = self.layout.imagemap 
+        self.layout = MapClientLayout(mapclient = self) 
         self.container.clear_widgets()
         self.container.add_widget(self.layout)
 
@@ -79,10 +78,7 @@ class MapClient(KalScenarioClient):
         self.map_handler.bind(rotation = self.send_rotatemap)
 
     def handle_game2(self, args):
-        #pass
         self.layout.auto_color_thumbs()
-        #self.layout.lock_thumbs(False)
-        #self.layout.hide_places()
 
     def handle_game3(self, args):
         self.layout.lock_thumbs(True)
@@ -93,17 +89,14 @@ class MapClient(KalScenarioClient):
         self.count += 1
         index = int(args)
         item = self.layout.create_and_add_item(index)
-        #item.bind(pos=self.send_pos)
         if item is not None :
             item.bind(mapitem = self.send_pos)
-        #item.bind(center = self.send_pos)
 
     def handle_thnotvalid(self, args):
         index = int(args)
         thumb = self.layout.get_thumb_from_index(index)
         if not thumb:
             return
-        #thumb.auto_color = True
         thumb.update_color(False)
         #shake !
         thumb.shake()
@@ -113,13 +106,9 @@ class MapClient(KalScenarioClient):
         thumb = self.layout.get_thumb_from_index(index)
         if not thumb:
             return
-        #self.fresco.set_pos_by_date(thumb, thumb.item['date'])
-        #thumb.auto_color = True
-        thumb.update_color(True)
-        #thumb.do_translation = False 
+        thumb.update_color(True) 
 
     def handle_hideth(self, args):
-        #print 'hideth'
         index = int(args)
         thumb = self.layout.get_thumb_from_index(index)
         if not thumb:
@@ -127,23 +116,17 @@ class MapClient(KalScenarioClient):
         self.layout.remove_widget(thumb)
 
     def handle_displayth(self, args):
-        #print 'displayth'
         index = int(args)
-        #print index
         thumb = self.layout.get_thumb_from_index(index)
-        #print thumb
         if not thumb:
             return
         self.layout.add_widget(thumb)
-        #thumb.move_to_origin()
 
     def handle_displaymapitem(self, args):
-        #print 'displaymapitem'
         filename = str(args)
         self.layout.imagemap.display_mapitem(filename, True, (1,1,1,1))
 
     def handle_hidemapitem(self, args):
-        #print 'hidemapitem'
         filename = str(args)
         self.layout.imagemap.hide_mapitem(filename)
 
@@ -181,13 +164,7 @@ class MapClient(KalScenarioClient):
     def send_color(self, instance, value):
         value = instance.color
         self.send('COLOR %d %d %d %d' % (instance.index, value[0]*255,value[1]*255,value[2]*255) )
-    """
-    def send_mapitem(self, instance, value):
-        if value is None:
-            value = -1
-        self.send('MAPITEM %d %.04f' % (instance.index, value))
-        print "send mapitem"
-    """
+
     def send_flag_change(self, mapitem, flag_id):
         if flag_id is None:
             flag_id = -1
