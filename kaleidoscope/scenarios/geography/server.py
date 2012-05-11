@@ -364,21 +364,7 @@ class MapServer(KalScenarioServer):
 
         #create map
         self.send_all('MAP')
-        """
-        index = 0
-        for item in (data for data in self.imagemap.data): 
-        #USE of a generator here to avoid running out of memory on the device (especially mobile devices)    
-            for client in self.controler.clients:
-                player = self.players[client]
-                if player['ready'] is False:
-                        continue
-                #if player['count'] > MAX_CLIENT_ITEMS - 1:
-                #        continue
-                self.send_to(client, 'GIVE %d' % index)
-                #player['count'] += 1
-                self.items_given.append((client, index))
-            index +=1
-        """
+        
         #USE of a generator here to avoid running out of memory on the device (especially mobile devices)    
         for client in (client for client in self.controler.clients):
             player = self.players[client]
