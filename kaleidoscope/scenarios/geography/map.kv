@@ -29,7 +29,8 @@
 	do_scale: False
 	do_rotation: False
 	size_hint: (None, None)
-	size: (130, 60 if self.controled else 60)
+	size: (130,60)	
+
 	length_flag: (root.imagemap.center_y - self.center_y)
 
 	canvas:
@@ -63,6 +64,7 @@
 		y: 9
 
 	Label:
+		id: root.lbl
 		font_name: 'Georgia_Italic.ttf'
 		font_size: 16
 		color: (.3, .3, .3, .7)
@@ -83,6 +85,7 @@
 		valign: 'bottom'
 		text: root.item.get('title')
 
+	
 <MapEmptyPlace>:
 	size_hint: (None, None)
 	size: (130,60)

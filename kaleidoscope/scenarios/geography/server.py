@@ -18,8 +18,9 @@ from kivy.lang import Builder
 from kivy.animation import Animation
 from kivy.properties import ListProperty, DictProperty, StringProperty, NumericProperty
 
-TIMER_1 = 20
-TIMER_2 = 15
+TIMER_1 = 40
+TIMER_2 = 25
+TIMER_3 = 15
 MAX_CLIENT_ITEMS = 3
 
 background = Image(join(dirname(__file__), 'background.png'))
@@ -185,7 +186,7 @@ class MapServer(KalScenarioServer):
     def do_client_flagchange(self, client, args):
         filename = self.index2filename( int(args[0]) )
         thumb_index = int(args[1])
-        print "SERVER : do_client_flagchange: "+ str(client)+','+str(filename)+str(thumb_index)
+        #print "SERVER : do_client_flagchange: "+ str(client)+','+str(filename)+str(thumb_index)
 
         if filename not in self.mapitems.keys():
             self.mapitems[filename] = [None, -1]
@@ -347,7 +348,8 @@ class MapServer(KalScenarioServer):
             else :
                 l = len(layers) - 1
                 r = -1
-                if place > l : place = 0
+                if place > l : 
+                    place = 0
                 else : 
                     while r in affected :
                         r = int( random() * l )
@@ -355,16 +357,17 @@ class MapServer(KalScenarioServer):
                 print affected
                 place = r 
                 layer = str(layers[place])
-                self.imagemap.layers = self.imagemap.layers + [layer] 
+            self.imagemap.layers = self.imagemap.layers + [layer] 
             self.send_to(client, 'LAYER %s' % layer)
             self.send_to(client, 'MAPSIZE %d %d' % map_coordinates[1] )
             self.send_to(client, 'MAPPOS %d %d' % map_coordinates[0])
 
         #create map
         self.send_all('MAP')
-        
+        """
         index = 0
-        for item in self.imagemap.data :     
+        for item in (data for data in self.imagemap.data): 
+        #USE of a generator here to avoid running out of memory on the device (especially mobile devices)    
             for client in self.controler.clients:
                 player = self.players[client]
                 if player['ready'] is False:
@@ -375,7 +378,24 @@ class MapServer(KalScenarioServer):
                 #player['count'] += 1
                 self.items_given.append((client, index))
             index +=1
+        """
+        #USE of a generator here to avoid running out of memory on the device (especially mobile devices)    
+        for client in (client for client in self.controler.clients):
+            player = self.players[client]
+            if player['ready'] is False:
+                        continue
+            #if player['count'] > MAX_CLIENT_ITEMS - 1:
+            #        continue
+            
+            index = 0
+            for item in (data for data in self.imagemap.data): 
+                self.send_to(client, 'GIVE %d' % index)
+                #player['count'] += 1
+                self.items_given.append((client, index))
+                index +=1
+ 
         self.state = 'game1'
+        self.send_all('LAYOUTALL')
 
  
     def run_game1(self):
@@ -450,7 +470,7 @@ class MapServer(KalScenarioServer):
         self.send_all('PLACETHUMBS')
         self.send_all('GAME2')
         self.state = 'game3'
-        self.timeout = time() + 25
+        self.timeout = time() + TIMER_3
         self.send_all('TIME %d %d' % (time(), int(self.timeout)))
         
     def run_game3(self):

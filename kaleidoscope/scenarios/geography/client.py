@@ -92,6 +92,9 @@ class MapClient(KalScenarioClient):
         if item is not None :
             item.bind(mapitem = self.send_pos)
 
+    def handle_layoutall(self,args):
+        self.layout.do_layout_all()
+
     def handle_thnotvalid(self, args):
         index = int(args)
         thumb = self.layout.get_thumb_from_index(index)
@@ -106,7 +109,8 @@ class MapClient(KalScenarioClient):
         thumb = self.layout.get_thumb_from_index(index)
         if not thumb:
             return
-        thumb.update_color(True) 
+        thumb.update_color(True)
+        thumb.locked = True 
 
     def handle_hideth(self, args):
         index = int(args)
@@ -170,7 +174,7 @@ class MapClient(KalScenarioClient):
             flag_id = -1
         filename_index = self.filename2index(mapitem.filename) 
         self.send('FLAGCHANGE %d %d' % (filename_index,flag_id) )
-        print "CLIENT : flag change : "+str(mapitem.filename) +' '+ str(flag_id)
+        #print "CLIENT : flag change : "+str(mapitem.filename) +' '+ str(flag_id)
 
     def filename2index(self,filename):
         #trick to pass mapitem.filename (string) as a integer (protocol blocks strings..)

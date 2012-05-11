@@ -115,6 +115,17 @@ class MapThumbnail(Scatter):
     # used by server, to know which client have this item
     client = ObjectProperty(None)
     
+    def __init__(self, **kwargs):
+        super(MapThumbnail, self).__init__(**kwargs)
+        self.lbl = Label(
+                        font_size = 20,
+                        text = self.item.get('title'),
+                        text_size = (130,None),
+                        multiline = True                        
+                        )
+        #self.size = self.lbl.texture_size
+        #self.lbl.bind(texture_size=self.setter('size'))
+    
     def update_color(self, win):
         color = Color(71 / 360., 71 / 100., 87 / 100., mode='hsv')
         if self.auto_color == True :
@@ -143,8 +154,6 @@ class MapThumbnail(Scatter):
             return
         Animation.stop_all(self, 'pos')
         self.controled = True
-        if touch.is_double_tap:
-            self.show_popup()
         return True
 
     def on_touch_up(self, touch):
@@ -168,7 +177,7 @@ class MapThumbnail(Scatter):
         if self.auto_color : 
             self.update_color(False)
         return ret
-    
+    """
     def show_popup(self):
         if self.popup is not None:
             self.popup.dismiss()
@@ -210,14 +219,14 @@ class MapThumbnail(Scatter):
             size_hint=(.7, .7))
         self.popup.bind(on_dismiss=self.stop_media)
         popup.open()
-
+    """
     def move_to_origin(self):
         Animation(pos=self.origin, t='out_elastic').start(self)
 
     def move_to_pos(self,pos):
         self.pos = pos
         #Animation(pos=pos, t='out_elastic').start(self)
-
+    """
     def stop_media(self, instance):
         content = instance.content
         if not content.media:
@@ -226,7 +235,7 @@ class MapThumbnail(Scatter):
             content.media.stop()
         except Exception, e:
             print e
-    
+    """
     def shake(self):
         self.x -= 15
         anim = Animation(x = self.x + 15, t='out_elastic', d=.5).start(self)
@@ -410,6 +419,8 @@ class Map(FloatLayout):
 
     def display_mapitem(self, filename, active, color):
             #print "display mapitem" + filename
+            #if self.server :
+            #    print filename, active, color
             parts = filename.rsplit('.', 1)
             if len(parts) != 2:
                 return
@@ -446,8 +457,8 @@ class Map(FloatLayout):
         for child in self.children[:]:
             child.unbind(active=self.on_child_active)
             self.remove_widget(child)
-
-        for item in self.data:
+ 
+        for item in (data for data in self.data): #use a GENERATOR here
             filename = item["filename"]
             #exclude unallowed layers (rivers etc etc)
             parts = filename.rsplit('-', 1)
@@ -603,7 +614,7 @@ class MapClientLayout(FloatLayout):
         self.add_widget(thumb)
         self.items.append(thumb)
         self.emptyplaces.append(place)
-        self.do_layout_all()
+        #self.do_layout_all()
         return thumb
 
     def do_layout_all(self):
@@ -614,10 +625,10 @@ class MapClientLayout(FloatLayout):
         # place correctly thumbs
         if not items:
             return
-        w, h = items[0].size
+        #w, h = items[0].size
         margin = 10
-        count_in_rows = int(self.height / (h + margin))
-        rows_space = count_in_rows * h + (count_in_rows - 1 * margin)
+        #count_in_rows = int(self.width * 0.6 / (h + margin))
+        #rows_space = count_in_rows * h + (count_in_rows - 1 * margin)
 
         # starting point
         x = 20
@@ -625,11 +636,11 @@ class MapClientLayout(FloatLayout):
 
         for item in items:
             item.pos = item.origin = x, y
-            y += h + margin
+            y += item.size[1] + margin
             
             if y > self.height - margin * 2:
                 y = oy
-                x += w + margin
+                x += item.size[0] + margin
             
     
     def on_size(self, instance, value):
@@ -671,6 +682,7 @@ class MapClientLayout(FloatLayout):
                 #convert to green 
                 child.auto_color = False
                 child.update_color(True)
+                child.locked = True
         self.imagemap.update_images(1)
 
     def auto_color_thumbs(self):
