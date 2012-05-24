@@ -280,7 +280,7 @@ class MapItem(Image):
         except IndexError:
             return False
         #print x,y,color
-        if color[-1] <= 0.01:
+        if color[-1] <= 0.003:
             return False
         return True
 
@@ -671,6 +671,7 @@ class MapClientLayout(FloatLayout):
         return None
 
     def place_thumbs(self):
+        print "place thumbs"
         for child in self.items:
             if isinstance(child, MapThumbnail):
                 pos = child.right_pos

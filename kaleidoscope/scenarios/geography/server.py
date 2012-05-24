@@ -189,34 +189,48 @@ class MapServer(KalScenarioServer):
         #print "SERVER : do_client_flagchange: "+ str(client)+','+str(filename)+str(thumb_index)
 
         if filename not in self.mapitems.keys():
-            self.mapitems[filename] = [None, -1]
+            self.mapitems[filename] = []
         if thumb_index not in self.thumbs.keys():
             self.thumbs[thumb_index] = [None, (0,-300)]
-        c = self.mapitems[filename][1]
+        c = len( self.mapitems[filename] )    
+
         #hide from screen and free current thumb_index 
         if thumb_index == -1 :
-            #remove mapitem from screen
-            self.imagemap.hide_mapitem(filename)
-            thumb = self.index2thumb(c)
+            #get thumb
+            d = self.mapitems[filename]
+            for i in d:
+                cl,ti = i
+                if cl == client :
+                    d = ti
+            thumb = self.index2thumb(d) 
+            #remove thumb from screen
             self.scat.remove_widget(thumb)
-            #add thumb to other clients
-            self.display_thumb(client, c)
-            self.display_mapitem(client,filename) 
             #save
-            self.mapitems[filename] = [None, -1]
+            if (client, d) in self.mapitems[filename] :
+                self.mapitems[filename].remove( (client, d) )      
+            #remove mapitem from screen
+            if len( self.mapitems[filename] ) == 0 :
+                self.imagemap.hide_mapitem(filename)
+            """ 
+            #add thumb to other clients
+            self.display_thumb(client, d)
+            self.display_mapitem(client,filename) 
+            """
             
         #display
-        elif c == -1 :
+        elif c >= 0 :
             #store new
-            self.mapitems[filename] = [client, thumb_index]
+            self.mapitems[filename].append( (client, thumb_index) )
             self.thumbs[thumb_index] = [client, self.thumbs[thumb_index][1] ]
-            #display mapitem on main screen
-            self.imagemap.display_mapitem(filename, True, (0,0,0,1))
+            if c == 0:
+                #display mapitem on main screen
+                self.imagemap.display_mapitem(filename, True, (0,0,0,1))
             thumb = self.create_and_add_item(client, thumb_index)
+            """
             #hide thumb on clients except client
             self.hide_thumb(client, thumb_index)
             self.hide_mapitem(client, filename)         
-
+            """ 
     def index2filename(self,index):
         #trick to pass mapitem.filename (string) as a integer (protocol blocks strings..)
         return self.imagemap.data[index]['filename']
@@ -304,6 +318,23 @@ class MapServer(KalScenarioServer):
             if cl != client :
                 self.send_to(cl, 'DISPLAYMAPITEM %s' % str(filename))
     
+    def thumb_index_match_layer(self, index, client):
+        filename = self.imagemap.data[index]['filename']
+        return self.filename_match_layer(filename, client)
+
+    def filename_match_layer(self, filename, client):
+        #print self.f1(self.layers)
+        parts = filename.rsplit('-', 1)
+        #print parts[0], self.layers_given, client
+        if len(parts) != 2 : 
+            return False
+        if client not in self.layers_given.keys():
+            return False  
+        if parts[0] != self.layers_given[ client ]:
+            return False
+        #print parts[0], self.layers_given, client
+        return True
+    
     #
     # State machine
     #
@@ -327,6 +358,7 @@ class MapServer(KalScenarioServer):
         self.state = 'game0'  
 
     def run_game0(self):
+
         if scenariol == -2:
             sleep(0.2)
             return
@@ -335,6 +367,7 @@ class MapServer(KalScenarioServer):
         self.send_all('REMOVESELECTOR')
         self.init_ui()
         self.items_given = []
+        self.layers_given = {}
         
         affected = [-1]
         self.imagemap.layers = []
@@ -359,27 +392,39 @@ class MapServer(KalScenarioServer):
                 layer = str(layers[place])
             self.imagemap.layers = self.imagemap.layers + [layer] 
             self.send_to(client, 'LAYER %s' % layer)
+            self.layers_given[client] = layer 
             self.send_to(client, 'MAPSIZE %d %d' % map_coordinates[1] )
             self.send_to(client, 'MAPPOS %d %d' % map_coordinates[0])
 
         #create map
         self.send_all('MAP')
         
-        #USE of a generator here to avoid running out of memory on the device (especially mobile devices)    
-        for client in (client for client in self.controler.clients):
-            player = self.players[client]
-            if player['ready'] is False:
+        # deliver randomly index
+        litems = len(self.imagemap.data)
+        if litems:
+            r = range(litems)
+            allfinished = False
+            while not allfinished:
+                allfinished = True
+                index = r.pop(randint(0, litems - 1))
+                litems -= 1
+                print litems
+                for client in self.controler.clients: 
+                    player = self.players[client]
+                    if player['ready'] is False:
                         continue
-            #if player['count'] > MAX_CLIENT_ITEMS - 1:
-            #        continue
-            
-            index = 0
-            for item in (data for data in self.imagemap.data): 
-                self.send_to(client, 'GIVE %d' % index)
-                #player['count'] += 1
-                self.items_given.append((client, index))
-                index +=1
- 
+                    if player['count'] > MAX_CLIENT_ITEMS - 1:
+                        continue 
+                    if self.thumb_index_match_layer(index, client) == True :
+                        print r, litems
+                        self.send_to(client, 'GIVE %d' % index)
+                        player['count'] += 1
+                        self.items_given.append((client, index))
+                        allfinished = allfinished and False 
+                        break
+                    allfinished = allfinished and False
+                if litems == 0 : allfinished = True       
+  
         self.state = 'game1'
         self.send_all('LAYOUTALL')
 

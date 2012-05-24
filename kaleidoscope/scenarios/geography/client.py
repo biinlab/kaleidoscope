@@ -1,5 +1,6 @@
 from os.path import join, dirname
 from time import time
+import thread
 
 from kaleidoscope.scenario import KalScenarioClient
 
@@ -87,10 +88,14 @@ class MapClient(KalScenarioClient):
     def handle_give(self, args):
         # create thumbnail in the gridlayout
         self.count += 1
+        #print args
         index = int(args)
         item = self.layout.create_and_add_item(index)
         if item is not None :
             item.bind(mapitem = self.send_pos)
+
+    #def handle_give2(self, args): #threaded version
+    #    thread.start_new_thread(self.handle_give,(args, ))
 
     def handle_layoutall(self,args):
         self.layout.do_layout_all()
@@ -113,6 +118,7 @@ class MapClient(KalScenarioClient):
         thumb.locked = True 
 
     def handle_hideth(self, args):
+        return
         index = int(args)
         thumb = self.layout.get_thumb_from_index(index)
         if not thumb:
@@ -131,6 +137,7 @@ class MapClient(KalScenarioClient):
         self.layout.imagemap.display_mapitem(filename, True, (1,1,1,1))
 
     def handle_hidemapitem(self, args):
+        return
         filename = str(args)
         self.layout.imagemap.hide_mapitem(filename)
 
