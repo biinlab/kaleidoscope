@@ -1,5 +1,8 @@
 #:kivy 1.0.8
 
+<ThumbImage>:
+	color:[1,1,1,.99]
+
 <FrescoThumbnail>:
 	do_scale: False
 	do_rotation: False
@@ -20,6 +23,11 @@
 		BorderImage:
 			size: root.size
 			source: 'roundrect.png'
+		ThumbImage:
+			source: root.media_picture
+			width: self.width * 0.25
+			x: self.width * 0.75 - 5
+		
 
 	Label:
 		text: root.str_date
@@ -48,8 +56,8 @@
 		font_name: 'Georgia_Italic.ttf'
 		font_size: 16
 		color: (.3, .3, .3, .7)
-		text_size: self.width - 20, self.height - 20
-		size: root.width, 100
+		text_size: self.width * 0.90 - 20, self.height - 20
+		size: root.width * 0.90, 100
 		halign: 'left'
 		valign: 'middle'
 		text: root.item.get('title')
@@ -59,8 +67,8 @@
 		font_name: 'Georgia_Italic.ttf'
 		font_size: 16
 		color: (1, 1, 1, 1)
-		text_size: self.width - 20, self.height - 20
-		size: root.width, 100
+		text_size: self.width * 0.90 - 20, self.height - 20
+		size: root.width * 0.90, 100
 		halign: 'left'
 		valign: 'middle'
 		text: root.item.get('title')

@@ -47,6 +47,9 @@ class FrescoDescription(FloatLayout):
     layout = ObjectProperty(None)
     media = ObjectProperty(None)
 
+class ThumbImage(Image):
+    pass
+
 class FrescoThumbnail(Scatter):
     origin = ListProperty([0, 0])
     fresco = ObjectProperty(None)
@@ -63,9 +66,25 @@ class FrescoThumbnail(Scatter):
     place_correctly = BooleanProperty(False)
     controled = BooleanProperty(False)
     real_center_y = NumericProperty(0)
+    media_picture = StringProperty('')
 
     # used by server, to know which client have this item
     client = ObjectProperty(None)
+
+    def __init__(self, **kwargs):
+        #inheritance
+        super(FrescoThumbnail, self).__init__(**kwargs)
+        
+        #init media in order to display a pic on the thumbnail front
+        media = self.item.get('media', '')
+        if media:
+            ext = media.rsplit('.', 1)[-1].lower()
+            media = join(dirname(__file__), 'data', media)
+            mediawidget = None
+            if ext in ('jpg', 'png', 'jpeg', 'gif', 'bmp', 'tga'):
+                self.media_picture = media
+            else:
+                self.media_picture = ''
 
     def on_date(self, instance, value):
         if value is None:
@@ -492,3 +511,4 @@ class FrescoClientLayout(FloatLayout):
 
 from kivy.factory import Factory
 Factory.register('Fresco', cls=Fresco)
+Factory.register('ThumbImage', cls=ThumbImage)
