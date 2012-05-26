@@ -387,7 +387,7 @@ class MapServer(KalScenarioServer):
                     while r in affected :
                         r = int( random() * l )
                 affected.append(r)
-                print affected
+                #print affected
                 place = r 
                 layer = str(layers[place])
             self.imagemap.layers = self.imagemap.layers + [layer] 
@@ -408,7 +408,7 @@ class MapServer(KalScenarioServer):
                 allfinished = True
                 index = r.pop(randint(0, litems - 1))
                 litems -= 1
-                print litems
+                #print litems
                 for client in self.controler.clients: 
                     player = self.players[client]
                     if player['ready'] is False:
@@ -416,7 +416,7 @@ class MapServer(KalScenarioServer):
                     if player['count'] > MAX_CLIENT_ITEMS - 1:
                         continue 
                     if self.thumb_index_match_layer(index, client) == True :
-                        print r, litems
+                        #print r, litems
                         self.send_to(client, 'GIVE %d' % index)
                         player['count'] += 1
                         self.items_given.append((client, index))
