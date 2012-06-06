@@ -198,7 +198,10 @@ class MapClient(KalScenarioClient):
         if t < 0:
             t = 0
         self.layout.time = t
-        self.layout.timelimit = self.timelimit
+        try:
+            self.layout.timelimit = self.timelimit
+        except:
+            return 
 
     def send_rotatemap(self, instance, value):
         value = int(value)
