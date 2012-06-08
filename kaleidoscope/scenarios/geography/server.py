@@ -18,9 +18,9 @@ from kivy.lang import Builder
 from kivy.animation import Animation
 from kivy.properties import ListProperty, DictProperty, StringProperty, NumericProperty
 
-TIMER_1 = 10
-TIMER_2 = 5
-TIMER_3 = 3
+TIMER_1 = 40
+TIMER_2 = 25
+TIMER_3 = 9
 MAX_CLIENT_ITEMS = 3
 
 background = Image(join(dirname(__file__), 'background.png'))
@@ -451,7 +451,7 @@ class MapServer(KalScenarioServer):
             return
 
     def run_reset_for_game2(self):
-        '''Order imagemap !
+        '''Make correction on imagemap !
         '''
         # order !
         index_sent = []
@@ -484,6 +484,8 @@ class MapServer(KalScenarioServer):
         # do game 2
         self.timeout = time() + TIMER_2
         self.send_all('TIME %d %d' % (time(), int(self.timeout)))
+        self.send_all('GAME2')
+        self.send_all('GAME2')
         self.send_all('GAME2')
         self.state = 'game2'
 
