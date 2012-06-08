@@ -149,6 +149,10 @@ class MapClient(KalScenarioClient):
             self.send_pos(th,0)
             self.send_color(th,0)
 
+    def handle_clear(self, args):
+        self.layout.clear()
+
+
     # SEND TO SERVER  
 
     def validate(self, instance):
@@ -215,6 +219,9 @@ class MapClient(KalScenarioClient):
 
     def handle_thheld(self, instance, th_index):
         pass
+
+
+         
 
     
 

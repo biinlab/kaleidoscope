@@ -18,9 +18,9 @@ from kivy.lang import Builder
 from kivy.animation import Animation
 from kivy.properties import ListProperty, DictProperty, StringProperty, NumericProperty
 
-TIMER_1 = 40
-TIMER_2 = 25
-TIMER_3 = 15
+TIMER_1 = 10
+TIMER_2 = 5
+TIMER_3 = 3
 MAX_CLIENT_ITEMS = 3
 
 background = Image(join(dirname(__file__), 'background.png'))
@@ -334,6 +334,20 @@ class MapServer(KalScenarioServer):
             return False
         #print parts[0], self.layers_given, client
         return True
+
+    def clear(self):
+        self.send_all('CLEAR')
+        #self clear as well
+        self.mapitems = {}
+        self.thumbs = {}
+        self.layout.remove_widget(self.scat)
+        self.scat.remove_widget(self.map_background)
+        self.scat.remove_widget(self.imagemap)
+        self.scat = ''
+        self.imagemap = ''
+        self.map_background = ''
+        self.layout = ''
+        
     
     #
     # State machine
@@ -506,6 +520,7 @@ class MapServer(KalScenarioServer):
         
     def run_game3(self):
         if time() > self.timeout:
+            self.clear()
             self.controler.switch_scenario('choose')
             self.controler.load_all()
     

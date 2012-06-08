@@ -695,7 +695,14 @@ class MapClientLayout(FloatLayout):
         for child in self.items:
             if isinstance(child, MapThumbnail):
                 child.locked = boole
-                
+   
+    def clear(self):
+        self.imagemap.clear_widgets() 
+        self.clear_widgets()
+        self.items = []
+        self.emptyplaces = []     
+        #clear cache
+        Cache.remove(kv.texture)
 
 
 from kivy.factory import Factory
