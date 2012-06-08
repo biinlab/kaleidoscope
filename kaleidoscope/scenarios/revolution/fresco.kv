@@ -23,8 +23,10 @@
 		BorderImage:
 			size: root.size
 			source: 'roundrect.png'
-
-		
+	ThumbImage:
+		source: root.media_picture
+		width: root.width * 0.25 if root.media_picture != '' else 0
+		x: root.width * 0.75 - 5
 
 	Label:
 		text: root.str_date
