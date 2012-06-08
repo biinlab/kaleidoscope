@@ -18,6 +18,7 @@ from kivy.uix.label import Label
 from kivy.core.image import Image as CoreImage
 from kivy.core.text import Label as CoreLabel
 from kivy.core.audio import SoundLoader
+#from kivy.cache import Cache
 from json import load
 
 from os.path import dirname, join
@@ -177,65 +178,14 @@ class MapThumbnail(Scatter):
         if self.auto_color : 
             self.update_color(False)
         return ret
-    """
-    def show_popup(self):
-        if self.popup is not None:
-            self.popup.dismiss()
-        desc = MapDescription(item=self.item)
-
-        count = 0
-        content = self.item.get('content', '')
-        if content:
-            label = Label(text=content)
-            label.bind(size=update_size)
-            desc.layout.add_widget(label)
-            count += 1
-        media = self.item.get('media', '')
-        if media:
-            ext = media.rsplit('.', 1)[-1].lower()
-            media = join(dirname(__file__), 'data', media)
-            mediawidget = None
-            if ext in ('mp3', 'wav', 'ogg'):
-                mediawidget = MapAudio(source=media)
-            elif ext in ('jpg', 'png', 'jpeg', 'gif', 'bmp', 'tga'):
-                mediawidget = Image(source=media)
-            else:
-                pass
-            if mediawidget:
-                count += 1
-                scatter = Scatter(do_translation=False, do_rotation=False,
-                        min_scale=.4, max_scale=2)
-                scatter.add_widget(mediawidget)
-                scatter.bind(size=mediawidget.setter('size'))
-                desc.layout.add_widget(mediawidget)
-                desc.media = mediawidget
-
-        desc.layout.cols = max(1, count)
-        desc.layout.height = 500
-
-        self.popup = popup = Popup(
-            title=self.item['title'],
-            content=desc,
-            size_hint=(.7, .7))
-        self.popup.bind(on_dismiss=self.stop_media)
-        popup.open()
-    """
+    
     def move_to_origin(self):
         Animation(pos=self.origin, t='out_elastic').start(self)
 
     def move_to_pos(self,pos):
         self.pos = pos
         #Animation(pos=pos, t='out_elastic').start(self)
-    """
-    def stop_media(self, instance):
-        content = instance.content
-        if not content.media:
-            return
-        try:
-            content.media.stop()
-        except Exception, e:
-            print e
-    """
+    
     def shake(self):
         self.x -= 15
         anim = Animation(x = self.x + 15, t='out_elastic', d=.5).start(self)
@@ -702,7 +652,7 @@ class MapClientLayout(FloatLayout):
         self.items = []
         self.emptyplaces = []     
         #clear cache
-        Cache.remove(kv.texture)
+        #Cache.remove(kv.texture)
 
 
 from kivy.factory import Factory
