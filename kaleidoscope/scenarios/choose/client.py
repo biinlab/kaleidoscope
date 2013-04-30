@@ -9,6 +9,8 @@ from kivy.lang import Builder
 from kivy.resources import resource_add_path
 from functools import partial
 
+from random import choice
+
 #background = Image(join(dirname(__file__), 'background.png'))
 
 resource_add_path(dirname(__file__))
@@ -57,26 +59,41 @@ class ChooseClient(KalScenarioClient):
             self.send('PLACE %d' % idx)
 
         available = map(int, args.split())
-        cx, cy = Window.center
-        s = 200
-        m = 10
-        self.container.clear_widgets()
-        self.container.add_widget(
-            ChooseLabel(text='Choisis une couleur',
-                    pos=(0, cy + 200),
-                    size=(Window.width, 100)
-        ))
-        for idx, px, py in ((1, cx-s-m, cy-s-m), (2, cx+m, cy-s-m),
-                            (3, cx-s-m, cy+m), (4, cx+m, cy+m)):
-            valid = idx in available
-            button = PlaceButton(text='', size=(200, 200),
-                              pos=(px, py), idx=idx, valid=valid)
-            self.container.add_widget(button)
 
-            if not valid:
-                continue
+        if self.container.couleur_auto == 'libre':
+            
+            cx, cy = Window.center
+            s = 200
+            m = 10
+            self.container.clear_widgets()
+            self.container.add_widget(
+                ChooseLabel(text='Choisis une couleur',
+                        pos=(0, cy + 200),
+                        size=(Window.width, 100)
+            ))
+            for idx, px, py in ((1, cx-s-m, cy-s-m), (2, cx+m, cy-s-m),
+                                (3, cx-s-m, cy+m), (4, cx+m, cy+m)):
+                valid = idx in available
+                button = PlaceButton(text='', size=(200, 200),
+                                  pos=(px, py), idx=idx, valid=valid)
+                self.container.add_widget(button)
 
-            button.bind(on_release=partial(place_press, idx))
+                if not valid:
+                    continue
+
+                button.bind(on_release=partial(place_press, idx))
+        elif self.container.couleur_auto == 'vert':
+            self.send('PLACE 1')
+        elif self.container.couleur_auto == 'bleu':
+            self.send('PLACE 3')
+        elif self.container.couleur_auto == 'orange':
+            self.send('PLACE 2')
+        elif self.container.couleur_auto == 'violet':
+            self.send('PLACE 4')
+        elif self.container.couleur_auto == 'auto':
+            idx = choice(available)
+            self.send('PLACE %d' % idx)
+
 
     def handle_scenario(self, args):
         '''Select the scenario

@@ -270,12 +270,14 @@ class KalClientInteractive(FloatLayout):
     host = StringProperty('127.0.0.1')
     port = NumericProperty(6464)
     nickname = StringProperty('noname')
+    couleur_auto = StringProperty('auto')
     app = ObjectProperty(None)
     def __init__(self, **kwargs):
         super(KalClientInteractive, self).__init__(**kwargs)
         self.nickname = self.app.config.get('network', 'nickname')
         self.host = self.app.config.get('network', 'host')
         self.port = self.app.config.getint('network', 'port')
+        self.couleur_auto = self.app.config.get('param', 'couleur_auto')
 
         self.register_event_type('on_ok')
         self.register_event_type('on_failed')
@@ -387,6 +389,10 @@ class KalClientApp(App):
         config.set('network', 'host', 'localhost')
         config.set('network', 'port', '6464')
         config.set('network', 'nickname', 'noname')
+
+        config.add_section('param')
+        config.set('param', 'couleur_auto', 'auto')
+
         config.add_section('config')
         config.set('config', 'first_run', '1')
 
@@ -400,16 +406,27 @@ class KalClientApp(App):
           "section": "network", "key": "port" },
         { "type": "string", "title": "Nom",
           "desc": "Nom d'identification pour le serveur",
-          "section": "network", "key": "nickname" } ]'''
+          "section": "network", "key": "nickname" },
+        { "type": "title", "title": "Parametre"},
+        { "type": "options", "title": "Couleur auto",
+          "desc": "Choix de la couleur automatique",
+          "section": "param", "key": "couleur_auto",
+          "options": ["auto", "libre", "bleu", "orange", "vert", "violet"]}
+           ]'''
         settings.add_json_panel('Kaleidoscope', self.config, data=jsondata)
 
     def on_config_change(self, config, section, key, value):
-        if config != self.config or section != 'network':
+        if config != self.config or (section != 'network' and section != 'param'):
             return
         client = self.root
+        print client
         if key == 'host':
             client.host = value
         elif key == 'nickname':
             client.nickname = value
         elif key == 'post':
             client.port = int(value)
+        elif key == 'couleur_auto':
+        	print client.couleur_auto
+        	client.couleur_auto = value
+        	print client.couleur_auto
