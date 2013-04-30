@@ -102,30 +102,34 @@ class ChooseClient(KalScenarioClient):
         def scenario_press(scenario, *largs):
             self.send('SCENARIO %s' % scenario)
 
-        cx, cy = Window.center
-        s = 200
-        m = 10
-        self.container.clear_widgets()
-        self.container.add_widget(
-            ChooseLabel(text='Choisis un scenario',
-                    pos=(0, cy + 200),
-                    size=(Window.width, 100)
-        ))
+        if self.container.scenario_auto == 'libre':
+            cx, cy = Window.center
+            s = 200
+            m = 10
+            self.container.clear_widgets()
+            self.container.add_widget(
+                ChooseLabel(text='Choisis un scenario',
+                        pos=(0, cy + 200),
+                        size=(Window.width, 100)
+            ))
 
-        py = cy
-        for scenario, name in (
-            ('pentaminos', 'Pentaminos'),
-            ('revolution', 'Revolution'),
-            #('anglais', 'Anglais'),
-            ('geography', 'Geography') 
-        ):
-            button = PlaceButton(text=name, size=(350, 100),
-                            pos=(cx - 350 / 2., py - 100))
-            self.container.add_widget(button)
-            py += 100 + m * 2
+            py = cy
+            for scenario, name in (
+                ('pentaminos', 'Pentaminos'),
+                ('revolution', 'Revolution'),
+                #('anglais', 'Anglais'),
+                ('geography', 'Geography') 
+            ):
+                button = PlaceButton(text=name, size=(350, 100),
+                                pos=(cx - 350 / 2., py - 100))
+                self.container.add_widget(button)
+                py += 100 + m * 2
 
-            button.bind(on_release=partial(scenario_press, scenario))
-
+                button.bind(on_release=partial(scenario_press, scenario))
+        elif self.container.scenario_auto == 'auto':
+            self.send('SCENARIO %s' % choice(["pentaminos", "revolution", "geography"]))
+        else:
+            self.send('SCENARIO %s' % self.container.scenario_auto)
     def handle_beready(self, args):
         '''Be ready !
         '''

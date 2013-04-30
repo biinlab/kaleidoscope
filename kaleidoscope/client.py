@@ -271,6 +271,7 @@ class KalClientInteractive(FloatLayout):
     port = NumericProperty(6464)
     nickname = StringProperty('noname')
     couleur_auto = StringProperty('auto')
+    scenario_auto = StringProperty('auto')
     app = ObjectProperty(None)
     def __init__(self, **kwargs):
         super(KalClientInteractive, self).__init__(**kwargs)
@@ -278,6 +279,7 @@ class KalClientInteractive(FloatLayout):
         self.host = self.app.config.get('network', 'host')
         self.port = self.app.config.getint('network', 'port')
         self.couleur_auto = self.app.config.get('param', 'couleur_auto')
+        self.scenario_auto = self.app.config.get('param', 'scenario_auto')
 
         self.register_event_type('on_ok')
         self.register_event_type('on_failed')
@@ -392,6 +394,7 @@ class KalClientApp(App):
 
         config.add_section('param')
         config.set('param', 'couleur_auto', 'auto')
+        config.set('param', 'scenario_auto', 'auto')
 
         config.add_section('config')
         config.set('config', 'first_run', '1')
@@ -409,9 +412,13 @@ class KalClientApp(App):
           "section": "network", "key": "nickname" },
         { "type": "title", "title": "Parametre"},
         { "type": "options", "title": "Couleur auto",
-          "desc": "Choix de la couleur automatique",
+          "desc": "Choix de la couleur",
           "section": "param", "key": "couleur_auto",
-          "options": ["auto", "libre", "bleu", "orange", "vert", "violet"]}
+          "options": ["auto", "libre", "bleu", "orange", "vert", "violet"]},
+        { "type": "options", "title": "scenario auto",
+          "desc": "Choix du scenario",
+          "section": "param", "key": "scenario_auto",
+          "options": ["auto", "libre", "pentaminos", "revolution", "geography"]}
            ]'''
         settings.add_json_panel('Kaleidoscope', self.config, data=jsondata)
 
@@ -419,7 +426,6 @@ class KalClientApp(App):
         if config != self.config or (section != 'network' and section != 'param'):
             return
         client = self.root
-        print client
         if key == 'host':
             client.host = value
         elif key == 'nickname':
@@ -427,6 +433,6 @@ class KalClientApp(App):
         elif key == 'post':
             client.port = int(value)
         elif key == 'couleur_auto':
-        	print client.couleur_auto
         	client.couleur_auto = value
-        	print client.couleur_auto
+        elif key == 'scenario_auto':
+        	client.scenario_auto = value
