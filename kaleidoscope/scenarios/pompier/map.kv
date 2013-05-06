@@ -34,12 +34,12 @@
 
 	length_flag: (root.imagemap.center_y - self.center_y)
 
-	canvas:
-		Color:
-			rgb: self.color
-		BorderImage:
-			size: root.size
-			source: 'small_flag2.png'
+	# canvas:
+	# 	Color:
+	# 		rgb: self.color
+	# 	BorderImage:
+	# 		size: root.size
+	# 		source: 'small_flag2.png'
 
 	# canvas:
 	# 	BorderImage:
@@ -52,51 +52,57 @@
 		source: root.media_picture
 		pos: 0,0
 		size: 101,100
+		canvas:
+			Color:
+				rgb: root.color
+			Line:
+				circle: self.width/2, self.height/2, self.width/2
+				width: 3
 
-	Label:
-		text: root.title
-		font_name: 'Georgia_Italic.ttf'
-		font_size: 16
-		color: (.4, .4, .4, .7)
-		text_size: self.width - 20, self.height
-		size: root.width, 40
-		halign: 'left'
-		valign: 'bottom'
-		y: 10
-		x: 1
+	# Label:
+	# 	text: root.title
+	# 	font_name: 'Georgia_Italic.ttf'
+	# 	font_size: 16
+	# 	color: (.4, .4, .4, .7)
+	# 	text_size: self.width - 20, self.height
+	# 	size: root.width, 40
+	# 	halign: 'left'
+	# 	valign: 'bottom'
+	# 	y: 10
+	# 	x: 1
 
-	Label:
-		text: root.title
-		font_name: 'Georgia_Italic.ttf'
-		font_size: 16
-		color: (.05, .05, .05, 1)
-		text_size: self.width - 20, self.height
-		size: root.width, 40
-		halign: 'left'
-		valign: 'bottom'
-		y: 9
+	# Label:
+	# 	text: root.title
+	# 	font_name: 'Georgia_Italic.ttf'
+	# 	font_size: 16
+	# 	color: (.05, .05, .05, 1)
+	# 	text_size: self.width - 20, self.height
+	# 	size: root.width, 40
+	# 	halign: 'left'
+	# 	valign: 'bottom'
+	# 	y: 9
 
-	Label:
-		id: root.lbl
-		font_name: 'Georgia_Italic.ttf'
-		font_size: 16
-		color: (.3, .3, .3, .7)
-		text_size: self.width - 20, self.height - 20
-		size: root.width, 100
-		halign: 'left'
-		valign: 'bottom'
-		text: root.item.get('title')
-		x: 1
+	# Label:
+	# 	id: root.lbl
+	# 	font_name: 'Georgia_Italic.ttf'
+	# 	font_size: 16
+	# 	color: (.3, .3, .3, .7)
+	# 	text_size: self.width - 20, self.height - 20
+	# 	size: root.width, 100
+	# 	halign: 'left'
+	# 	valign: 'bottom'
+	# 	text: root.item.get('title')
+	# 	x: 1
 
-	Label:
-		font_name: 'Georgia_Italic.ttf'
-		font_size: 16
-		color: (1, 1, 1, 1)
-		text_size: self.width - 20, self.height - 20
-		size: root.width, 100
-		halign: 'left'
-		valign: 'bottom'
-		text: root.item.get('title')
+	# Label:
+	# 	font_name: 'Georgia_Italic.ttf'
+	# 	font_size: 16
+	# 	color: (1, 1, 1, 1)
+	# 	text_size: self.width - 20, self.height - 20
+	# 	size: root.width, 100
+	# 	halign: 'left'
+	# 	valign: 'bottom'
+	# 	text: root.item.get('title')
 
 	
 <MapEmptyPlace>:
@@ -137,12 +143,43 @@
 		pos: 40,40
 		size: 871, 161
 
+	Scatter:
+		pos: 1280 -320, 0
+		size_hint: None,None
+		size: 320, 800
+		do_scale: False
+		do_rotation: False
+		do_translation: False
+		
+		Image:
+			size_hint: None,None
+			pos: self.pos
+			source:'data/panneau-droite-active.png'
+			size: 320, 800
+
+		Image:
+			size_hint: None,None
+			source: 'data/casque_max.jpg'
+			pos: 10, 490
+			size:300,300
+
+		Label:
+			size_hint: None,None
+			font_size: 15
+			width: 300
+			text_size: (300, 500)
+			font_name: 'data/fonts/DroidSans-Bold.ttf'
+			text: 'Flumen praecipitem ad flumen coniunctos constrinxerunt acri constrinxerunt acri artuum ultimam iamque mox praecipitem eodem conpage corpora iamque velut in coniunctos velut artuum spatia divulsa ad ad scalas scalas eosque.'
+			x: 10
+			y: root.top - self.height - 10 - 250
+			font_name: 'data/fonts/DroidSans-Bold.ttf'
+
 	Label:
 		size_hint: (None, None)
 		font_size: 43
 		height: 43
 		y: root.top - 10 - 32 - 22
-		x: root.right - 230 + 90
+		x: root.right - 230 + 90 - 300
 		color: (.05, .05, .05, .6)
 		text: str(int(root.time)) + '"'
 		font_name: 'data/fonts/DroidSans-Bold.ttf'
@@ -152,7 +189,7 @@
 		font_size: 43
 		height: 43
 		y: root.top - 10 - 32 - 22
-		x: root.right - 230 + 90
+		x: root.right - 230 + 90 -300
 		color: root.color + [1]
 		text: str(int(root.time)) + '"'
 		font_name: 'data/fonts/DroidSans-Bold.ttf'

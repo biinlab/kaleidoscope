@@ -137,12 +137,12 @@ class MapThumbnail(Scatter):
                 self.media_picture = media
             else:
                 self.media_picture = ''
-        self.lbl = Label(
-                        font_size = 20,
-                        text = self.item.get('title'),
-                        text_size = (130,None),
-                        multiline = True                        
-                        )
+        # self.lbl = Label(
+        #                 font_size = 20,
+        #                 text = self.item.get('title'),
+        #                 text_size = (130,None),
+        #                 multiline = True                        
+        #                 )
         #self.size = self.lbl.texture_size
         #self.lbl.bind(texture_size=self.setter('size'))
     
@@ -622,12 +622,12 @@ class MapClientLayout(FloatLayout):
         if not items:
             return
         #w, h = items[0].size
-        margin = 20
+        margin = 40
         #count_in_rows = int(self.width * 0.6 / (h + margin))
         #rows_space = count_in_rows * h + (count_in_rows - 1 * margin)
 
         # starting point
-        x = 330
+        x = 320
         # oy = y = margin #(self.height - rows_space) / 2
         y = 70
         for item in items:
