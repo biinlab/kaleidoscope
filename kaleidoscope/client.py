@@ -418,7 +418,7 @@ class KalClientApp(App):
         { "type": "options", "title": "scenario auto",
           "desc": "Choix du scenario",
           "section": "param", "key": "scenario_auto",
-          "options": ["auto", "libre", "pentaminos", "revolution", "geography"]}
+          "options": ["auto", "libre", "pentaminos", "revolution", "geography", "pompier"]}
            ]'''
         settings.add_json_panel('Kaleidoscope', self.config, data=jsondata)
 

@@ -1,0 +1,29 @@
+{
+	"layers": ["continent"],
+	"items": [
+		{
+			"title": "Afrique",
+			"filename": "continent-afrique.png"
+		},
+		{
+			"title": "AmeriqueNord",
+			"filename": "continent-amerique_nord.png"
+		},
+		{
+			"title": "AmeriqueSud",
+			"filename": "continent-amerique_sud.png"
+		},
+		{
+			"title": "Asie",
+			"filename": "continent-asie.png"
+		},
+		{
+			"title": "Europe",
+			"filename": "continent-europe.png"
+		},
+		{
+			"title": "Oceanie",
+			"filename": "continent-oceanie.png"
+		}
+		]
+}

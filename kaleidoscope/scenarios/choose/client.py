@@ -113,12 +113,13 @@ class ChooseClient(KalScenarioClient):
                         size=(Window.width, 100)
             ))
 
-            py = cy
+            py = cy - 150
             for scenario, name in (
                 ('pentaminos', 'Pentaminos'),
                 ('revolution', 'Revolution'),
                 #('anglais', 'Anglais'),
-                ('geography', 'Geography') 
+                ('geography', 'Geography'),
+                ('pompier', 'Pompier')
             ):
                 button = PlaceButton(text=name, size=(350, 100),
                                 pos=(cx - 350 / 2., py - 100))
@@ -127,7 +128,7 @@ class ChooseClient(KalScenarioClient):
 
                 button.bind(on_release=partial(scenario_press, scenario))
         elif self.container.scenario_auto == 'auto':
-            self.send('SCENARIO %s' % choice(["pentaminos", "revolution", "geography"]))
+            self.send('SCENARIO %s' % choice(["pentaminos", "revolution", "geography", "pompier"]))
         else:
             self.send('SCENARIO %s' % self.container.scenario_auto)
     def handle_beready(self, args):
