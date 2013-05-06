@@ -29,7 +29,7 @@
 	do_scale: False
 	do_rotation: False
 	size_hint: (None, None)
-	size: (130,60)	
+	size: (80,80)	
 
 	length_flag: (root.imagemap.center_y - self.center_y)
 
@@ -118,6 +118,12 @@
 		#	size: 64, 64
 		#	source: root.logo + '_enable.png'
 
+	Image:
+		size_hint:(None,None)
+		source: 'bar-casque.png'
+		pos: 40,40
+		size: 871, 161
+
 	Label:
 		size_hint: (None, None)
 		font_size: 43
@@ -155,23 +161,12 @@
 <MapDescription>:
 	layout: layout
 
-	ScrollView:
-		pos: root.pos
-		size: root.width, root.height - 50
-		do_scroll_x: True
-		GridLayout:
-			rows: 1
-			cols: 2
-			size_hint: (1, None)
-			padding: 10
-			spacing: 10
-			id: layout
+	Image:
+		size_hint: (None,None)
+		source: 'panneau-droite-active.png'
+		pos: 0,0
+		size: 320, 800
 
-	Button:
-		size_hint: (None, None)
-		size: (100, 40)
-		text: '<< Retour'
-		pos: root.x - 5, root.y - 50
 
 <MapServerLayout>:
 

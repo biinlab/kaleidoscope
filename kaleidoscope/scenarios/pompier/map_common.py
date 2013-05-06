@@ -103,6 +103,11 @@ class MapDescription(FloatLayout):
     layout = ObjectProperty(None)
     media = ObjectProperty(None)
 
+    def __init__(self, **kwargs):
+        super(MapDescription, self).__init__(**kwargs)
+        print 'init description'
+
+
 class MapThumbnail(Scatter):
     title = StringProperty('')
     origin = ListProperty([0, 0])
@@ -369,7 +374,7 @@ class Map(FloatLayout):
     layers = ListProperty([])#cities, montains, rivers or/and areas 
     active_ids = ListProperty([])
     server = BooleanProperty(False)
-    color = ObjectProperty( (0,0,0,1) )
+    color = ObjectProperty( (0,0,0,1))
 
     def __init__(self, **kwargs):
         super(Map, self).__init__(**kwargs)
@@ -521,6 +526,7 @@ class MapClientLayout(FloatLayout):
     py = NumericProperty(None)
     mapsize = ObjectProperty( (1280,800) )
     mappos = ObjectProperty( (0,0) )
+    mapdescription = ObjectProperty(None)
 
     def __init__(self, **kwargs):
         self.items = []
@@ -576,6 +582,7 @@ class MapClientLayout(FloatLayout):
                  )
         self.add_widget(self.map_background)
         self.add_widget(self.imagemap)
+
         return imagemap
 
     def create_emptyplace(self):
@@ -604,21 +611,24 @@ class MapClientLayout(FloatLayout):
         if not items:
             return
         #w, h = items[0].size
-        margin = 10
+        margin = 20
         #count_in_rows = int(self.width * 0.6 / (h + margin))
         #rows_space = count_in_rows * h + (count_in_rows - 1 * margin)
 
         # starting point
-        x = 20
-        oy = y = margin #(self.height - rows_space) / 2
-
+        x = 330
+        # oy = y = margin #(self.height - rows_space) / 2
+        y = 70
         for item in items:
             item.pos = item.origin = x, y
-            y += item.size[1] + margin
-            
-            if y > self.height - margin * 2:
-                y = oy
-                x += item.size[0] + margin
+            # y += item.size[1] + margin
+            x += item.size[0] + margin
+            # if x > self.width - margin * 2:
+            #     x = oy
+
+            # if y > self.height - margin * 2:
+            #     y = oy
+            #     x += item.size[0] + margin
             
     
     def on_size(self, instance, value):

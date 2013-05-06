@@ -76,8 +76,8 @@ class MapClient(KalScenarioClient):
         for mapitem in imagemap.children[:] :
             mapitem.bind(flag_id = self.send_flag_change)
         #control the main map rotation with a controler
-        self.map_handler = self.layout.create_map_handler()
-        self.map_handler.bind(rotation = self.send_rotatemap)
+        # self.map_handler = self.layout.create_map_handler()
+        # self.map_handler.bind(rotation = self.send_rotatemap)
 
     def handle_game2(self, args):
         self.layout.auto_color_thumbs()
