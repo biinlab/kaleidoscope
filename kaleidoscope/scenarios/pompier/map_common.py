@@ -270,7 +270,9 @@ class MapItem(Image):
         
         if self.pixel(x, y) is False : 
             print "2"
-            p = self.parent.unflag(flag_id)
+            # p = self.parent.unflag(flag_id)
+            p = self.unflag(flag_id)
+            
             #print p
             return False
         if flag_id == self.flag_id :
@@ -451,9 +453,10 @@ class Map(FloatLayout):
         y -= self.y
         #print self.pos, x,y
         cf = ''
-        print "c=================================3"
+        print "-----------------------------"
         for child in self.children :
             if child.flag(flag_id, x,y) : 
+                #return child.filename
                 cf = child.filename
         return cf           
 

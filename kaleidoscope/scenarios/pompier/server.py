@@ -18,7 +18,7 @@ from kivy.lang import Builder
 from kivy.animation import Animation
 from kivy.properties import ListProperty, DictProperty, StringProperty, NumericProperty
 
-TIMER_1 = 10
+TIMER_1 = 100
 TIMER_2 = 100
 TIMER_3 = 9
 MAX_CLIENT_ITEMS = 5
