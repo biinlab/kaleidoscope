@@ -120,12 +120,23 @@ class MapThumbnail(Scatter):
     controled = BooleanProperty(False)
     locked = BooleanProperty(False)
     right_pos = ObjectProperty((0,0))
+    media_picture = StringProperty('')
 
     # used by server, to know which client have this item
     client = ObjectProperty(None)
     
     def __init__(self, **kwargs):
         super(MapThumbnail, self).__init__(**kwargs)
+
+        media = self.item.get('photo', '')
+        if media:
+            ext = media.rsplit('.', 1)[-1].lower()
+            media = join(dirname(__file__), 'data/sources', media)
+            mediawidget = None
+            if ext in ('jpg', 'png', 'jpeg', 'gif', 'bmp', 'tga'):
+                self.media_picture = media
+            else:
+                self.media_picture = ''
         self.lbl = Label(
                         font_size = 20,
                         text = self.item.get('title'),
@@ -389,7 +400,7 @@ class Map(FloatLayout):
         self.data = data['items']
 
     def get_thumb(self, index):
-        if self.thumb_index_match_layer(index):
+        if self.thumb_index_match_layer(index): 
             item = self.data[index]
             return MapThumbnail(item=item, imagemap=self, index=index)
         else : 
