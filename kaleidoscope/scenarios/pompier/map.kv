@@ -1,5 +1,6 @@
 #:kivy 1.0.8
 
+
 <ScenarioSelectorButton>:
 	pos:self.pos
 	canvas:
@@ -39,6 +40,18 @@
 		BorderImage:
 			size: root.size
 			source: 'small_flag2.png'
+
+	# canvas:
+	# 	BorderImage:
+	# 		source: root.media_picture
+	# 		width: root.width * 0.25 if root.media_picture != '' else 0
+	# 		x: root.width * 0.75 - 5
+
+	Image:
+		size_hint: (None,None)
+		source: root.media_picture
+		pos: 0,0
+		size: 101,100
 
 	Label:
 		text: root.title

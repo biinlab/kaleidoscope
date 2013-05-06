@@ -3,27 +3,33 @@
 	"items": [
 		{
 			"title": "Afrique",
-			"filename": "continent-afrique.png"
+			"filename": "continent-afrique.png",
+			"photo": "casque.png"
 		},
 		{
 			"title": "AmeriqueNord",
-			"filename": "continent-amerique_nord.png"
+			"filename": "continent-amerique_nord.png",
+			"photo": "casque.png"
 		},
 		{
 			"title": "AmeriqueSud",
-			"filename": "continent-amerique_sud.png"
+			"filename": "continent-amerique_sud.png",
+			"photo": "casque.png"
 		},
 		{
 			"title": "Asie",
-			"filename": "continent-asie.png"
+			"filename": "continent-asie.png",
+			"photo": "casque.png"
 		},
 		{
 			"title": "Europe",
-			"filename": "continent-europe.png"
+			"filename": "continent-europe.png",
+			"photo": "casque.png"
 		},
 		{
 			"title": "Oceanie",
-			"filename": "continent-oceanie.png"
+			"filename": "continent-oceanie.png",
+			"photo": "casque.png"
 		}
 		]
 }
