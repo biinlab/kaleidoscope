@@ -159,7 +159,7 @@
 
 		Image:
 			size_hint: None,None
-			source: 'data/casque_max.jpg'
+			source: 'data/casque_max.jpg' or root.imagemap.current_image
 			pos: 10, 490
 			size:300,300
 
@@ -168,10 +168,14 @@
 			font_size: 15
 			width: 300
 			text_size: (300, 500)
+			valign: 'top'
 			font_name: 'data/fonts/DroidSans-Bold.ttf'
-			text: 'Flumen praecipitem ad flumen coniunctos constrinxerunt acri constrinxerunt acri artuum ultimam iamque mox praecipitem eodem conpage corpora iamque velut in coniunctos velut artuum spatia divulsa ad ad scalas scalas eosque.'
+			# text: root.imagemap.current_content
+			# text: 'Flumen praecipitem ad flumen coniunctos constrinxerunt acri constrinxerunt acri artuum ultimam iamque mox praecipitem eodem conpage corpora iamque velut in coniunctos velut artuum spatia divulsa ad ad scalas scalas eosque.'
+			text: 'Flumen praecipitem ad flumen coniunctos constrinxerunt acri constrinxerunt acri artuum ultimam iamque'
 			x: 10
-			y: root.top - self.height - 10 - 250
+			y: 150
+			# y: root.top - self.height - 10 - 300
 			font_name: 'data/fonts/DroidSans-Bold.ttf'
 
 	Label:

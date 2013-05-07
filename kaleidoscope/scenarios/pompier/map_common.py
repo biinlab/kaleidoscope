@@ -174,6 +174,9 @@ class MapThumbnail(Scatter):
             return
         Animation.stop_all(self, 'pos')
         self.controled = True
+        # self.imagemap.current_content = 
+        # self.imagemap.current_image = 
+
         return True
 
     def on_touch_up(self, touch):
@@ -386,6 +389,9 @@ class Map(FloatLayout):
     active_ids = ListProperty([])
     server = BooleanProperty(False)
     color = ObjectProperty( (0,0,0,1))
+    current_image = ObjectProperty(None)
+    current_content = ObjectProperty(None)
+
 
     def __init__(self, **kwargs):
         super(Map, self).__init__(**kwargs)

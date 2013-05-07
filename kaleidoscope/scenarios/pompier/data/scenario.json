@@ -4,7 +4,8 @@
 		{
 			"title": "Afrique",
 			"filename": "continent-afrique.png",
-			"photo": "casque.png"
+			"photo": "casque.png",
+			"content": "poil"
 		},
 		{
 			"title": "AmeriqueNord",
