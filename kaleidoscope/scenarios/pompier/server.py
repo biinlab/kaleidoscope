@@ -290,6 +290,11 @@ class MapServer(KalScenarioServer):
         #anim.start(self.scat)
         self.scat.rotation += int(rot[0])
 
+    def do_client_exit(self, client, value):
+        self.clear()        
+        self.controler.switch_scenario('choose')
+        self.controler.load_all()
+
     #
     # Commands to send to clients
     #

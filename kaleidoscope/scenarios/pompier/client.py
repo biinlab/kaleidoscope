@@ -69,6 +69,7 @@ class MapClient(KalScenarioClient):
         self.layout = MapClientLayout(mapclient = self) 
         self.container.clear_widgets()
         self.container.add_widget(self.layout)
+        self.layout.exitButton.bind(state= self.send_exitgame)
 
     def handle_map(self, args):
         self.imagemap = imagemap = self.layout.imagemap = self.layout.create_map()
@@ -214,6 +215,11 @@ class MapClient(KalScenarioClient):
         self.layout.map_handler.last_rotation = value
         if delta != 0 : 
             self.send('ROTATE %d' % delta )
+
+    def send_exitgame(self, instance, value):
+        print 'CLIENT : ', value
+        if value == 'down':
+            self.send('EXIT')
 
     def send_thheld(self, instance, th_index):
         pass

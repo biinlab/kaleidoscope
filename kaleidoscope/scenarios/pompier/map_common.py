@@ -122,6 +122,7 @@ class MapThumbnail(Scatter):
     right_pos = ObjectProperty((0,0))
     media_content = StringProperty('')
     media_picture = StringProperty('')
+    current_country = StringProperty('')
     media_picture_thumbnail = StringProperty('')
 
     # used by server, to know which client have this item
@@ -179,8 +180,10 @@ class MapThumbnail(Scatter):
             return
         Animation.stop_all(self, 'pos')
         self.controled = True
+
         self.imagemap.parent.img_description.source = self.media_picture
         self.imagemap.parent.content_description.text = self.media_content
+
         return True
 
     def on_touch_up(self, touch):
@@ -191,10 +194,10 @@ class MapThumbnail(Scatter):
         if not self._touches : 
                 #test if th is on a mapitem
                 x,y = self.pos
-                x += self.width / 2.
+                x += self.width / 2
+                y += self.height / 2
                 # print x,y
                 mapitem = self.imagemap.flag(self.index, x, y)
-                # print mapitem
                 if mapitem == '': 
                     self.move_to_origin()
                     self.mapitem = ''
@@ -208,6 +211,18 @@ class MapThumbnail(Scatter):
         ret = super(MapThumbnail, self).on_touch_move(touch)
         #mapitem = self.imagemap.flag(self.index, touch.x, touch.y)
         #print mapitem
+        x,y = self.pos
+        x += self.width / 2
+        y += self.height / 2
+        ### Display current country above thumbnail
+        country_filename = self.get_current_country(x, y)
+        item = self.get_item_from_filename(country_filename)
+        if item:
+            self.current_country = item["title"]
+        else:
+            self.current_country = ''
+
+        # Auto correction
         if self.auto_color : 
             self.update_color(False)
         return ret
@@ -222,7 +237,20 @@ class MapThumbnail(Scatter):
     def shake(self):
         self.x -= 15
         anim = Animation(x = self.x + 15, t='out_elastic', d=.5).start(self)
-    
+
+    def get_item_from_filename(self, filename):
+        for item in (data for data in self.imagemap.data):
+            if item["filename"] == filename:
+                return item
+        return None    
+
+    def get_current_country(self, x,y):
+        country = ''
+        for child in self.imagemap.children:
+            if child.pixel(x,y):
+                country = child.filename
+        return country
+
 
 class MapItem(Image):
 
@@ -282,27 +310,27 @@ class MapItem(Image):
         return True
 
     def flag(self, flag_id, x, y):
-        print self.filename
-        #one flag at a time
-        print "self.flagged ", self.flagged
-        print "flag_id", flag_id 
-        print "self.flag_id", self.flag_id
+        # print self.filename
+        # #one flag at a time
+        # print "self.flagged ", self.flagged
+        # print "flag_id", flag_id 
+        # print "self.flag_id", self.flag_id
         if self.flagged and flag_id != self.flag_id :
-            print "1" 
+            # print "1" 
             return False
         
         if self.pixel(x, y) is False : 
-            print "2"
+            # print "2"
             # p = self.parent.unflag(flag_id)
             p = self.unflag(flag_id)
             
             #print p
             return False
         if flag_id == self.flag_id :
-            print "3"
+            # print "3"
             return True  
         if flag_id != self.flag_id : 
-            print "4"
+            # print "4"
             self.active = True
             self.flagged = True
             self.source = self.source_active
@@ -394,8 +422,6 @@ class Map(FloatLayout):
     server = BooleanProperty(False)
     color = ObjectProperty( (0,0,0,1))
 
-
-
     def __init__(self, **kwargs):
         super(Map, self).__init__(**kwargs)
         self.load()        
@@ -478,7 +504,7 @@ class Map(FloatLayout):
         y -= self.y
         #print self.pos, x,y
         cf = ''
-        print "-----------------------------"
+        # print "-----------------------------"
         for child in self.children :
             if child.flag(flag_id, x,y) : 
                 #return child.filename
@@ -488,7 +514,7 @@ class Map(FloatLayout):
     def unflag(self, flag_id):
         for child in self.children :
             if child.unflag(flag_id) : 
-                print "unflag"
+                # print "unflag"
                 return child.filename
         return ''
 
