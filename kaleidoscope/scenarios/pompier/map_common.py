@@ -556,6 +556,13 @@ class Map(FloatLayout):
                 string = string + str(item)
             return string
     
+class MapMenu(FloatLayout):
+    time = NumericProperty(0)
+    
+    def __init__(self, **kwargs):
+        super(MapMenu, self).__init__(**kwargs)
+
+ 
 
 class MapClientLayout(FloatLayout):
     json_filename = StringProperty('')

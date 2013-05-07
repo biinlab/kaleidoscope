@@ -130,6 +130,38 @@
 			# source: 'freeplace.png'
 			pos: self.pos
 
+<MapMenu>:
+	launchGameButton: launchGameButton
+	canvas.before:
+		Color:
+			rgb: 1, 1, 1
+		Rectangle:
+			size: self.size
+			pos: self.pos
+			source: 'background.jpg'
+
+	Button:
+		id:launchGameButton
+		size_hint: (None,None)
+		background_down: 'data/btn-jouer-active.png'
+		background_normal: 'data/btn-jouer.png'
+		size: (298, 298)
+		center_x: 1280/2
+		center_y: 400
+	
+	Label:
+		size_hint: None,None
+		font_size: 15
+
+		valign: 'top'
+		text: str(int(root.time)) if root.time != 0 else ''
+		x: 50
+		y: 50
+		# y: root.top - self.height - 10 - 300
+		font_name: 'data/fonts/DroidSans-Bold.ttf'
+
+
+
 <MapClientLayout>:
 	imagemap: imagemap
 	exitButton: exitButton

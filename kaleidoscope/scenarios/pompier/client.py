@@ -8,7 +8,7 @@ from kivy.clock import Clock
 from kivy.resources import resource_add_path
 from kivy.lang import Builder
 
-from map_common import MapClientLayout, Map
+from map_common import MapClientLayout, Map, MapMenu
 
 resource_add_path(dirname(__file__))
 Builder.load_file(join(dirname(__file__), 'map.kv'))
@@ -19,6 +19,8 @@ class MapClient(KalScenarioClient):
         self.count = 0
         self.timeout = 0
         self.layout = None
+        self.menu = None
+        self.isPlaying = False
         #self.logo = ''
         Clock.schedule_interval(self.update_graphics_timer, 1 / 10.)
 
@@ -65,7 +67,22 @@ class MapClient(KalScenarioClient):
     def handle_game(self,args):
         pass
 
+    def handle_menu(self, args):
+        self.menu = MapMenu()
+        self.container.clear_widgets()
+        self.container.add_widget(self.menu)  
+        self.menu.launchGameButton.bind(state = self.send_launchGame)
+
+    def handle_game_start(self, args):
+        # afficher le timer et indication : la partie a demarree
+        pass
+
+    def handle_wait_game(self, args):
+        self.menu.launchGameButton.opacity = 0
+        # Changer lecran : le joueur doit attendre la prochaine partie
+
     def handle_game1(self, args):
+        self.isPlaying = True
         self.layout = MapClientLayout(mapclient = self) 
         self.container.clear_widgets()
         self.container.add_widget(self.layout)
@@ -198,11 +215,16 @@ class MapClient(KalScenarioClient):
             index +=1
 
     def update_graphics_timer(self, dt):
-        if not self.layout:
+        if not self.menu:
             return
         t = self.timeout - time()
         if t < 0:
             t = 0
+        self.menu.time = t
+
+        if not self.layout:
+            return
+
         self.layout.time = t
         try:
             self.layout.timelimit = self.timelimit
@@ -220,6 +242,11 @@ class MapClient(KalScenarioClient):
         print 'CLIENT : ', value
         if value == 'down':
             self.send('EXIT')
+
+    def send_launchGame(self, instance, value):
+        if value == 'down':
+            self.menu.launchGameButton.opacity = 0
+            self.send('WANT_TO_PLAY')
 
     def send_thheld(self, instance, th_index):
         pass
