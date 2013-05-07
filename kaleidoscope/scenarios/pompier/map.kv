@@ -50,7 +50,7 @@
 
 	Image:
 		size_hint: (None,None)
-		source: root.media_picture
+		source: root.media_picture_thumbnail
 		pos: 0,0
 		size: 101,100
 		canvas:
@@ -133,6 +133,8 @@
 <MapClientLayout>:
 	imagemap: imagemap
 	exitButton: exitButton
+	img_description: img_description
+	content_description: content_description
 	
 	canvas.before:
 		Color:
@@ -183,12 +185,15 @@
 			size: 320, 800
 
 		Image:
+			id: img_description
 			size_hint: None,None
-			source: 'data/casque_max.jpg' or root.imagemap.current_image
+			source: 'casque_max.jpg'
+			# source: '/Users/admin/Desktop/Travail/kaleidoscope/kaleidoscope/cache/pompier/data/sources/Europe_casque.png'
 			pos: 10, 490
 			size:300,300
 
 		Label:
+			id: content_description
 			size_hint: None,None
 			font_size: 15
 			width: 300
