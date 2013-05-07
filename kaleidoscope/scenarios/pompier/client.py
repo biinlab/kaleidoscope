@@ -26,9 +26,9 @@ class MapClient(KalScenarioClient):
     
 	#TODO: a nettoyer (seule la derniere ligne doit rester)
     def handle_selector(self, args):
-        self.layout.create_selector()
-        for val in self.layout.selector.buttons.itervalues():
-            val.bind(on_release = self.validate)
+        # self.layout.create_selector()
+        # for val in self.layout.selector.buttons.itervalues():
+        #     val.bind(on_release = self.validate)
         self.send('SCENARIO 0') 
         
     def handle_removeselector(self, args):

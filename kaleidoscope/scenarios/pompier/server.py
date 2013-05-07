@@ -378,7 +378,7 @@ class MapServer(KalScenarioServer):
             return
 
         #self.layout.remove_widget(self.selector)
-        self.send_all('REMOVESELECTOR')
+        # self.send_all('REMOVESELECTOR')
         self.init_ui()
         self.items_given = []
         self.layers_given = {}
