@@ -120,7 +120,9 @@ class MapThumbnail(Scatter):
     controled = BooleanProperty(False)
     locked = BooleanProperty(False)
     right_pos = ObjectProperty((0,0))
+    media_content = StringProperty('')
     media_picture = StringProperty('')
+    media_picture_thumbnail = StringProperty('')
 
     # used by server, to know which client have this item
     client = ObjectProperty(None)
@@ -128,15 +130,18 @@ class MapThumbnail(Scatter):
     def __init__(self, **kwargs):
         super(MapThumbnail, self).__init__(**kwargs)
 
-        media = self.item.get('photo', '')
+        self.media_content = self.item.get('content', '')
+
+        media = self.item.get('title', '')
+        mediath = self.item.get('title', '')
         if media:
-            ext = media.rsplit('.', 1)[-1].lower()
-            media = join(dirname(__file__), 'data/sources', media)
+            media += '_casque.png'
+            mediath += '_casque_thumbnail.png'
+            media = join(dirname(__file__), 'data/sources', media )
+            mediath = join(dirname(__file__), 'data/sources', mediath )
             mediawidget = None
-            if ext in ('jpg', 'png', 'jpeg', 'gif', 'bmp', 'tga'):
-                self.media_picture = media
-            else:
-                self.media_picture = ''
+            self.media_picture = media
+            self.media_picture_thumbnail = mediath
         # self.lbl = Label(
         #                 font_size = 20,
         #                 text = self.item.get('title'),
@@ -174,9 +179,8 @@ class MapThumbnail(Scatter):
             return
         Animation.stop_all(self, 'pos')
         self.controled = True
-        # self.imagemap.current_content = 
-        # self.imagemap.current_image = 
-
+        self.imagemap.parent.img_description.source = self.media_picture
+        self.imagemap.parent.content_description.text = self.media_content
         return True
 
     def on_touch_up(self, touch):
@@ -389,8 +393,7 @@ class Map(FloatLayout):
     active_ids = ListProperty([])
     server = BooleanProperty(False)
     color = ObjectProperty( (0,0,0,1))
-    current_image = ObjectProperty(None)
-    current_content = ObjectProperty(None)
+
 
 
     def __init__(self, **kwargs):

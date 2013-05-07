@@ -4,33 +4,32 @@
 		{
 			"title": "Afrique",
 			"filename": "continent-afrique.png",
-			"photo": "casque.png",
-			"content": "poil"
+			"content": "poil1"
 		},
 		{
 			"title": "AmeriqueNord",
 			"filename": "continent-amerique_nord.png",
-			"photo": "casque.png"
+			"content": "poil2"
 		},
 		{
 			"title": "AmeriqueSud",
 			"filename": "continent-amerique_sud.png",
-			"photo": "casque.png"
+			"content": "poil3"
 		},
 		{
 			"title": "Asie",
 			"filename": "continent-asie.png",
-			"photo": "casque.png"
+			"content": "poil4"
 		},
 		{
 			"title": "Europe",
 			"filename": "continent-europe.png",
-			"photo": "casque.png"
+			"content": "poil5"
 		},
 		{
 			"title": "Oceanie",
 			"filename": "continent-oceanie.png",
-			"photo": "casque.png"
+			"content": "poil6"
 		}
 		]
 }
