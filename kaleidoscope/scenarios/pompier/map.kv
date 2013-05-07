@@ -18,6 +18,7 @@
 	center: self.center
 	spacing:0
 	padding:0
+	x: 1500
 
 <MapHandler>:
 	cols:2
@@ -58,6 +59,20 @@
 			Line:
 				circle: self.width/2, self.height/2, self.width/2
 				width: 3
+
+	Label:
+		text: root.current_country or ''
+		font_size: 12
+		# color: (0,0,0,1)
+		y: root.height - 10
+		x: 0
+		canvas.before:
+			Color:
+				rgba: (1,1,1,1) if self.text != '' else (1,1,1,0)
+			Rectangle:
+				source: 'data/encart-pays.png'
+				size: 189, 62
+				pos: -self.width/2, root.height - 10
 
 	# Label:
 	# 	text: root.title
@@ -112,10 +127,12 @@
 		Rectangle:
 			size: self.size
 			source: 'freeplace.png'
+			# source: 'freeplace.png'
 			pos: self.pos
 
 <MapClientLayout>:
 	imagemap: imagemap
+	exitButton: exitButton
 	
 	canvas.before:
 		Color:
@@ -136,6 +153,14 @@
 		#	pos: root.right - 230 + 10, self.top - 10 - 64
 		#	size: 64, 64
 		#	source: root.logo + '_enable.png'
+
+	Button:
+		id:exitButton
+		size_hint: (None,None)
+		background_down: 'data/btn-back-active.png'
+		background_normal: 'data/btn-back.png'
+		size: (224, 48)
+		pos: 5, root.height - self.height
 
 	Image:
 		size_hint:(None,None)
