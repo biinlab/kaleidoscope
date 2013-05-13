@@ -19,7 +19,7 @@ from kivy.animation import Animation
 from kivy.properties import ListProperty, DictProperty, StringProperty, NumericProperty
 from kivy.clock import Clock
 
-TIMER_0 = 1
+TIMER_0 = 15
 TIMER_1 = 90
 TIMER_2 = 30
 
@@ -59,13 +59,11 @@ class MapServerMenu(FloatLayout):
     def __init__(self, **kwargs):
         super(MapServerMenu, self).__init__(**kwargs)
 
-
 class MapServerLayout(FloatLayout):
     pass
 
 from kivy.factory import Factory
 Factory.register('MapServerLayout', cls=MapServerLayout)
-
 
 class MapServer(KalScenarioServer):
     json_filename = StringProperty('')

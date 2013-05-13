@@ -169,6 +169,16 @@ class MapThumbnail(Scatter):
             else : 
                 color.h = 0
         self.color = color.rgba
+
+    def launchAnimPanel(self, panel = None, op = True):
+            layout = self.imagemap.layout
+            width = layout.cluePanel.width
+            Animation.stop_all(panel)
+            if op:
+                anim = Animation(x=1280-width, d=.2)
+            else:
+                anim = Animation(x=1280, d=.2)
+            anim.start(panel)
         
     def on_touch_down(self, touch):
         if not super(MapThumbnail, self).on_touch_down(touch):
@@ -176,9 +186,14 @@ class MapThumbnail(Scatter):
         Animation.stop_all(self, 'pos')
         self.controled = True
 
+        self.scale = 1
+ 
         self.imagemap.parent.img_description.source = self.media_picture
         self.imagemap.parent.content_description.text = self.media_content
-
+        self.imagemap.layout.remove_widget(self.imagemap.layout.cluePanel)
+        self.imagemap.layout.add_widget(self.imagemap.layout.cluePanel)
+        self.imagemap.layout.remove_widget(self)
+        self.imagemap.layout.add_widget(self)
         return True
 
     def on_touch_up(self, touch):
@@ -196,9 +211,12 @@ class MapThumbnail(Scatter):
                 if mapitem == '': 
                     self.move_to_origin()
                     self.mapitem = ''
+                    self.scale = 1            
+                    self.launchAnimPanel(self.imagemap.layout.cluePanel, False)
                 else : 
                     if self.mapitem!=mapitem :
                         self.mapitem = mapitem
+                    self.scale = .3
                 self.current_country = ''
         return ret
     
@@ -215,23 +233,17 @@ class MapThumbnail(Scatter):
         width = layout.cluePanel.width
         cluePanel = layout.cluePanel
         clueArea = layout.clueArea
-        print self.media_picture_thumbnail
-        def launchAnimPanel(op = True):
-            Animation.stop_all(cluePanel)
-            if op:
-                anim = Animation(x=1280-width, d=.2)
-            else:
-                anim = Animation(x=1280, d=.2)
-            anim.start(cluePanel)
+        # print self.media_picture_thumbnail
+        
 
         if cluePanel.x == 1280:
             if clueArea.collide_point(*(x,y)):
                 # cluePanel.x = 1280 - width
-                launchAnimPanel(True)
+                self.launchAnimPanel(cluePanel, True)
         else:
             if layout.clueBarPanel.collide_point(*(x,y)) or x < 1280-width:
                 # cluePanel.x = 1280
-                launchAnimPanel(False)
+                self.launchAnimPanel(cluePanel, False)
 
         x -= self.imagemap.x
         y -= self.imagemap.y
@@ -579,10 +591,11 @@ class Map(FloatLayout):
     
 class MapMenu(FloatLayout):
     time = NumericProperty(0)
-    
-    def __init__(self,color, **kwargs):
+    color = ListProperty([1, 1, 1]) 
+
+    def __init__(self, **kwargs):
         super(MapMenu, self).__init__(**kwargs)
-        self.color = color
+        # self.color = color
  
 
 class MapClientLayout(FloatLayout):

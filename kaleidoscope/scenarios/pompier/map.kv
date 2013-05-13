@@ -35,30 +35,23 @@
 
 	length_flag: (root.imagemap.center_y - self.center_y)
 
-	# canvas:
-	# 	Color:
-	# 		rgb: self.color
-	# 	BorderImage:
-	# 		size: root.size
-	# 		source: 'small_flag2.png'
-
-	# canvas:
-	# 	BorderImage:
-	# 		source: root.media_picture
-	# 		width: root.width * 0.25 if root.media_picture != '' else 0
-	# 		x: root.width * 0.75 - 5
-
 	Image:
 		size_hint: (None,None)
 		source: root.media_picture_thumbnail
 		pos: 0,0
 		size: 100,100
+
 		canvas:
 			Color:
 				rgb: root.color
 			Line:
-				circle: self.width/2, self.height/2, self.width/2, 0, 150
+				circle: self.width/2, self.height/2, self.width/2-3, 0, 180
 				width: 3
+			Color:
+				rgba: root.color +  [1- ((root.scale - .3)/.7)] if not isinstance(root.parent.parent, MapServer) else (1,1,1,0)
+			Line:
+				circle: self.width/2, self.height/2, 0, 0, 180
+				width: self.width/2
 
 	Label:
 		text: root.current_country or ''
@@ -69,58 +62,11 @@
 		valign: 'bottom'
 		canvas.before:
 			Color:
-				# rgba: (0,0,0,.5) if self.text != '' else (1,1,1,0)
 				rgba: root.color + [1] if self.text != '' else (1,1,1,0)
 			Rectangle:
 				source: 'data/etiquettes.png'
 				size: 180, 60
 				pos: self.width/2 - 90 , root.height + 5
-
-	# Label:
-	# 	text: root.title
-	# 	font_name: 'Georgia_Italic.ttf'
-	# 	font_size: 16
-	# 	color: (.4, .4, .4, .7)
-	# 	text_size: self.width - 20, self.height
-	# 	size: root.width, 40
-	# 	halign: 'left'
-	# 	valign: 'bottom'
-	# 	y: 10
-	# 	x: 1
-
-	# Label:
-	# 	text: root.title
-	# 	font_name: 'Georgia_Italic.ttf'
-	# 	font_size: 16
-	# 	color: (.05, .05, .05, 1)
-	# 	text_size: self.width - 20, self.height
-	# 	size: root.width, 40
-	# 	halign: 'left'
-	# 	valign: 'bottom'
-	# 	y: 9
-
-	# Label:
-	# 	id: root.lbl
-	# 	font_name: 'Georgia_Italic.ttf'
-	# 	font_size: 16
-	# 	color: (.3, .3, .3, .7)
-	# 	text_size: self.width - 20, self.height - 20
-	# 	size: root.width, 100
-	# 	halign: 'left'
-	# 	valign: 'bottom'
-	# 	text: root.item.get('title')
-	# 	x: 1
-
-	# Label:
-	# 	font_name: 'Georgia_Italic.ttf'
-	# 	font_size: 16
-	# 	color: (1, 1, 1, 1)
-	# 	text_size: self.width - 20, self.height - 20
-	# 	size: root.width, 100
-	# 	halign: 'left'
-	# 	valign: 'bottom'
-	# 	text: root.item.get('title')
-
 	
 <MapEmptyPlace>:
 	size_hint: (None, None)
@@ -137,14 +83,14 @@
 	helpButton: helpButton
 	canvas.before:
 		Color:
-			rgb: 1, 1, 1
+			rgb: self.color
 		Rectangle:
 			size: self.size
 			pos: self.pos
 			source: 'data/background.jpg'
-	canvas:
+
 		Color:
-			rgba: (1,1,1,0.3)
+			rgba: self.color + [.3] #(1,1,1,0.3)
 		Line:
 			circle: self.width/2, self.height/2, 210
 			width: 10
@@ -159,22 +105,28 @@
 	Button:
 		id:launchGameButton
 		size_hint: (None,None)
-		# background_down: 'data/btn-jouer-active.png'
-		# background_normal: 'data/btn-jouer.png'
+		background_down: 'data/btn-start_active.png'
+		background_normal: 'data/btn-start.png'
 		size: (180, 40)
 		text: "jouer" 
+		color: root.color + [1]
 		center_x: 1280/2
-		center_y: 360
+		center_y: 360 + 10
+		font_size: 14
+		font_name: 'data/fonts/myra_regular.ttf'
 
 	Button:
 		id:helpButton
 		size_hint: (None,None)
-		# background_down: 'data/btn-jouer-active.png'
-		# background_normal: 'data/btn-jouer.png'
+		background_down: 'data/btn-start_active.png'
+		background_normal: 'data/btn-start.png'
 		size: (180, 40)
 		text: "aide" 
+		color: root.color + [1]
 		center_x: 1280/2
 		center_y: 320
+		font_size: 14
+		font_name: 'data/fonts/myra_regular.ttf'
 	
 	Label:
 		size_hint: None,None
@@ -185,29 +137,6 @@
 		center_y: 450 
 		# y: root.top - self.height - 10 - 300
 		font_name: 'data/fonts/myra_regular.ttf'
-
-
-
-
-<MapServerMenu>:
-	canvas.before:
-		Color:
-			rgb: 1, 1, 1
-		Rectangle:
-			size: self.size
-			pos: self.pos
-			source: 'background.jpg'
-
-	Label:
-		size_hint: None,None
-		font_size: 15
-
-		valign: 'top'
-		text: str(int(root.time)) if root.time != 0 else ''
-		x: 50
-		y: 50
-		# y: root.top - self.height - 10 - 300
-		font_name: 'data/fonts/DroidSans-Bold.ttf'
 
 <MapClientLayout>:
 	imagemap: imagemap
@@ -224,20 +153,7 @@
 		Rectangle:
 			size: self.size
 			pos: self.pos
-			# color: self.color + [1]
 			source: 'data/background.jpg'
-		#Color:
-			#rgb: 0, 0, 0
-		#Rectangle:
-			#pos: root.right - 230 + 10, self.top - 10 - 64
-			#size: 64, 64
-			#source: root.logo + '_enable.png'
-
-		# XXX dont duplicate image to make it darker >_<
-		#Rectangle:
-		#	pos: root.right - 230 + 10, self.top - 10 - 64
-		#	size: 64, 64
-		#	source: root.logo + '_enable.png'
 
 	Button:
 		id:exitButton
@@ -269,6 +185,20 @@
 		text: 'place les casques sur la carte'
 		font_name: 'data/fonts/myra_regular.ttf'
 
+	Label:
+		size_hint: (None, None)
+		font_size: 13
+		height: 13
+		y: root.top - 74
+		x: root.right - 150 - self.texture_size[0]
+
+		color: (1,1,1,1)
+		text: 'temps restant : ' + str(int(root.time)) + '"'
+		font_name: 'data/fonts/myra_regular.ttf'
+
+	Map:
+		id: imagemap
+		
 	Scatter:
 		id: clueArea
 		pos: 1280-200, 360	
@@ -284,13 +214,20 @@
 			pos: 0,0
 			source: 'data/indice-bar.png'
 			size:200, 360
+			color: root.color + [1]
+		
+		Image:
+			size_hint: None,None
+			pos: 0,0
+			source: 'data/indice-bar_info.png'
+			size:200, 360
 
 	Scatter:
 		id: cluePanel
 		# pos: 1280 -320, 0
 		pos: 1280, 0
 		size_hint: None,None
-		size: 320, 800
+		size: 275, 800
 		do_scale: False
 		do_rotation: False
 		do_translation: False
@@ -300,66 +237,28 @@
 			id: clueBarPanel
 			size_hint: None,None
 			pos: self.pos
-			source:'data/panneau-droite-active.png'
-			size: 320, 800
+			source:'data/indice-bar-open.png'
+			size: 275, 800
+			color: root.color + [1]
 
 		Image:
 			id: img_description
 			size_hint: None,None
-			source: 'casque_max.jpg'
-			# source: '/Users/admin/Desktop/Travail/kaleidoscope/kaleidoscope/cache/pompier/data/sources/Europe_casque.png'
-			pos: 10, 490
-			size:300,300
+			source: 'casque_max.jpg'			
+			size:255,255
+			pos: 10, 520
 
 		Label:
 			id: content_description
 			size_hint: None,None
 			font_size: 15
-			width: 300
-			text_size: (300, 500)
+			width: 255
+			text_size: (200, 500)
 			valign: 'top'
-			font_name: 'data/fonts/DroidSans-Bold.ttf'
-			# text: root.imagemap.current_content
-			# text: 'Flumen praecipitem ad flumen coniunctos constrinxerunt acri constrinxerunt acri artuum ultimam iamque mox praecipitem eodem conpage corpora iamque velut in coniunctos velut artuum spatia divulsa ad ad scalas scalas eosque.'
-			text: 'Flumen praecipitem ad flumen coniunctos constrinxerunt acri constrinxerunt acri artuum ultimam iamque'
-			x: 10
-			y: 150
-			# y: root.top - self.height - 10 - 300
-			font_name: 'data/fonts/DroidSans-Bold.ttf'
-
-	Label:
-		size_hint: (None, None)
-		font_size: 43
-		height: 43
-		y: root.top - 10 - 32 - 22
-		x: root.right - 230 + 90 - 300
-		color: (.05, .05, .05, .6)
-		text: str(int(root.time)) + '"'
-		font_name: 'data/fonts/DroidSans-Bold.ttf'
-
-	Label:
-		size_hint: (None, None)
-		font_size: 43
-		height: 43
-		y: root.top - 10 - 32 - 22
-		x: root.right - 230 + 90 -300
-		color: root.color + [1]
-		text: str(int(root.time)) + '"'
-		font_name: 'data/fonts/DroidSans-Bold.ttf'
-
-		canvas.before:
-			StencilPush
-			Rectangle:
-				pos: self.pos
-				size: self.width, self.height * (1 - (root.time / float(root.timelimit)))
-			StencilUse
-
-		canvas.after:
-			StencilPop
-
-	Map:
-		id: imagemap
-		
+			font_name: 'data/fonts/myra_regular.ttf'
+			text: ''
+			x: 30
+			y: 180
 
 <MapDescription>:
 	layout: layout
@@ -380,6 +279,26 @@
 			size: self.size
 			pos: self.pos
 			source: 'data/background.jpg'
+
+<MapServerMenu>:
+	canvas.before:
+		Color:
+			rgb: 1, 1, 1
+		Rectangle:
+			size: self.size
+			pos: self.pos
+			source: 'background.jpg'
+
+	Label:
+		size_hint: None,None
+		font_size: 15
+
+		valign: 'top'
+		text: str(int(root.time)) if root.time != 0 else ''
+		x: 50
+		y: 50
+		# y: root.top - self.height - 10 - 300
+		font_name: 'data/fonts/myra_regular.ttf'
 
 <MapAudio>:
 	AnchorLayout:
