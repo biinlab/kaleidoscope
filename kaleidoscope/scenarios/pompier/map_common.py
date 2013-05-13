@@ -580,9 +580,9 @@ class Map(FloatLayout):
 class MapMenu(FloatLayout):
     time = NumericProperty(0)
     
-    def __init__(self, **kwargs):
+    def __init__(self,color, **kwargs):
         super(MapMenu, self).__init__(**kwargs)
-
+        self.color = color
  
 
 class MapClientLayout(FloatLayout):
