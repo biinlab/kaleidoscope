@@ -31,7 +31,7 @@
 	do_scale: False
 	do_rotation: False
 	size_hint: (None, None)
-	size: (80,80)	
+	size: (100,100)	
 
 	length_flag: (root.imagemap.center_y - self.center_y)
 
@@ -52,29 +52,29 @@
 		size_hint: (None,None)
 		source: root.media_picture_thumbnail
 		pos: 0,0
-		size: 101,100
+		size: 100,100
 		canvas:
 			Color:
 				rgb: root.color
 			Line:
-				circle: self.width/2, self.height/2, self.width/2
+				circle: self.width/2, self.height/2, self.width/2, 0, 150
 				width: 3
 
 	Label:
 		text: root.current_country or ''
 		font_size: 12
 		# color: (0,0,0,1)
-		y: root.height + 15
+		y: root.height -5
 		x: 0
 		valign: 'bottom'
 		canvas.before:
 			Color:
-				rgba: (0,0,0,.5) if self.text != '' else (1,1,1,0)
-				# rgba: root.color + [1] if self.text != '' else (1,1,1,0)
+				# rgba: (0,0,0,.5) if self.text != '' else (1,1,1,0)
+				rgba: root.color + [1] if self.text != '' else (1,1,1,0)
 			Rectangle:
 				source: 'data/etiquettes.png'
 				size: 180, 60
-				pos: self.width/2 - 90 , root.height + 30
+				pos: self.width/2 - 90 , root.height + 5
 
 	# Label:
 	# 	text: root.title
@@ -140,7 +140,7 @@
 		Rectangle:
 			size: self.size
 			pos: self.pos
-			source: 'background.jpg'
+			source: 'data/background.jpg'
 
 	Button:
 		id:launchGameButton
@@ -169,14 +169,18 @@
 	exitButton: exitButton
 	img_description: img_description
 	content_description: content_description
-	
+	cluePanel: cluePanel
+	clueArea: clueArea
+	clueBarPanel: clueBarPanel
+
 	canvas.before:
 		Color:
-			rgb: 1, 1, 1
+			rgb: self.color or (1, 1, 1)
 		Rectangle:
 			size: self.size
 			pos: self.pos
-			source: 'background.jpg'
+			# color: self.color + [1]
+			source: 'data/background.jpg'
 		#Color:
 			#rgb: 0, 0, 0
 		#Rectangle:
@@ -193,10 +197,14 @@
 	Button:
 		id:exitButton
 		size_hint: (None,None)
-		background_down: 'data/btn-back-active.png'
+		background_down: 'data/btn-back.png'
 		background_normal: 'data/btn-back.png'
-		size: (224, 48)
-		pos: 5, root.height - self.height
+		size: (176, 24)
+		# color: (1,1,1,1) if self.state == 'down' else root.color + [1]
+		pos: 100, root.height - self.height - 50
+		canvas:
+			Color:
+				rgb: root.color
 
 	Image:
 		size_hint:(None,None)
@@ -217,14 +225,34 @@
 		font_name: 'data/fonts/myra_regular.ttf'
 
 	Scatter:
-		pos: 1280 -320, 0
+		id: clueArea
+		pos: 1280-200, 360	
+		size_hint:None,None
+		size: 200, 360
+		center_y: 400
+		do_scale: False
+		do_rotation: False
+		do_translation: False
+
+		Image:
+			size_hint: None,None
+			pos: 0,0
+			source: 'data/indice-bar.png'
+			size:200, 360
+
+	Scatter:
+		id: cluePanel
+		# pos: 1280 -320, 0
+		pos: 1280, 0
 		size_hint: None,None
 		size: 320, 800
 		do_scale: False
 		do_rotation: False
 		do_translation: False
+		auto_bring_to_front: True
 		
 		Image:
+			id: clueBarPanel
 			size_hint: None,None
 			pos: self.pos
 			source:'data/panneau-droite-active.png'
@@ -306,7 +334,7 @@
 		Rectangle:
 			size: self.size
 			pos: self.pos
-			source: 'background.jpg'
+			source: 'data/background.jpg'
 
 <MapAudio>:
 	AnchorLayout:

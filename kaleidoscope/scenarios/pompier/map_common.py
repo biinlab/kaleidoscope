@@ -138,10 +138,6 @@ class MapThumbnail(Scatter):
         filename = parts[1]
         media = mediath = splitext(filename)[0]
 
-        print media, mediath
-        
-        # media = self.item.get('title', '')
-        # mediath = self.item.get('title', '')
         if media:
             media += '_casque.png'
             mediath += '_casque_thumbnail.png'
@@ -150,14 +146,6 @@ class MapThumbnail(Scatter):
             mediawidget = None
             self.media_picture = media
             self.media_picture_thumbnail = mediath
-        # self.lbl = Label(
-        #                 font_size = 20,
-        #                 text = self.item.get('title'),
-        #                 text_size = (130,None),
-        #                 multiline = True                        
-        #                 )
-        #self.size = self.lbl.texture_size
-        #self.lbl.bind(texture_size=self.setter('size'))
     
     def update_color(self, win):
         color = Color(71 / 360., 71 / 100., 87 / 100., mode='hsv')
@@ -222,6 +210,31 @@ class MapThumbnail(Scatter):
         x,y = self.pos
         x += self.width / 2
         y += self.height / 2
+
+        layout = self.imagemap.layout
+        width = layout.cluePanel.width
+        cluePanel = layout.cluePanel
+        clueArea = layout.clueArea
+        print self.media_picture_thumbnail
+        def launchAnimPanel(op = True):
+            Animation.stop_all(cluePanel)
+            if op:
+                anim = Animation(x=1280-width, d=.2)
+            else:
+                anim = Animation(x=1280, d=.2)
+            anim.start(cluePanel)
+
+        if cluePanel.x == 1280:
+            if clueArea.collide_point(*(x,y)):
+                # cluePanel.x = 1280 - width
+                launchAnimPanel(True)
+        else:
+            if layout.clueBarPanel.collide_point(*(x,y)) or x < 1280-width:
+                # cluePanel.x = 1280
+                launchAnimPanel(False)
+
+        x -= self.imagemap.x
+        y -= self.imagemap.y
         ### Display current country above thumbnail
         country_filename = self.get_current_country(x, y)
         item = self.get_item_from_filename(country_filename)
@@ -585,7 +598,7 @@ class MapClientLayout(FloatLayout):
     time = NumericProperty(0)
     timelimit = NumericProperty(1)
     py = NumericProperty(None)
-    mapsize = ObjectProperty( (1280,800) )
+    mapsize = ObjectProperty( (980,484))
     mappos = ObjectProperty( (0,0) )
     mapdescription = ObjectProperty(None)
 
@@ -626,7 +639,8 @@ class MapClientLayout(FloatLayout):
         #print size
         cx,cy = Window.center
         thumb_width = 0#130 #scale the map to the right 
-        pos = (cx - size[0]/2. + thumb_width,cy - size[1]/2.)
+        # pos = (cx - size[0]/2. + thumb_width,cy - size[1]/2.)
+        pos = self.mappos
         #the map cannot have relative position .. 
         self.imagemap = imagemap = Map( 
                  layers = self.layers,
@@ -641,6 +655,7 @@ class MapClientLayout(FloatLayout):
                  size= size,
                  pos = pos
                  )
+        print imagemap.pos, imagemap.size
         self.add_widget(self.map_background)
         self.add_widget(self.imagemap)
 
@@ -672,7 +687,7 @@ class MapClientLayout(FloatLayout):
         if not items:
             return
         #w, h = items[0].size
-        margin = 50
+        margin = 30
         #count_in_rows = int(self.width * 0.6 / (h + margin))
         #rows_space = count_in_rows * h + (count_in_rows - 1 * margin)
 
