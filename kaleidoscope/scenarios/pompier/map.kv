@@ -64,15 +64,17 @@
 		text: root.current_country or ''
 		font_size: 12
 		# color: (0,0,0,1)
-		y: root.height - 10
+		y: root.height + 15
 		x: 0
+		valign: 'bottom'
 		canvas.before:
 			Color:
-				rgba: (1,1,1,1) if self.text != '' else (1,1,1,0)
+				rgba: (0,0,0,.5) if self.text != '' else (1,1,1,0)
+				# rgba: root.color + [1] if self.text != '' else (1,1,1,0)
 			Rectangle:
-				source: 'data/encart-pays.png'
-				size: 189, 62
-				pos: -self.width/2, root.height - 10
+				source: 'data/etiquettes.png'
+				size: 180, 60
+				pos: self.width/2 - 90 , root.height + 30
 
 	# Label:
 	# 	text: root.title
@@ -126,7 +128,7 @@
 	canvas.before:
 		Rectangle:
 			size: self.size
-			source: 'freeplace.png'
+			source: 'data/freeplace.png'
 			# source: 'freeplace.png'
 			pos: self.pos
 
@@ -198,9 +200,21 @@
 
 	Image:
 		size_hint:(None,None)
-		source: 'bar-casque.png'
-		pos: 40,40
-		size: 871, 161
+		source: 'casque-bar.png'
+		color: root.color + [1] or (1,1,1,1)
+		pos: 100,50
+		size: 980, 134
+
+	Label:
+		size_hint: (None, None)
+		font_size: 16
+		text_size: (214, 52)
+		# height: 43
+		y: 70
+		x: 190
+		color: (1, 1, 1, 1)
+		text: 'place les casques sur la carte'
+		font_name: 'data/fonts/myra_regular.ttf'
 
 	Scatter:
 		pos: 1280 -320, 0

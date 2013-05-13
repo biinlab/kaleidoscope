@@ -18,7 +18,7 @@ from kivy.lang import Builder
 from kivy.animation import Animation
 from kivy.properties import ListProperty, DictProperty, StringProperty, NumericProperty
 
-TIMER_0 = 15
+TIMER_0 = 1 #15
 TIMER_1 = 100
 TIMER_2 = 100
 TIMER_3 = 9

@@ -21,7 +21,7 @@ from kivy.core.audio import SoundLoader
 #from kivy.cache import Cache
 from json import load
 
-from os.path import dirname, join
+from os.path import dirname, join, splitext
 
 class ScenarioSelectorButton(Button):
     source = StringProperty('cities.png')
@@ -133,8 +133,15 @@ class MapThumbnail(Scatter):
 
         self.media_content = self.item.get('content', '')
 
-        media = self.item.get('title', '')
-        mediath = self.item.get('title', '')
+        filename = self.item.get('filename', '')
+        parts = filename.rsplit('-', 1)
+        filename = parts[1]
+        media = mediath = splitext(filename)[0]
+
+        print media, mediath
+        
+        # media = self.item.get('title', '')
+        # mediath = self.item.get('title', '')
         if media:
             media += '_casque.png'
             mediath += '_casque_thumbnail.png'
@@ -204,6 +211,7 @@ class MapThumbnail(Scatter):
                 else : 
                     if self.mapitem!=mapitem :
                         self.mapitem = mapitem
+                self.current_country = ''
         return ret
     
     def on_touch_move(self,touch):
@@ -664,14 +672,14 @@ class MapClientLayout(FloatLayout):
         if not items:
             return
         #w, h = items[0].size
-        margin = 40
+        margin = 50
         #count_in_rows = int(self.width * 0.6 / (h + margin))
         #rows_space = count_in_rows * h + (count_in_rows - 1 * margin)
 
         # starting point
-        x = 320
+        x = 420
         # oy = y = margin #(self.height - rows_space) / 2
-        y = 70
+        y = 68
         for item in items:
             item.pos = item.origin = x, y
             # y += item.size[1] + margin
