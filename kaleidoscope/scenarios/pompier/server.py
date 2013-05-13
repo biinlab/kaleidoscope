@@ -22,6 +22,7 @@ from kivy.clock import Clock
 TIMER_0 = 10
 TIMER_1 = 10
 TIMER_2 = 10
+
 TIMER_3 = 9
 MAX_CLIENT_ITEMS = 5
 
