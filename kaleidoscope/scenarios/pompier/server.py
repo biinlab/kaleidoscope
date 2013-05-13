@@ -19,7 +19,7 @@ from kivy.animation import Animation
 from kivy.properties import ListProperty, DictProperty, StringProperty, NumericProperty
 from kivy.clock import Clock
 
-TIMER_0 = 10
+TIMER_0 = 15
 TIMER_1 = 10
 TIMER_2 = 10
 
@@ -402,6 +402,11 @@ class MapServer(KalScenarioServer):
             ready = ready and player['ready']
         if not ready:
             return
+
+        for client in self.controler.clients:
+            place = int(self.players[client]['place']) - 1
+            self.send_to(client, 'COLOR %d %d %d' % map_colors[place])
+
         self.send_all('MENU')
 
         self.layout = MapServerMenu()
