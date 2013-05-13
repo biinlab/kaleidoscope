@@ -19,8 +19,8 @@ from kivy.animation import Animation
 from kivy.properties import ListProperty, DictProperty, StringProperty, NumericProperty
 
 TIMER_0 = 1
-TIMER_1 = 10
-TIMER_2 = 10
+TIMER_1 = 90
+TIMER_2 = 30
 
 TIMER_3 = 9
 MAX_CLIENT_ITEMS = 5
@@ -42,11 +42,11 @@ map_colors = (
 #     'plane',
 #     'ying',
 # )
-layers = ["continent"]
+layers = ["pays"]
 
 map_coordinates = (
-    (200,20),
-    (1280,800)
+    (100,234),
+    (980,484)
 )#pos, size
 
 scenariol = -2
