@@ -17,8 +17,9 @@ from kivy.resources import resource_add_path, resource_remove_path
 from kivy.lang import Builder
 from kivy.animation import Animation
 from kivy.properties import ListProperty, DictProperty, StringProperty, NumericProperty
+from kivy.clock import Clock
 
-TIMER_0 = 1
+TIMER_0 = 10
 TIMER_1 = 10
 TIMER_2 = 10
 TIMER_3 = 9
@@ -50,7 +51,11 @@ map_coordinates = (
 
 scenariol = -2
 
-
+class MapServerMenu(FloatLayout):
+    time = NumericProperty(0)
+    
+    def __init__(self, **kwargs):
+        super(MapServerMenu, self).__init__(**kwargs)
 
 
 class MapServerLayout(FloatLayout):
@@ -87,6 +92,8 @@ class MapServer(KalScenarioServer):
         resource_add_path(dirname(__file__))
         Builder.load_file(join(dirname(__file__), 'map.kv'))
         super(MapServer, self).__init__(*largs)
+        self.layout = None
+        Clock.schedule_interval(self.update_graphics_timer, 1 / 10.)
         self.timeout = 0
         self.timemsg = 0
         self.players = {}
@@ -109,6 +116,14 @@ class MapServer(KalScenarioServer):
 
         #get map layers list from json
         self.load_json() 
+
+    def update_graphics_timer(self, dt):
+        if not isinstance(self.layout, MapServerMenu):
+            return
+        t = self.timeout - time()
+        if t < 0:
+            t = 0
+        self.layout.time = t
 
     def load_json(self):
         global layers
@@ -387,6 +402,10 @@ class MapServer(KalScenarioServer):
         if not ready:
             return
         self.send_all('MENU')
+
+        self.layout = MapServerMenu()
+        self.controler.app.show(self.layout)
+
         self.state = 'menu1'
 
 

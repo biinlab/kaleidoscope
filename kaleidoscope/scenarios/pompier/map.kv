@@ -160,7 +160,25 @@
 		# y: root.top - self.height - 10 - 300
 		font_name: 'data/fonts/DroidSans-Bold.ttf'
 
+<MapServerMenu>:
+	canvas.before:
+		Color:
+			rgb: 1, 1, 1
+		Rectangle:
+			size: self.size
+			pos: self.pos
+			source: 'background.jpg'
 
+	Label:
+		size_hint: None,None
+		font_size: 15
+
+		valign: 'top'
+		text: str(int(root.time)) if root.time != 0 else ''
+		x: 50
+		y: 50
+		# y: root.top - self.height - 10 - 300
+		font_name: 'data/fonts/DroidSans-Bold.ttf'
 
 <MapClientLayout>:
 	imagemap: imagemap
