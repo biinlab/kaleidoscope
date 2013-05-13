@@ -18,9 +18,10 @@ from kivy.lang import Builder
 from kivy.animation import Animation
 from kivy.properties import ListProperty, DictProperty, StringProperty, NumericProperty
 
-TIMER_0 = 1 #15
-TIMER_1 = 100
-TIMER_2 = 100
+TIMER_0 = 1
+TIMER_1 = 10
+TIMER_2 = 10
+
 TIMER_3 = 9
 MAX_CLIENT_ITEMS = 5
 
@@ -296,9 +297,24 @@ class MapServer(KalScenarioServer):
         self.scat.rotation += int(rot[0])
 
     def do_client_exit(self, client, value):
-        self.clear()        
-        self.controler.switch_scenario('choose')
-        self.controler.load_all()
+        self.players[client]['want_to_play'] = False
+        self.send_to(client, 'MENU')
+
+        want_to_play = False
+        for player in self.players.itervalues():
+            want_to_play = want_to_play or player['want_to_play']
+
+        if want_to_play:
+            self.send_to(client, 'WAIT_GAME')
+            self.send_to(client, 'TIME %d %d' % (time(), int(self.timeoutfinal)))
+        else:
+            self.clear()
+            self.controler.switch_scenario('pompier')
+            self.controler.load_all()
+
+        # self.clear()        
+        # self.controler.switch_scenario('choose')
+        # self.controler.load_all()
 
     #
     # Commands to send to clients
@@ -588,7 +604,7 @@ class MapServer(KalScenarioServer):
     def run_game3(self):
         if time() > self.timeout:
             self.clear()
-            self.controler.switch_scenario('choose')
+            self.controler.switch_scenario('pompier')
             self.controler.load_all()
     
            

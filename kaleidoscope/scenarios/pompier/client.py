@@ -241,7 +241,10 @@ class MapClient(KalScenarioClient):
     def send_exitgame(self, instance, value):
         print 'CLIENT : ', value
         if value == 'down':
+            self.layout.clear()
             self.send('EXIT')
+            
+
 
     def send_launchGame(self, instance, value):
         if value == 'down':
