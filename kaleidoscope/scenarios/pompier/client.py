@@ -22,6 +22,7 @@ class MapClient(KalScenarioClient):
         self.menu = None
         self.isPlaying = False
         #self.logo = ''
+        self.color = (1,1,1,0)
         Clock.schedule_interval(self.update_graphics_timer, 1 / 10.)
 
     # RECEIVE COMMANDS FROM SERVER
@@ -50,6 +51,9 @@ class MapClient(KalScenarioClient):
         self.timelimit = self.timeout - time() 
 
     def handle_color(self, args):
+        if not self.layout:
+            self.color = map(lambda x: int(x) / 255., args.split())
+            return
         self.layout.color = map(lambda x: int(x) / 255., args.split())
 
     # def handle_logo(self, args):
@@ -59,16 +63,18 @@ class MapClient(KalScenarioClient):
         self.layout.layers = args
 
     def handle_mapsize(self, args):
+        print 'handle mapsize'
         self.layout.mapsize = map(lambda x: int(x), args.split())
 
     def handle_mappos(self, args):
+        print 'handle map pos'
         self.layout.mappos = map(lambda x: int(x), args.split()) #(x,y)
 
     def handle_game(self,args):
         pass
 
     def handle_menu(self, args):
-        self.menu = MapMenu()
+        self.menu = MapMenu(color=self.color)
         self.container.clear_widgets()
         self.container.add_widget(self.menu)  
         self.menu.launchGameButton.bind(state = self.send_launchGame)

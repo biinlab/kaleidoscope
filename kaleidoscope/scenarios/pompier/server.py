@@ -260,7 +260,7 @@ class MapServer(KalScenarioServer):
         thumb = self.imagemap.get_thumb(index)
         player_place = int(self.players[client]["place"])-1
         r,g,b = map_colors[ player_place ]
-        thumb.color = [r/255.,g/255.,b/255.,1.]
+        thumb.color = [r/255.,g/255.,b/255.]
         thumb.pos = (0,-400)
         right_pos = self.imagemap.retrieve_pixels_location(thumb.item['filename'])
         if right_pos is not None : 

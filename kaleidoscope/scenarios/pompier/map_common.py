@@ -201,7 +201,7 @@ class MapThumbnail(Scatter):
         Si oui, enregistre le-dit mapItem, si non, le renvoi a sa place. Si on le 
         bouge sur le même mapItem, on ne fait rien'''
         ret = super(MapThumbnail, self).on_touch_up(touch)
-        if not self._touches : 
+        if not self._touches and ret: 
                 #test if th is on a mapitem
                 x,y = self.pos
                 x += self.width / 2
