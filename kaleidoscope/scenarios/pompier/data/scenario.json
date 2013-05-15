@@ -4,197 +4,165 @@
 		{
 			"title": "Afrique du Sud",
 			"filename": "pays-afriquedusud.png",
-			"content": "afrique du sud"
+			"content": "afrique du sud",
+			"rightpos": "524x49"
 		},
 		{
 			"title": "Allemagne",
 			"filename": "pays-allemagne.png",
-			"content": "Allemagne"
+			"content": "Allemagne",
+			"rightpos": "487x297"
 		},
 		{
 			"title": "Angleterre",
 			"filename": "pays-angleterre.png",
-			"content": "Angleterre"
+			"content": "Angleterre",
+			"rightpos": "455x304"
 		},
 		{
 			"title": "Argentine",
 			"filename": "pays-argentine.png",
-			"content": "Argentine"
+			"content": "Argentine",
+			"rightpos": "280x64"
 		},
-		{
-			"title": "Arménie",
-			"filename": "pays-armenie.png",
-			"content": "Arménie"
-		},
+
 		{
 			"title": "Australie",
 			"filename": "pays-australie.png",
-			"content": "Australie"
+			"content": "Australie",
+			"rightpos": "828x67"
 		},
 		{
 			"title": "Autriche",
 			"filename": "pays-autriche.png",
-			"content": "Autriche"
-		},
-		{
-			"title": "Belgique",
-			"filename": "pays-belgique.png",
-			"content": "Belgique"
+			"content": "Autriche",
+			"rightpos": "498x284"
 		},
 		{
 			"title": "Bielorussie",
 			"filename": "pays-bielorussie.png",
-			"content": "Bielorussie"
-		},
-		{
-			"title": "Brésil",
-			"filename": "pays-bresil.png",
-			"content": "Brésil"
+			"content": "Bielorussie",
+			"rightpos": "535x309"
 		},
 		{
 			"title": "Canada",
 			"filename": "pays-canada.png",
-			"content": "Canada"
+			"content": "Canada",
+			"rightpos": "209x346"
 		},
 		{
 			"title": "Chine",
 			"filename": "pays-chine.png",
-			"content": "Chine"
-		},
-		{
-			"title": "Danemark",
-			"filename": "pays-danemark.png",
-			"content": "Danemark"
+			"content": "Chine",
+			"rightpos": "747x233"
 		},
 		{
 			"title": "Espagne",
 			"filename": "pays-espagne.png",
-			"content": "Espagne"
+			"content": "Espagne",
+			"rightpos": "451x256"
 		},
 		{
 			"title": "Etats-Unis",
 			"filename": "pays-etatsunis.png",
-			"content": "Etats-Unis"
+			"content": "Etats-Unis",
+			"rightpos": "186x293"
 		},
 		{
 			"title": "Finlande",
 			"filename": "pays-finlande.png",
-			"content": "Finlande"
-		},
-		{
-			"title": "Grèce",
-			"filename": "pays-grece.png",
-			"content": "Grèce"
-		},
-		{
-			"title": "Hongrie",
-			"filename": "pays-hongrie.png",
-			"content": "Hongrie"
+			"content": "Finlande",
+			"rightpos": "533x372"
 		},
 		{
 			"title": "Irlande",
 			"filename": "pays-irlande.png",
-			"content": "Irlande"
-		},
-		{
-			"title": "Israel",
-			"filename": "pays-israel.png",
-			"content": "Israel"
+			"content": "Irlande",
+			"rightpos": "437x309"
 		},
 		{
 			"title": "Italie",
 			"filename": "pays-italie.png",
-			"content": "Italie"
+			"content": "Italie",
+			"rightpos": "493x263"
 		},
 		{
 			"title": "Japon",
 			"filename": "pays-japon.png",
-			"content": "Japon"
+			"content": "Japon",
+			"rightpos": "829x238"
 		},
 		{
 			"title": "Kenya",
 			"filename": "pays-kenya.png",
-			"content": "Kenya"
+			"content": "Kenya",
+			"rightpos": "564x136"
 		},
 		{
 			"title": "Malaisie",
 			"filename": "pays-malaisie.png",
-			"content": "Malaisie"
+			"content": "Malaisie",
+			"rightpos": "754x145"
 		},
 		{
 			"title": "Mexique",
 			"filename": "pays-mexique.png",
-			"content": "Mexique"
+			"content": "Mexique",
+			"rightpos": "178x243"
 		},
 		{
 			"title": "Norvège",
 			"filename": "pays-norvege.png",
-			"content": "Norvège"
+			"content": "Norvège",
+			"rightpos": "501x385"
 		},
 		{
 			"title": "Nouvelle Zélande",
 			"filename": "pays-nouvellezelande.png",
-			"content": "Nouvelle Zélande"
-		},
-		{
-			"title": "Panama",
-			"filename": "pays-panama.png",
-			"content": "Panama"
-		},
-		{
-			"title": "Pays-Bas",
-			"filename": "pays-paysbas.png",
-			"content": "Pays-Bas"
+			"content": "Nouvelle Zélande",
+			"rightpos": "931x29"
 		},
 		{
 			"title": "Pérou",
 			"filename": "pays-perou.png",
-			"content": "Pérou"
+			"content": "Pérou",
+			"rightpos": "250x148"
 		},
 		{
 			"title": "Pologne",
 			"filename": "pays-pologne.png",
-			"content": "Pologne"
-		},
-		{
-			"title": "Portugal",
-			"filename": "pays-portugal.png",
-			"content": "Portugal"
-		},
-		{
-			"title": "République Tchèque",
-			"filename": "pays-republiquetcheque.png",
-			"content": "République Tchèque"
+			"content": "Pologne",
+			"rightpos": "511x302"
 		},
 		{
 			"title": "Roumanie",
 			"filename": "pays-roumanie.png",
-			"content": "Roumanie"
+			"content": "Roumanie",
+			"rightpos": "528x276"
 		},
 		{
 			"title": "Senegal",
 			"filename": "pays-senegal.png",
-			"content": "Senegal"
+			"content": "Senegal",
+			"rightpos": "420x174"
 		},
 		{
 			"title": "Srilanka",
 			"filename": "pays-srilanka.png",
-			"content": "Srilanka"
+			"content": "Srilanka",
+			"rightpos": "179x156"
 		},
 		{
 			"title": "Suède",
 			"filename": "pays-suede.png",
-			"content": "Suède"
-		},
-		{
-			"title": "Suisse",
-			"filename": "pays-suisse.png",
-			"content": "Suisse"
+			"content": "Suède",
+			"rightpos": "503x363"
 		},
 		{
 			"title": "Turquie",
 			"filename": "pays-turquie.png",
-			"content": "Turquie"
+			"content": "Turquie",
+			"rightpos": "558x252"
 		}
 		]
 }

@@ -168,7 +168,7 @@ class MapThumbnail(Scatter):
                 color.h = 106 / 360.
             else : 
                 color.h = 0
-        self.color = color.rgba
+        self.color = [color.rgba[0], color.rgba[1], color.rgba[2]]
 
     def launchAnimPanel(self, panel = None, op = True):
             layout = self.imagemap.layout
@@ -280,6 +280,7 @@ class MapThumbnail(Scatter):
     def get_current_country(self, x,y):
         country = ''
         for child in self.imagemap.children:
+            # print child.filename
             if child.pixel(x,y):
                 country = child.filename
         return country
@@ -293,6 +294,7 @@ class MapItem(Image):
     flag_id = NumericProperty(-1) #MapThumbnail id 
     source_active = StringProperty(None)
     source_original = StringProperty(None)
+    right_pos = ObjectProperty((0,0))
 
     def on_touch_down(self, touch):
         if not self.collide_point(*touch.pos):
@@ -323,9 +325,10 @@ class MapItem(Image):
             color = coreimage.read_pixel(x, y)
         except IndexError:
             return False
-        # print 'color : ', x,y,color
-        if color[-1] <= 0.003:
-            return False
+        # print self.filename, ' color : ', x,y,color
+        if len(color) > 0:
+            if color[-1] <= 0.003:
+                return False
         return True
 
     def toggle_active(self, touch):
@@ -380,6 +383,11 @@ class MapItem(Image):
         return True
 
     def retrieve_pixels_location(self):
+        if self.right_pos:
+            return self.right_pos
+        return (0,0)
+
+        # OLD
         coreimage = self._coreimage
         w,h = coreimage.size
         x=0
@@ -391,9 +399,11 @@ class MapItem(Image):
                 color = coreimage.read_pixel(x, y)
             except IndexError:
                 pass
-            if color[-1] >= 0.01:
-                low_pos = (x,y)
-                alpha = color[-1]
+            
+            if len(color) > 0:
+                if color[-1] >= 0.01:
+                    low_pos = (x,y)
+                    alpha = color[-1]
             x+=8
             if x >= w:
                 x=0
@@ -407,10 +417,11 @@ class MapItem(Image):
             try:
                 color = coreimage.read_pixel(x, y)
             except IndexError:
-                pass
-            if color[-1] >= 0.01:
-                alpha = color[-1]
-                high_pos = (x,y)
+                print 'Error reading pixel ', x,y
+            if len(color) > 0:
+                if color[-1] >= 0.01:
+                    alpha = color[-1]
+                    high_pos = (x,y)
             x+=8
             if x >= w:
                 if alpha == 0:
@@ -428,8 +439,9 @@ class MapItem(Image):
                     color = coreimage.read_pixel(xc2, yc)
                 except IndexError:
                     pass
-                if color[-1] >= 0.1:
-                    alpha = color[-1]
+                if len(color) > 0:
+                    if color[-1] >= 0.1:
+                        alpha = color[-1]
                 xc2 +=3    
         xc_min = xc2
         while alpha > 0.1 and xc2 < w:
@@ -437,8 +449,9 @@ class MapItem(Image):
                     color = coreimage.read_pixel(xc2, yc)
                 except IndexError:
                     pass
-                if color[-1] < 0.01:
-                    alpha = color[-1]
+                if len(color) > 0:
+                    if color[-1] < 0.01:
+                        alpha = color[-1]
                 xc2 +=3
         xc_max = xc2
         return (xc_min + (xc_max-xc_min)/2., yc)    
@@ -454,6 +467,7 @@ class Map(FloatLayout):
     active_ids = ListProperty([])
     server = BooleanProperty(False)
     color = ObjectProperty( (0,0,0,1))
+    selected_items = ListProperty([])
 
     def __init__(self, **kwargs):
         super(Map, self).__init__(**kwargs)
@@ -468,13 +482,15 @@ class Map(FloatLayout):
         self.data = data['items']
 
     def get_thumb(self, index):
+        print 'THUMB'
         if self.thumb_index_match_layer(index): 
             item = self.data[index]
+            self.selected_items.append(index)
             return MapThumbnail(item=item, imagemap=self, index=index)
         else : 
             return None
 
-    def display_mapitem(self, filename, active, color):
+    def display_mapitem(self, filename, active, color, right_pos=None):
             #print "display mapitem" + filename
             #if self.server :
             #    print filename, active, color
@@ -491,11 +507,16 @@ class Map(FloatLayout):
                 source = filename
             #print parts[0], filename_suffix
             image = self.get_child_by_filename(filename)
-            if not isinstance(image,MapItem) :    
-                #print source
+
+            if not isinstance(image,MapItem):    
+                for item in (data for data in self.data): #use a GENERATOR here
+                    if filename == item["filename"]:
+                        right_pos = item["rightpos"].split('x', 1)
+                        right_pos =  (int(right_pos[0]), int(right_pos[1]))
                 image = MapItem(source=source, 
                     id = filename,
                     filename = filename,
+                    right_pos = right_pos,
                     pos_hint={'x': 0, 'y': 0},
                     source_original=filename,
                     source_active=filename_suffix) 
@@ -515,9 +536,12 @@ class Map(FloatLayout):
         for child in self.children[:]:
             child.unbind(active=self.on_child_active)
             self.remove_widget(child)
- 
+        
+        print 'UPDATING IMAGES', self.selected_items
+
         for item in (data for data in self.data): #use a GENERATOR here
             filename = item["filename"]
+
             #exclude unallowed layers (rivers etc etc)
             parts = filename.rsplit('-', 1)
             #print parts, f1(self.layers)            
@@ -694,6 +718,7 @@ class MapClientLayout(FloatLayout):
     def do_layout_all(self):
         self.do_layout_items(self.emptyplaces)
         self.do_layout_items(self.items)
+        print self.items
 
     def do_layout_items(self, items):
         # place correctly thumbs

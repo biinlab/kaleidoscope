@@ -7,6 +7,7 @@ from kaleidoscope.scenario import KalScenarioClient
 from kivy.clock import Clock
 from kivy.resources import resource_add_path
 from kivy.lang import Builder
+from kivy.properties import ListProperty
 
 from map_common import MapClientLayout, Map, MapMenu
 
@@ -23,7 +24,9 @@ class MapClient(KalScenarioClient):
         self.isPlaying = False
         #self.logo = ''
         self.color = (1,1,1,0)
-        Clock.schedule_interval(self.update_graphics_timer, 1 / 10.)
+        Clock.schedule_interval(self.update_graphics_timer, 1.)
+        # Clock.schedule_interval(self.update_graphics_timer, 1 / 10.)
+        self.index_list = []
 
     # RECEIVE COMMANDS FROM SERVER
     
@@ -118,6 +121,15 @@ class MapClient(KalScenarioClient):
         item = self.layout.create_and_add_item(index)
         if item is not None :
             item.bind(mapitem = self.send_pos)
+        self.index_list.append(index)
+        
+        if self.count == 5:
+            tmp = []
+            for idx in self.index_list:
+                item = self.layout.imagemap.data[idx]
+                tmp.append(item)
+            self.layout.imagemap.data = tmp
+            self.layout.imagemap.update_images(0)
 
     #def handle_give2(self, args): #threaded version
     #    thread.start_new_thread(self.handle_give,(args, ))

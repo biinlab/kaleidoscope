@@ -45,12 +45,12 @@
 			Color:
 				rgb: root.color
 			Line:
-				circle: self.width/2, self.height/2, self.width/2-3, 0, 180
+				circle: self.width/2, self.height/2, self.width/2-3, 0, 360
 				width: 3
 			Color:
 				rgba: root.color +  [1- ((root.scale - .3)/.7)] #if not isinstance(root.parent.parent, MapServer) else (1,1,1,0)
 			Line:
-				circle: self.width/2, self.height/2, 0, 0, 180
+				circle: self.width/2, self.height/2, 0, 0, 360
 				width: self.width/2
 
 	Label:
@@ -99,7 +99,7 @@
 		Color:
 			rgba: root.color+[1] if root.time != 0 else (0,0,0,0)
 		Line:
-			circle: self.width/2, self.height/2, 210, 0, (180-root.time/15*180)
+			circle: self.width/2, self.height/2, 210, 0, (360-root.time/15*360)
 			cap: 'square'
 			width: 11
 	Button:
@@ -170,7 +170,7 @@
 	Image:
 		size_hint:(None,None)
 		source: 'casque-bar.png'
-		color: root.color + [1] or (1,1,1,1)
+		color: root.color + [1] or (1,1,1,1) if root.color else (0,0,0,1)
 		pos: 100,50
 		size: 980, 134
 
