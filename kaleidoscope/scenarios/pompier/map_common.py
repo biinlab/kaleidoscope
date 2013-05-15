@@ -185,7 +185,6 @@ class MapThumbnail(Scatter):
             return
         Animation.stop_all(self, 'pos')
         self.controled = True
-
         self.scale = 1
  
         self.imagemap.parent.img_description.source = self.media_picture
@@ -221,8 +220,10 @@ class MapThumbnail(Scatter):
         return ret
     
     def on_touch_move(self,touch):
-        if self.locked : return
+        if self.locked: return
         ret = super(MapThumbnail, self).on_touch_move(touch)
+        if not ret:
+            return
         #mapitem = self.imagemap.flag(self.index, touch.x, touch.y)
         #print mapitem
         x,y = self.pos
@@ -265,6 +266,7 @@ class MapThumbnail(Scatter):
 
     def move_to_pos(self,pos):
         self.pos = pos
+        # self.center = pos
         #Animation(pos=pos, t='out_elastic').start(self)
     
     def shake(self):
@@ -319,7 +321,7 @@ class MapItem(Image):
 
     def pixel(self, x, y):
         x = int(x)
-        y = int(y)
+        y = self.height - int(y)
         coreimage = self._coreimage
         try:
             color = coreimage.read_pixel(x, y)
@@ -482,7 +484,6 @@ class Map(FloatLayout):
         self.data = data['items']
 
     def get_thumb(self, index):
-        print 'THUMB'
         if self.thumb_index_match_layer(index): 
             item = self.data[index]
             self.selected_items.append(index)
@@ -490,7 +491,7 @@ class Map(FloatLayout):
         else : 
             return None
 
-    def display_mapitem(self, filename, active, color, right_pos=None):
+    def display_mapitem(self, filename, active, color):
             #print "display mapitem" + filename
             #if self.server :
             #    print filename, active, color
@@ -536,9 +537,6 @@ class Map(FloatLayout):
         for child in self.children[:]:
             child.unbind(active=self.on_child_active)
             self.remove_widget(child)
-        
-        print 'UPDATING IMAGES', self.selected_items
-
         for item in (data for data in self.data): #use a GENERATOR here
             filename = item["filename"]
 
@@ -779,7 +777,7 @@ class MapClientLayout(FloatLayout):
                 pos = child.right_pos
                 x,y = pos
                 x += self.imagemap.x - child.width/2.
-                y += self.imagemap.y
+                y += self.imagemap.y - child.height/2
                 #print x,y
                 if pos is not None:
                     child.move_to_pos( (x,y) )
@@ -787,6 +785,7 @@ class MapClientLayout(FloatLayout):
                 child.auto_color = False
                 child.update_color(True)
                 child.locked = True
+                child.scale = 1
         self.imagemap.update_images(1)
 
     def auto_color_thumbs(self):

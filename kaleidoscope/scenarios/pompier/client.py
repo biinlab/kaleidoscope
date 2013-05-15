@@ -99,7 +99,7 @@ class MapClient(KalScenarioClient):
 
     def handle_map(self, args):
         self.imagemap = imagemap = self.layout.imagemap = self.layout.create_map()
-        self.imagemap.update_images(0)
+        # self.imagemap.update_images(0)
         for mapitem in imagemap.children[:] :
             mapitem.bind(flag_id = self.send_flag_change)
         #control the main map rotation with a controler
@@ -118,11 +118,18 @@ class MapClient(KalScenarioClient):
         self.count += 1
         #print args
         index = int(args)
+        #Create MapItem
+        item_data = self.layout.imagemap.data[index]
+        filename = item_data["filename"]
+        parts = filename.rsplit('-', 1)
+        self.layout.imagemap.display_mapitem(filename, False, self.color)
+
+        #Create MapThumbnail
         item = self.layout.create_and_add_item(index)
         if item is not None :
             item.bind(mapitem = self.send_pos)
+
         self.index_list.append(index)
-        
         if self.count == 5:
             tmp = []
             for idx in self.index_list:
