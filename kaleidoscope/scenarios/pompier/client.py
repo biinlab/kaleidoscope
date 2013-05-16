@@ -100,8 +100,7 @@ class MapClient(KalScenarioClient):
     def handle_map(self, args):
         self.imagemap = imagemap = self.layout.imagemap = self.layout.create_map()
         # self.imagemap.update_images(0)
-        for mapitem in imagemap.children[:] :
-            mapitem.bind(flag_id = self.send_flag_change)
+        
         #control the main map rotation with a controler
         # self.map_handler = self.layout.create_map_handler()
         # self.map_handler.bind(rotation = self.send_rotatemap)
@@ -120,6 +119,7 @@ class MapClient(KalScenarioClient):
         index = int(args)
         #Create MapItem
         item_data = self.layout.imagemap.data[index]
+        item_data["id"] = str(index)
         filename = item_data["filename"]
         parts = filename.rsplit('-', 1)
         self.layout.imagemap.display_mapitem(filename, False, self.color)
@@ -135,8 +135,12 @@ class MapClient(KalScenarioClient):
             for idx in self.index_list:
                 item = self.layout.imagemap.data[idx]
                 tmp.append(item)
+                print item
             self.layout.imagemap.data = tmp
             self.layout.imagemap.update_images(0)
+
+            for mapitem in self.layout.imagemap.children[:] :
+                mapitem.bind(flag_id = self.send_flag_change)
 
     #def handle_give2(self, args): #threaded version
     #    thread.start_new_thread(self.handle_give,(args, ))
@@ -229,14 +233,15 @@ class MapClient(KalScenarioClient):
             flag_id = -1
         filename_index = self.filename2index(mapitem.filename) 
         self.send('FLAGCHANGE %d %d' % (filename_index,flag_id) )
-        #print "CLIENT : flag change : "+str(mapitem.filename) +' '+ str(flag_id)
+        # print "CLIENT : flag change : "+str(mapitem.filename) +' '+ str(flag_id)
 
     def filename2index(self,filename):
         #trick to pass mapitem.filename (string) as a integer (protocol blocks strings..)
         index = 0
         for i in self.imagemap.data :
             if i['filename'] == filename :
-                return index
+                return int(i["id"])
+                # return index
             index +=1
 
     def update_graphics_timer(self, dt):

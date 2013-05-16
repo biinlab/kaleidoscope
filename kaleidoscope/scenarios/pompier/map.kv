@@ -54,7 +54,7 @@
 				width: self.width/2
 
 	Label:
-		text: root.current_country if root.scale == 1 else ''
+		text: root.current_country #if root.scale == 1 else ''
 		font_size: 12
 		# color: (0,0,0,1)
 		y: root.height -5
@@ -272,13 +272,13 @@
 
 <MapServerLayout>:
 
-	canvas.before:
-		Color:
-			rgb: 1, 1, 1
-		Rectangle:
-			size: self.size
-			pos: self.pos
-			source: 'data/background.jpg'
+	# canvas.before:
+	# 	Color:
+	# 		rgb: 1, 1, 1
+	# 	Rectangle:
+	# 		size: self.size
+	# 		pos: self.pos
+	# 		source: 'data/background.jpg'
 
 <MapServerMenu>:
 	canvas.before:

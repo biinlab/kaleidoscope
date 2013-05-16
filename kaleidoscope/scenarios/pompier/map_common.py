@@ -251,6 +251,7 @@ class MapThumbnail(Scatter):
         ### Display current country above thumbnail
         country_filename = self.get_current_country(x, y)
         item = self.get_item_from_filename(country_filename)
+
         if item:
             self.current_country = item["title"]
         else:
@@ -690,7 +691,6 @@ class MapClientLayout(FloatLayout):
                  size= size,
                  pos = pos
                  )
-        print imagemap.pos, imagemap.size
         self.add_widget(self.map_background)
         self.add_widget(self.imagemap)
 
@@ -716,7 +716,6 @@ class MapClientLayout(FloatLayout):
     def do_layout_all(self):
         self.do_layout_items(self.emptyplaces)
         self.do_layout_items(self.items)
-        print self.items
 
     def do_layout_items(self, items):
         # place correctly thumbs
