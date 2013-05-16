@@ -281,13 +281,21 @@
 	# 		source: 'data/background.jpg'
 
 <MapServerMenu>:
-	canvas.before:
-		Color:
-			rgb: 1, 1, 1
-		Rectangle:
-			size: self.size
-			pos: self.pos
-			source: 'data/background.jpg'
+	# canvas.before:
+	# 	Color:
+	# 		rgb: 1, 1, 1
+	# 	Rectangle:
+	# 		size: self.size
+	# 		pos: self.pos
+	# 		source: 'data/background.jpg'
+	Image:
+		size_hint: None, None
+		size: 1920, 1080
+		pos: 0,0
+		anim_delay: .001
+		source: 'anim_server.gif'
+
+
 
 	Label:
 		size_hint: None,None

@@ -16,10 +16,10 @@ from random import randint
 from kivy.resources import resource_add_path, resource_remove_path
 from kivy.lang import Builder
 from kivy.animation import Animation
-from kivy.properties import ListProperty, DictProperty, StringProperty, NumericProperty
+from kivy.properties import ListProperty, DictProperty, StringProperty, NumericProperty, BooleanProperty
 from kivy.clock import Clock
 
-TIMER_0 = 15
+TIMER_0 = 1
 TIMER_1 = 15
 TIMER_2 = 30
 
@@ -55,6 +55,7 @@ scenariol = -2
 
 class MapServerMenu(FloatLayout):
     time = NumericProperty(0)
+    is_idle = BooleanProperty(True)
     
     def __init__(self, **kwargs):
         super(MapServerMenu, self).__init__(**kwargs)
@@ -388,7 +389,6 @@ class MapServer(KalScenarioServer):
         self.map_background = ''
         self.layout = ''
         
-    
     #
     # State machine
     #
@@ -604,7 +604,8 @@ class MapServer(KalScenarioServer):
         index = 0
         clients = self.controler.clients
         #add all items to the map 
-        for item in self.imagemap.data :
+        for item in self.imagemap.data:
+            print item
             filename = item['filename']
             if self.imagemap.filename_match_layer(filename):
                 self.imagemap.display_mapitem(filename, True, (0,0,0,1))    
