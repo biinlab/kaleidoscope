@@ -55,6 +55,7 @@ scenariol = -2
 
 class MapServerMenu(FloatLayout):
     time = NumericProperty(0)
+
     
     def __init__(self, **kwargs):
         super(MapServerMenu, self).__init__(**kwargs)
@@ -93,7 +94,8 @@ class MapServer(KalScenarioServer):
         Builder.load_file(join(dirname(__file__), 'map.kv'))
         super(MapServer, self).__init__(*largs)
         self.layout = None
-        Clock.schedule_interval(self.update_graphics_timer, 1 / 10.)
+        Clock.schedule_interval(self.update_graphics_timer, 1 / 100.)
+
         self.timeout = 0
         self.timemsg = 0
         self.players = {}
@@ -124,6 +126,7 @@ class MapServer(KalScenarioServer):
         if t < 0:
             t = 0
         self.layout.time = t
+        # self.layout.rotation += 1
 
     def load_json(self):
         global layers
@@ -450,7 +453,8 @@ class MapServer(KalScenarioServer):
         self.send_all('SELECTOR') 
         # global scenariol
         # scenariol = 0
-
+        Clock.unschedule(self.update_graphics_timer)
+        Clock.schedule_interval(self.update_graphics_timer, 1 / 10.)
         self.state = 'game0'  
 
     def run_game0(self):

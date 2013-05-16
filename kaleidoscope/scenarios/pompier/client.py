@@ -49,9 +49,12 @@ class MapClient(KalScenarioClient):
     def handle_time(self, args):
         self.timedelta, self.timeout = map(int, args.split())
         self.timedelta = time() - self.timedelta
+        
         # apply that delta to timeout
         self.timeout += self.timedelta
         self.timelimit = self.timeout - time() 
+        if hasattr(self, "menu"):
+            self.menu.timeout = self.timelimit
 
     def handle_color(self, args):
         if not self.layout:

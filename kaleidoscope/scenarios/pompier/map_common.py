@@ -614,6 +614,7 @@ class Map(FloatLayout):
     
 class MapMenu(FloatLayout):
     time = NumericProperty(0)
+    timeout = NumericProperty(1)
     color = ListProperty([1, 1, 1]) 
 
     def __init__(self, **kwargs):
