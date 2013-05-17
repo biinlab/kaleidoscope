@@ -19,11 +19,11 @@ from kivy.animation import Animation
 from kivy.properties import ListProperty, DictProperty, StringProperty, NumericProperty, BooleanProperty
 from kivy.clock import Clock
 
-TIMER_0 = 1
-TIMER_1 = 1
-TIMER_2 = 3
+TIMER_0 = 15
+TIMER_1 = 30
+TIMER_2 = 30
 
-TIMER_3 = 9
+TIMER_3 = 10
 MAX_CLIENT_ITEMS = 5
 
 background = Image(join(dirname(__file__), 'background.jpg'))
@@ -320,6 +320,8 @@ class MapServer(KalScenarioServer):
         self.players[client]['want_to_play'] = False
         self.send_to(client, 'MENU')
 
+
+
         want_to_play = False
         for player in self.players.itervalues():
             want_to_play = want_to_play or player['want_to_play']
@@ -327,6 +329,8 @@ class MapServer(KalScenarioServer):
         if want_to_play:
             self.send_to(client, 'WAIT_GAME')
             self.send_to(client, 'TIME %d %d' % (time(), int(self.timeoutfinal)))
+            # On retire les items donnes au client qui vient de quitter la partie
+            self.items_given = [(clt, idx) for (clt, idx) in self.items_given if clt != client ]
         else:
             self.clear()
             self.controler.switch_scenario('pompier')

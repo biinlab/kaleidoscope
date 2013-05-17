@@ -49,6 +49,12 @@
 			"filename": "pays-canada.png",
 			"content": "Canada",
 			"rightpos": "209x346"
+		},		
+		{
+			"title": "Chine",
+			"filename": "pays-chine.png",
+			"content": "Chine",
+			"rightpos": "750x234"
 		},
 		{
 			"title": "Espagne",
@@ -120,7 +126,7 @@
 			"title": "Pérou",
 			"filename": "pays-perou.png",
 			"content": "Pérou",
-			"rightpos": "250x148"
+			"rightpos": "255x149"
 		},
 		{
 			"title": "Pologne",
@@ -144,13 +150,19 @@
 			"title": "Srilanka",
 			"filename": "pays-srilanka.png",
 			"content": "Srilanka",
-			"rightpos": "179x156"
+			"rightpos": "680x156"
 		},
 		{
 			"title": "Suède",
 			"filename": "pays-suede.png",
 			"content": "Suède",
 			"rightpos": "503x363"
+		},
+		{
+			"title": "Turquie",
+			"filename": "pays-turquie.png",
+			"content": "Turquie",
+			"rightpos": "560x249"
 		}
 		]
 }

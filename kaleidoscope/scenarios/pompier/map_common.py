@@ -132,7 +132,7 @@ class MapThumbnail(Scatter):
         super(MapThumbnail, self).__init__(**kwargs)
 
         self.media_content = self.item.get('content', '')
-
+        self.title = self.item.get('title', '') 
         filename = self.item.get('filename', '')
         parts = filename.rsplit('-', 1)
         filename = parts[1]
@@ -158,8 +158,10 @@ class MapThumbnail(Scatter):
             diff = (abs(x2-x1) + abs(y2-y1)) / wind
             #print diff, x2 - x1, y2 - y1 
         
-            if diff < 0.05:
-                color.h = 106 / 360.
+            if self.current_country == self.title:
+                color.h = 106/360.
+            # if diff < 0.05:
+            #     color.h = 106 / 360.
             else:
                 h = (71 - 71 * (min(2., 10*(diff - 0.01)) / 2.)) / 360.
                 color.h = h
