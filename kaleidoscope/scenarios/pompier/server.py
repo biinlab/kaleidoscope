@@ -19,9 +19,9 @@ from kivy.animation import Animation
 from kivy.properties import ListProperty, DictProperty, StringProperty, NumericProperty, BooleanProperty
 from kivy.clock import Clock
 
-TIMER_0 = 15
-TIMER_1 = 15
-TIMER_2 = 30
+TIMER_0 = 1
+TIMER_1 = 1
+TIMER_2 = 3
 
 TIMER_3 = 9
 MAX_CLIENT_ITEMS = 5
@@ -32,10 +32,10 @@ btnbg = Image(join(dirname(__file__), 'buttonbackground.png')).texture
 
 # vert, jaune, bleu, rose
 map_colors = (
-    (92, 179, 103),
-    (194, 222, 65),
-    (92, 145, 179),
-    (227, 53, 119),
+    (213, 219, 15),
+    (40, 116, 255),
+    (40, 194, 185)
+    # (227, 53, 119),
 )
 
 # map_logos = (
@@ -56,6 +56,7 @@ scenariol = -2
 class MapServerMenu(FloatLayout):
     time = NumericProperty(0)
     is_idle = BooleanProperty(True)
+    rotation = NumericProperty(0)
     
     def __init__(self, **kwargs):
         super(MapServerMenu, self).__init__(**kwargs)
@@ -69,7 +70,7 @@ Factory.register('MapServerLayout', cls=MapServerLayout)
 class MapServer(KalScenarioServer):
     json_filename = StringProperty('')
     scenariol = NumericProperty(-2)
-    layers = ListProperty( ["continent"] )
+    layers = ListProperty( ["pays"] )
 
     def search_data_files(self):
         blacklist = ('__init__.py', )
@@ -126,6 +127,8 @@ class MapServer(KalScenarioServer):
         if t < 0:
             t = 0
         self.layout.time = t
+
+        self.layout.rotation = (self.layout.rotation + 0.1)% 360
         # self.layout.rotation += 1
 
     def load_json(self):
@@ -391,6 +394,15 @@ class MapServer(KalScenarioServer):
         self.map_background = ''
         self.layout = ''
         
+
+    def index_given(self, index):
+        for client, idx in self.items_given:
+            if idx == index:
+                return True
+        return False
+
+
+
     #
     # State machine
     #
@@ -424,7 +436,7 @@ class MapServer(KalScenarioServer):
 
         if not want_to_play:
             return
-
+        self.layout.is_idle = False
         self.timeout = time() + TIMER_0
         self.send_all('GAME_START')
         self.send_all('TIME %d %d' % (time(), int(self.timeout)))
@@ -501,6 +513,7 @@ class MapServer(KalScenarioServer):
             if player['want_to_play']:
                 self.send_to(player['client'], 'MAP')
         
+
         # deliver randomly index
         litems = len(self.imagemap.data)
         if litems:
@@ -521,6 +534,8 @@ class MapServer(KalScenarioServer):
                             continue 
                         if self.thumb_index_match_layer(index, client) == True :
                             #print r, litems
+                            item = self.imagemap.data[index]
+                            # tmp.append(item)
                             self.send_to(client, 'GIVE %d' % index)
                             player['count'] += 1
                             self.items_given.append((client, index))
@@ -529,6 +544,8 @@ class MapServer(KalScenarioServer):
                         allfinished = allfinished and False
                 if litems == 0 : allfinished = True       
   
+        # self.imagemap.data = tmp
+
         self.state = 'game1'
 
         for player in self.players.itervalues():
@@ -571,6 +588,8 @@ class MapServer(KalScenarioServer):
                         self.send_to(client, 'THNOTVALID %d' % thumb.index)
             index_sent.append(thumb.index)
 
+        print index_sent
+
         for client, index in self.items_given:
             if index in index_sent:
                 continue
@@ -584,8 +603,8 @@ class MapServer(KalScenarioServer):
             if player['want_to_play']:
                 self.send_to(player['client'], 'TIME %d %d' % (time(), int(self.timeout)))
                 self.send_to(player['client'],'GAME2')
-                self.send_to(player['client'],'GAME2')
-                self.send_to(player['client'],'GAME2')
+                # self.send_to(player['client'],'GAME2')
+                # self.send_to(player['client'],'GAME2')
         self.state = 'game2'
 
     def run_game2(self):
@@ -604,18 +623,22 @@ class MapServer(KalScenarioServer):
             if isinstance(child,MapItem):
                 self.imagemap.remove_widget(child)
         #place all thumbs on the map
-        index = 0
+        index = -1
         clients = self.controler.clients
         #add all items to the map 
         for item in self.imagemap.data:
-            print item
+            # print item
+            index +=1
+            if not self.index_given(index):
+                continue
             filename = item['filename']
             if self.imagemap.filename_match_layer(filename):
                 self.imagemap.display_mapitem(filename, True, (0,0,0,1))    
             item = self.create_and_add_item(clients.keys()[0] ,index)
+
             item.auto_color = False
-            index +=1
-        
+            
+        print index
         #move thumbs to the right position
         self.timeout = time() + TIMER_3
 

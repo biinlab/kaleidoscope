@@ -508,6 +508,7 @@ class MapServer(KalScenarioServer):
         for item in self.imagemap.data :
             filename = item['filename']
             if self.imagemap.filename_match_layer(filename):
+                print index
                 self.imagemap.display_mapitem(filename, True, (0,0,0,1))    
             item = self.create_and_add_item(clients.keys()[0] ,index)
             item.auto_color = False

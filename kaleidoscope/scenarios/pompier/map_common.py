@@ -592,7 +592,7 @@ class Map(FloatLayout):
         return self.filename_match_layer(filename)
 
     def filename_match_layer(self,filename):
-        #print self.f1(self.layers)
+        # print self.f1(self.layers)
         parts = filename.rsplit('-', 1)
         if len(parts) != 2 or parts[0] not in self.f1(self.layers):
             return False

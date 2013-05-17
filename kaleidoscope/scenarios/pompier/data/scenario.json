@@ -51,12 +51,6 @@
 			"rightpos": "209x346"
 		},
 		{
-			"title": "Chine",
-			"filename": "pays-chine.png",
-			"content": "Chine",
-			"rightpos": "747x233"
-		},
-		{
 			"title": "Espagne",
 			"filename": "pays-espagne.png",
 			"content": "Espagne",
@@ -157,12 +151,6 @@
 			"filename": "pays-suede.png",
 			"content": "Suède",
 			"rightpos": "503x363"
-		},
-		{
-			"title": "Turquie",
-			"filename": "pays-turquie.png",
-			"content": "Turquie",
-			"rightpos": "558x252"
 		}
 		]
 }
