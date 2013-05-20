@@ -19,9 +19,9 @@ from kivy.animation import Animation
 from kivy.properties import ListProperty, DictProperty, StringProperty, NumericProperty, BooleanProperty
 from kivy.clock import Clock
 
-TIMER_0 = 15
-TIMER_1 = 30
-TIMER_2 = 30
+TIMER_0 = 1
+TIMER_1 = 10
+TIMER_2 = 10
 
 TIMER_3 = 10
 MAX_CLIENT_ITEMS = 5
@@ -287,6 +287,7 @@ class MapServer(KalScenarioServer):
         if thumb is not None :
             thumb.center = (x,y)
             self.thumbs[index] = [client, (x,y)]
+            thumb.scale = .5
 
     def do_client_color(self, client, args):
         index = int(args[0])
@@ -649,7 +650,7 @@ class MapServer(KalScenarioServer):
         for player in self.players.itervalues():
             if player['want_to_play']:
                 self.send_to(player['client'],'PLACETHUMBS')
-                self.send_to(player['client'],'GAME2')
+                # self.send_to(player['client'],'GAME2')
                 self.send_to(player['client'],'TIME %d %d' % (time(), int(self.timeout)))
         self.state = 'game3'
         

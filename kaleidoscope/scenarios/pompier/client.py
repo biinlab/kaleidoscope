@@ -228,7 +228,7 @@ class MapClient(KalScenarioClient):
         #print "CLIENT : send POS"
 
     def send_color(self, instance, value):
-        value = instance.color
+        value = self.color
         self.send('COLOR %d %d %d %d' % (instance.index, value[0]*255,value[1]*255,value[2]*255) )
 
     def send_flag_change(self, mapitem, flag_id):

@@ -123,6 +123,7 @@ class MapThumbnail(Scatter):
     media_content = StringProperty('')
     media_picture = StringProperty('')
     current_country = StringProperty('')
+    current_country2 = StringProperty('')
     media_picture_thumbnail = StringProperty('')
 
     # used by server, to know which client have this item
@@ -130,7 +131,6 @@ class MapThumbnail(Scatter):
     
     def __init__(self, **kwargs):
         super(MapThumbnail, self).__init__(**kwargs)
-
         self.media_content = self.item.get('content', '')
         self.title = self.item.get('title', '') 
         filename = self.item.get('filename', '')
@@ -151,14 +151,26 @@ class MapThumbnail(Scatter):
         color = Color(71 / 360., 71 / 100., 87 / 100., mode='hsv')
         if self.auto_color == True :
             x1,y1 = self.pos
+            # x1, y1 = self.center
             x2,y2 = self.right_pos
             x1 -= self.imagemap.x 
             y1 -= self.imagemap.y
             wind = Window.width + Window.height
             diff = (abs(x2-x1) + abs(y2-y1)) / wind
+            # current_country = ''
             #print diff, x2 - x1, y2 - y1 
-        
-            if self.current_country == self.title:
+            # if self.current_country == '':
+            #     print self.width/2 * self.scale
+            #     # x1 += self.width/2 * self.scale
+            #     # y1 += self.height/2 * self.scale
+            #     country_filename = self.get_current_country(x1, y1)
+            #     item = self.get_item_from_filename(country_filename)
+            #     if item != None:            
+            #         current_country = item["title"]
+            # else:
+            #     current_country = self.current_country
+
+            if self.current_country2 == self.title and self.pos != self.origin:
                 color.h = 106/360.
             # if diff < 0.05:
             #     color.h = 106 / 360.
@@ -183,6 +195,7 @@ class MapThumbnail(Scatter):
             anim.start(panel)
         
     def on_touch_down(self, touch):
+        if self.locked: return
         if not super(MapThumbnail, self).on_touch_down(touch):
             return
         Animation.stop_all(self, 'pos')
@@ -201,6 +214,8 @@ class MapThumbnail(Scatter):
         ''' Pose le MapThumbnail sur la carte. regarde si il est sur un mapItem.
         Si oui, enregistre le-dit mapItem, si non, le renvoi a sa place. Si on le 
         bouge sur le même mapItem, on ne fait rien'''
+        print "on touch up"
+        if self.locked: return
         ret = super(MapThumbnail, self).on_touch_up(touch)
         if not self._touches and ret: 
                 #test if th is on a mapitem
@@ -222,6 +237,7 @@ class MapThumbnail(Scatter):
         return ret
     
     def on_touch_move(self,touch):
+        print "on touch move"
         if self.locked: return
         ret = super(MapThumbnail, self).on_touch_move(touch)
         if not ret:
@@ -256,6 +272,7 @@ class MapThumbnail(Scatter):
 
         if item:
             self.current_country = item["title"]
+            self.current_country2 = self.current_country
         else:
             self.current_country = ''
 
@@ -621,7 +638,34 @@ class MapMenu(FloatLayout):
 
     def __init__(self, **kwargs):
         super(MapMenu, self).__init__(**kwargs)
-        # self.color = color
+        
+    def init_help_img(self):
+        self.himg = Image(size_hint=(None,None),
+            size=(1280,800),
+            pos=(0,0),
+            source='data/ecran-correction.png',
+            opacity= 1
+            )
+        self.himg.on_touch_down = self.on_img_touch_down
+        self.add_widget(self.himg)
+
+    def display_help(self):
+        self.toggle_help_image()
+
+    def toggle_help_image(self):
+        if not hasattr(self, 'himg'):
+            self.init_help_img()
+            return
+        if self.himg.parent == self:
+            self.remove_widget(self.himg)
+            self.himg.opacity = 0
+        else:
+            self.init_help_img()
+
+    def on_img_touch_down(self, touch):
+        if self.himg.opacity == 1:
+            self.toggle_help_image()
+            return True
  
 
 class MapClientLayout(FloatLayout):
@@ -778,10 +822,12 @@ class MapClientLayout(FloatLayout):
             if isinstance(child, MapThumbnail):
                 pos = child.right_pos
                 x,y = pos
-                x += self.imagemap.x - child.width/2.
-                y += self.imagemap.y - child.height/2
+                x += self.imagemap.x #- child.width/2.
+                y += self.imagemap.y #- child.height/2
+                x -= child.width/2
+                y -= child.height/2
                 #print x,y
-                if pos is not None:
+                if pos is not None and child.current_country2 != child.title:
                     child.move_to_pos( (x,y) )
                 #convert to green 
                 child.auto_color = False
@@ -791,9 +837,11 @@ class MapClientLayout(FloatLayout):
         self.imagemap.update_images(1)
 
     def auto_color_thumbs(self):
+        print 'auto color'
         for child in self.items:
             if isinstance(child, MapThumbnail):
                 child.auto_color = True
+                child.update_color(True)
 
     def lock_thumbs(self, boole):
         for child in self.items:
