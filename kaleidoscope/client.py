@@ -395,6 +395,10 @@ class KalClientApp(App):
         config.add_section('param')
         config.set('param', 'couleur_auto', 'auto')
         config.set('param', 'scenario_auto', 'auto')
+        # config.set('param', 'TIMER0', '15')
+        # config.set('param', 'TIMER1', '60')
+        # config.set('param', 'TIMER2', '30')
+        # config.set('param', 'TIMER3', '15')
 
         config.add_section('config')
         config.set('config', 'first_run', '1')
@@ -419,7 +423,25 @@ class KalClientApp(App):
           "desc": "Choix du scenario",
           "section": "param", "key": "scenario_auto",
           "options": ["auto", "libre", "pentaminos", "revolution", "geography", "pompier"]}
-           ]'''
+        ]'''
+
+        # { "type": "numeric", "title": "TIMER 0",
+        #   "desc": "Temps de lancement de la partie",
+        #   "section": "param", "key": "TIMER0",
+        # }
+        # { "type": "numeric", "title": "TIMER 1",
+        #   "desc": "Temps avant la correction",
+        #   "section": "param", "key": "TIMER1",
+        # },
+        # { "type": "numeric", "title": "TIMER 2",
+        #   "desc": "Temps de la correction",
+        #   "section": "param", "key": "TIMER2",
+        # },
+        # { "type": "numeric", "title": "TIMER 3",
+        #   "desc": "Temps de la reponse",
+        #   "section": "param", "key": "TIMER3",
+        # }
+        
         settings.add_json_panel('Kaleidoscope', self.config, data=jsondata)
 
     def on_config_change(self, config, section, key, value):
