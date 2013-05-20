@@ -69,11 +69,11 @@ class MapClient(KalScenarioClient):
         self.layout.layers = args
 
     def handle_mapsize(self, args):
-        print 'handle mapsize'
+        # print 'handle mapsize'
         self.layout.mapsize = map(lambda x: int(x), args.split())
 
     def handle_mappos(self, args):
-        print 'handle map pos'
+        # print 'handle map pos'
         self.layout.mappos = map(lambda x: int(x), args.split()) #(x,y)
 
     def handle_game(self,args):
@@ -138,7 +138,6 @@ class MapClient(KalScenarioClient):
             for idx in self.index_list:
                 item = self.layout.imagemap.data[idx]
                 tmp.append(item)
-                print item
             self.layout.imagemap.data = tmp
             self.layout.imagemap.update_images(0)
 
@@ -208,7 +207,7 @@ class MapClient(KalScenarioClient):
 
     def validate(self, instance):
         scenario = instance.text
-        print scenario + ' scenario was selected'
+        # print scenario + ' scenario was selected'
         if scenario == 'all': 
             index = -1
         else :
@@ -272,7 +271,7 @@ class MapClient(KalScenarioClient):
             self.send('ROTATE %d' % delta )
 
     def send_exitgame(self, instance, value):
-        print 'CLIENT : ', value
+        # print 'CLIENT : ', value
         if value == 'down':
             self.layout.clear()
             self.send('EXIT')

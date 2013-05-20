@@ -593,7 +593,6 @@ class MapServer(KalScenarioServer):
                         self.send_to(client, 'THNOTVALID %d' % thumb.index)
             index_sent.append(thumb.index)
 
-        print index_sent
 
         for client, index in self.items_given:
             if index in index_sent:
@@ -643,7 +642,7 @@ class MapServer(KalScenarioServer):
 
             item.auto_color = False
             
-        print index
+
         #move thumbs to the right position
         self.timeout = time() + TIMER_3
 

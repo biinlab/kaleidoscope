@@ -105,7 +105,6 @@ class MapDescription(FloatLayout):
 
     def __init__(self, **kwargs):
         super(MapDescription, self).__init__(**kwargs)
-        print 'init description'
 
 
 class MapThumbnail(Scatter):
@@ -214,7 +213,6 @@ class MapThumbnail(Scatter):
         ''' Pose le MapThumbnail sur la carte. regarde si il est sur un mapItem.
         Si oui, enregistre le-dit mapItem, si non, le renvoi a sa place. Si on le 
         bouge sur le même mapItem, on ne fait rien'''
-        print "on touch up"
         if self.locked: return
         ret = super(MapThumbnail, self).on_touch_up(touch)
         if not self._touches and ret: 
@@ -237,7 +235,6 @@ class MapThumbnail(Scatter):
         return ret
     
     def on_touch_move(self,touch):
-        print "on touch move"
         if self.locked: return
         ret = super(MapThumbnail, self).on_touch_move(touch)
         if not ret:
@@ -439,7 +436,7 @@ class MapItem(Image):
             try:
                 color = coreimage.read_pixel(x, y)
             except IndexError:
-                print 'Error reading pixel ', x,y
+                pass
             if len(color) > 0:
                 if color[-1] >= 0.01:
                     alpha = color[-1]
@@ -817,7 +814,6 @@ class MapClientLayout(FloatLayout):
         return None
 
     def place_thumbs(self):
-        print "place thumbs"
         for child in self.items:
             if isinstance(child, MapThumbnail):
                 pos = child.right_pos
@@ -837,7 +833,6 @@ class MapClientLayout(FloatLayout):
         self.imagemap.update_images(1)
 
     def auto_color_thumbs(self):
-        print 'auto color'
         for child in self.items:
             if isinstance(child, MapThumbnail):
                 child.auto_color = True
