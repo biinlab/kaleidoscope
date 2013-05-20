@@ -102,7 +102,7 @@ class KalScenarioClient(object):
         else:
             cmd, args = out
         try:
-            print cmd.lower()
+            # print cmd.lower()
             getattr(self, 'handle_%s' % cmd.lower())(args)
         except Exception, e:
             print 'Unable to execute game command:', e
