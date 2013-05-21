@@ -232,6 +232,7 @@ class MapThumbnail(Scatter):
                         self.mapitem = mapitem
                     self.scale = .3
                 self.current_country = ''
+                self.controled = False
         return ret
     
     def on_touch_move(self,touch):
@@ -287,8 +288,9 @@ class MapThumbnail(Scatter):
         #Animation(pos=pos, t='out_elastic').start(self)
     
     def shake(self):
-        self.x -= 15
-        anim = Animation(x = self.x + 15, t='out_elastic', d=.5).start(self)
+        if not self.controled:
+            self.x -= 15
+            anim = Animation(x = self.x + 15, t='out_elastic', d=.5).start(self)
 
     def get_item_from_filename(self, filename):
         for item in (data for data in self.imagemap.data):
@@ -823,12 +825,12 @@ class MapClientLayout(FloatLayout):
                 x -= child.width/2
                 y -= child.height/2
                 #print x,y
+                child.locked = True
                 if pos is not None and child.current_country2 != child.title:
                     child.move_to_pos( (x,y) )
                 #convert to green 
                 child.auto_color = False
                 child.update_color(True)
-                child.locked = True
                 child.scale = 1
         self.imagemap.update_images(1)
 
