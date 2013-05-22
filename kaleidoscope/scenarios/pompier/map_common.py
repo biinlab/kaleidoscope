@@ -136,6 +136,7 @@ class MapThumbnail(Scatter):
         parts = filename.rsplit('-', 1)
         filename = parts[1]
         media = mediath = splitext(filename)[0]
+        media = mediath = media.replace("_active", "")
 
         if media:
             media += '_casque.png'
@@ -273,6 +274,7 @@ class MapThumbnail(Scatter):
             self.current_country2 = self.current_country
         else:
             self.current_country = ''
+            self.current_country2 = ''
 
         # Auto correction
         if self.auto_color : 
@@ -818,12 +820,14 @@ class MapClientLayout(FloatLayout):
     def place_thumbs(self):
         for child in self.items:
             if isinstance(child, MapThumbnail):
+                child.scale = 1
                 pos = child.right_pos
                 x,y = pos
                 x += self.imagemap.x #- child.width/2.
                 y += self.imagemap.y #- child.height/2
                 x -= child.width/2
                 y -= child.height/2
+
                 #print x,y
                 child.locked = True
                 if pos is not None and child.current_country2 != child.title:
@@ -831,7 +835,7 @@ class MapClientLayout(FloatLayout):
                 #convert to green 
                 child.auto_color = False
                 child.update_color(True)
-                child.scale = 1
+                
         self.imagemap.update_images(1)
 
     def auto_color_thumbs(self):

@@ -19,11 +19,11 @@ from kivy.animation import Animation
 from kivy.properties import ListProperty, DictProperty, StringProperty, NumericProperty, BooleanProperty
 from kivy.clock import Clock
 
-TIMER_0 = 1
-TIMER_1 = 10
-TIMER_2 = 10
+TIMER_0 = 15
+TIMER_1 = 30#150
+TIMER_2 = 30#90
 
-TIMER_3 = 10
+TIMER_3 = 15#45
 MAX_CLIENT_ITEMS = 5
 
 background = Image(join(dirname(__file__), 'background.jpg'))
@@ -267,7 +267,7 @@ class MapServer(KalScenarioServer):
         player_place = int(self.players[client]["place"])-1
         r,g,b = map_colors[ player_place ]
         thumb.color = [r/255.,g/255.,b/255.]
-        thumb.pos = (0,-400)
+        thumb.pos = (0,-1000)
         right_pos = self.imagemap.retrieve_pixels_location(thumb.item['filename'])
         if right_pos is not None : 
             thumb.right_pos = right_pos
@@ -583,12 +583,12 @@ class MapServer(KalScenarioServer):
             if filename == thumb.item['filename'] : #, thumb.item['filename']
                 for client in self.controler.clients:
                     if self.players[client]['want_to_play']:
-                        thumb.update_color(True)
+                        # thumb.update_color(True)
                         self.send_to(client, 'THVALID %d' % thumb.index)
             else :
                 for client in self.controler.clients:
                     if self.players[client]['want_to_play']:
-                        thumb.update_color(False)
+                        # thumb.update_color(False)
                         thumb.shake()
                         self.send_to(client, 'THNOTVALID %d' % thumb.index)
             index_sent.append(thumb.index)
