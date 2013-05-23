@@ -1,0 +1,162 @@
+{
+	"layers": ["pays"],
+	"items": [
+		{
+			"title": "Afrique du Sud",
+			"filename": "pays-afriquedusud_active.png",
+			"content": "Dans le nom de mon pays, un point cardinal indique ma position sur le continent.",
+			"rightpos": "524x49"
+		},
+		{
+			"title": "Allemagne",
+			"filename": "pays-allemagne_active.png",
+			"content": "Le pays d’où je viens a longtemps été coupé en deux, et moi, je viens de l’Ouest.",
+			"rightpos": "487x297"
+		},
+		{
+			"title": "Angleterre",
+			"filename": "pays-angleterre_active.png",
+			"content": "Je suis presque une copie des casques français sous Napoléon. Les pompes à vapeur, en revanche, ont bien été inventées dans mon pays.",
+			"rightpos": "455x304"
+		},
+		{
+			"title": "Argentine",
+			"filename": "pays-argentine_active.png",
+			"content": "Pas le temps de danser le tango, le pompier qui me porte a fort à faire dans un pays muy caliente !",
+			"rightpos": "280x64"
+		},
+
+		{
+			"title": "Australie",
+			"filename": "pays-australie_active.png",
+			"content": "L’équipe de rugby de mon pays est surnommée « wallabies », et ses joueurs portent un short de la même couleur que moi.",
+			"rightpos": "828x67"
+		},
+		{
+			"title": "Autriche",
+			"filename": "pays-autriche_active.png",
+			"content": "Pour courir au feu d’un pas léger, Apfelstrudel, Mozartkugeln et Sachertorte il te faudra éviter !",
+			"rightpos": "498x284"
+		},
+		{
+			"title": "Bielorussie",
+			"filename": "pays-bielorussie_active.png",
+			"content": "Quand j’étais utilisé dans les années 1950, mon pays faisait partie de l’URSS.",
+			"rightpos": "535x309"
+		},
+		{
+			"title": "Canada",
+			"filename": "pays-canada_active.png",
+			"content": "Les températures descendent souvent à  – 25 °C dans mon pays. Les pompiers doivent alors casser la glace qui recouvre tout pour pouvoir accéder aux flammes.",
+			"rightpos": "209x346"
+		},		
+		{
+			"title": "Chine",
+			"filename": "pays-chine_active.png",
+			"content": "Je suis aussi vert que le thé qui est consommé dans mon pays.",
+			"rightpos": "750x234"
+		},
+		{
+			"title": "Espagne",
+			"filename": "pays-espagne_active.png",
+			"content": "L’ours représenté sur ma plaque est le symbole de ma ville. Ce sont pourtant les taureaux qui sont mis à l’honneur dans nos corridas !",
+			"rightpos": "451x256"
+		},
+		{
+			"title": "Etats-Unis",
+			"filename": "pays-etatsunis_active.png",
+			"content": "Ma forme peut rappeler le chapeau d’un cow boy, c’est bien naturel quand on sait d’où je viens.",
+			"rightpos": "186x293"
+		},
+		{
+			"title": "Finlande",
+			"filename": "pays-finlande_active.png",
+			"content": "Proche du pôle nord, mon pays est un des rares où l’on peut admirer des aurores boréales.",
+			"rightpos": "533x372"
+		},
+		{
+			"title": "Irlande",
+			"filename": "pays-irlande_active.png",
+			"content": "Mon pays est l’Eire. S’il y a un feu le 17 mars, l’eau utilisée par nos pompiers risque d’être verte ! ",
+			"rightpos": "437x309"
+		},
+		{
+			"title": "Italie",
+			"filename": "pays-italie_active.png",
+			"content": "Dans mon pays, les pompiers étaient désignés sous le nom de Vigili sous l’Antiquité, puis Pompieri pendant très longtemps, et à nouveau Vigili au siècle dernier.",
+			"rightpos": "493x263"
+		},
+		{
+			"title": "Japon",
+			"filename": "pays-japon_active.png",
+			"content": "Dans mon pays, pompiers et samouraï portaient le même type de casque.",
+			"rightpos": "829x238"
+		},
+		{
+			"title": "Kenya",
+			"filename": "pays-kenya_active.png",
+			"content": "Hop ! Hop ! Hop ! Les pompiers se faufilent entre les girafes et les éléphants tels des marathoniens dans mon pays. ",
+			"rightpos": "564x136"
+		},
+		{
+			"title": "Mexique",
+			"filename": "pays-mexique_active.png",
+			"content": "Aïe Caramba ! Il fait tellement chaud dans mon pays que je suis percé pour aérer la tête du pompier qui me porte !",
+			"rightpos": "178x243"
+		},
+		{
+			"title": "Norvège",
+			"filename": "pays-norvege_active.png",
+			"content": "Je porte la couleur de notre long hiver arctique : pendant des mois, il fait toujours noir, même le jour.",
+			"rightpos": "501x385"
+		},
+		{
+			"title": "Nouvelle Zélande",
+			"filename": "pays-nouvellezelande_active.png",
+			"content": "Un phénix me décore. Comme lui, nos chers All Blacks sont immortels !",
+			"rightpos": "931x29"
+		},
+		{
+			"title": "Pérou",
+			"filename": "pays-perou_active.png",
+			"content": "J’ai un oiseau sur la tête ! Regardez bien, c’est le grand condor des mystérieuses cités d’or…",
+			"rightpos": "255x149"
+		},
+		{
+			"title": "Pologne",
+			"filename": "pays-pologne_active.png",
+			"content": "Ma forme est inspirée de celle de mes voisins allemands.",
+			"rightpos": "511x302"
+		},
+		{
+			"title": "Roumanie",
+			"filename": "pays-roumanie_active.png",
+			"content": "Dans les Carpates, il était plus facile de lutter contre les incendies que contre le comte Dracula …",
+			"rightpos": "528x276"
+		},
+		{
+			"title": "Senegal",
+			"filename": "pays-senegal_active.png",
+			"content": "Le poète Léopold Sedar Senghor m’a peut-être vu quand j’étais en activité.",
+			"rightpos": "420x174"
+		},
+		{
+			"title": "Srilanka",
+			"filename": "pays-srilanka_active.png",
+			"content": "Le saviez-vous ? Mon pays est un grand exportateur de clous de girofle.",
+			"rightpos": "680x156"
+		},
+		{
+			"title": "Suède",
+			"filename": "pays-suede_active.png",
+			"content": "Notre célèbre fabricant de meubles démontre chaque jour combien nous sommes rationnels et organisés…",
+			"rightpos": "503x363"
+		},
+		{
+			"title": "Turquie",
+			"filename": "pays-turquie_active.png",
+			"content": "Après une intervention difficile, nos pompiers peuvent se détendre dans nos célèbres bains.",
+			"rightpos": "560x249"
+		}
+		]
+}

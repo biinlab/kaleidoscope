@@ -418,11 +418,11 @@ class KalClientApp(App):
         { "type": "options", "title": "Couleur auto",
           "desc": "Choix de la couleur",
           "section": "param", "key": "couleur_auto",
-          "options": ["auto", "libre", "bleu", "orange", "vert", "violet"]},
+          "options": ["auto", "libre", "bleu 3", "orange 2", "vert 1", "violet 4"]},
         { "type": "options", "title": "scenario auto",
           "desc": "Choix du scenario",
           "section": "param", "key": "scenario_auto",
-          "options": ["auto", "libre", "pentaminos", "revolution", "geography", "pompier"]}
+          "options": ["auto", "libre", "pentaminos", "revolution", "geography", "pompier", "archeologie"]}
         ]'''
 
         # { "type": "numeric", "title": "TIMER 0",

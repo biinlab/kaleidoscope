@@ -19,7 +19,7 @@ from kivy.animation import Animation
 from kivy.properties import ListProperty, DictProperty, StringProperty, NumericProperty, BooleanProperty
 from kivy.clock import Clock
 
-TIMER_0 = 15
+TIMER_0 = 1
 TIMER_1 = 150
 TIMER_2 = 90
 
@@ -34,8 +34,8 @@ btnbg = Image(join(dirname(__file__), 'buttonbackground.png')).texture
 map_colors = (
     (213, 219, 15),
     (40, 116, 255),
-    (40, 194, 185)
-    # (227, 53, 119),
+    (40, 194, 185),
+    (227, 53, 119),
 )
 
 # map_logos = (
@@ -100,6 +100,7 @@ class MapServer(KalScenarioServer):
         self.timeout = 0
         self.timemsg = 0
         self.players = {}
+        index = 0
 
         # init client table
         for client in self.controler.clients:
@@ -110,8 +111,10 @@ class MapServer(KalScenarioServer):
                 'want_to_play': False,
                 'done': False,
                 'place': self.controler.metadata[client]['place'],
-                'count': 0
+                'count': 0,
+                'idx':index
             }
+            index += 1
         #store mapitems and thumbs in order to display them on main screen
         #or remove them from clients
         self.mapitems = {} #filename: [client, index]
@@ -161,35 +164,117 @@ class MapServer(KalScenarioServer):
         size = map_coordinates[1]
         cx,cy = Window.center
         pos = (cx - size[0]/3.,cy - size[1]/3.)
+        print pos
+        print size
         if scenariol == -2 : layers2 = []
         elif scenariol == -1 : layers2 = layers
         else : layers2 = layers[int(scenariol)]
 
+        self.imagemap = {}
+        self.scat = {}
+
         self.layout = MapServerLayout()
-        self.imagemap = imagemap = Map(
+        self.imagemap[0] = imagemap = Map(
                 server=True, 
                 size_hint=(None, None),
-                size = size,
+                size = (980,484),
+                layers = layers2
+                )
+        self.imagemap[1] = imagemap2 = Map(
+                server=True, 
+                size_hint=(None, None),
+                size = (980,484),
                 layers = layers2
                 )
         self.map_background = ImageWidget(
                  source = 'data/map.png',
                  size_hint = imagemap.size_hint,
                  size = imagemap.size,
+                 pos=(0,0)
                  )
-        self.scat = Scatter(
+        self.map_background2 = ImageWidget(
+                 source = 'data/map.png',
+                 size_hint = imagemap2.size_hint,
+                 size = imagemap2.size,
+                 pos=(0,0)
+                 )
+        self.scat[0] = Scatter(
                 size_hint = imagemap.size_hint,
                 size = imagemap.size,
-                center = pos, 
-                scale = .8,
+                center = (pos[0]*1/2, pos[1]*3/2),
+                scale = .5,
                 rotation = 0,
                 do_translation = False,
                 do_scale = False   
                 )
-        self.layout.add_widget(self.scat)
-        self.scat.add_widget(self.map_background)
-        self.scat.add_widget(self.imagemap)
+        self.scat[1] = Scatter(
+                size_hint = imagemap2.size_hint,
+                size = imagemap2.size,
+                center = (pos[0]*3/2, pos[1]*3/2),
+                scale = .5,
+                rotation = 0,
+                do_translation = False,
+                do_scale = False   
+                )        
+        self.imagemap[2] = imagemap3 = Map(
+                server=True, 
+                size_hint=(None, None),
+                size = (980,484),
+                layers = layers2
+                )
+        self.imagemap[3] = imagemap4 = Map(
+                server=True, 
+                size_hint=(None, None),
+                size = (980,484),
+                layers = layers2
+                )
+        self.map_background3 = ImageWidget(
+                 source = 'data/map.png',
+                 size_hint = imagemap3.size_hint,
+                 size = imagemap3.size,
+                 pos=(0,0)
+                 )
+        self.map_background4 = ImageWidget(
+                 source = 'data/map.png',
+                 size_hint = imagemap4.size_hint,
+                 size = imagemap4.size,
+                 pos=(0,0)
+                 )
+        self.scat[2] = Scatter(
+                size_hint = imagemap3.size_hint,
+                size = imagemap3.size,
+                center = (pos[0]/2, pos[1]/2),
+                scale = .5,
+                rotation = 0,
+                do_translation = False,
+                do_scale = False   
+                )
+        self.scat[3] = Scatter(
+                size_hint = imagemap4.size_hint,
+                size = imagemap4.size,
+                center = (pos[0]*3/2, pos[1]/2),
+                scale = .5,
+                rotation = 0,
+                do_translation = False,
+                do_scale = False   
+                )
+        self.layout.add_widget(self.scat[0])
+        self.scat[0].add_widget(self.map_background)
+        self.scat[0].add_widget(self.imagemap[0])
+        self.layout.add_widget(self.scat[1])
+        self.scat[1].add_widget(self.map_background2)
+        self.scat[1].add_widget(self.imagemap[1])
+        self.layout.add_widget(self.scat[2])
+        self.scat[2].add_widget(self.map_background3)
+        self.scat[2].add_widget(self.imagemap[2])
+        self.layout.add_widget(self.scat[3])
+        self.scat[3].add_widget(self.map_background4)
+        self.scat[3].add_widget(self.imagemap[3])
+
         self.controler.app.show(self.layout)
+
+
+
 
     #
     # Client commands received
@@ -208,9 +293,10 @@ class MapServer(KalScenarioServer):
 
     def do_client_want_to_play(self, client, args):
         self.players[client]['want_to_play'] = True
+        print self.controler.metadata[client]['place']
 
     def do_client_flagchange(self, client, args):
-        filename = self.index2filename( int(args[0]) )
+        filename = self.index2filename( int(args[0]))
         thumb_index = int(args[1])
         #print "SERVER : do_client_flagchange: "+ str(client)+','+str(filename)+str(thumb_index)
 
@@ -230,13 +316,13 @@ class MapServer(KalScenarioServer):
                     d = ti
             thumb = self.index2thumb(d) 
             #remove thumb from screen
-            self.scat.remove_widget(thumb)
+            self.scat[0].remove_widget(thumb)
             #save
             if (client, d) in self.mapitems[filename] :
                 self.mapitems[filename].remove( (client, d) )      
             #remove mapitem from screen
             if len( self.mapitems[filename] ) == 0 :
-                self.imagemap.hide_mapitem(filename)
+                self.imagemap[0].hide_mapitem(filename)
             """ 
             #add thumb to other clients
             self.display_thumb(client, d)
@@ -250,30 +336,30 @@ class MapServer(KalScenarioServer):
             self.thumbs[thumb_index] = [client, self.thumbs[thumb_index][1] ]
             if c == 0:
                 #display mapitem on main screen
-                self.imagemap.display_mapitem(filename, True, (0,0,0,1))
+                self.imagemap[0].display_mapitem(filename, True, (0,0,0,1))
             thumb = self.create_and_add_item(client, thumb_index)
             """
             #hide thumb on clients except client
             self.hide_thumb(client, thumb_index)
             self.hide_mapitem(client, filename)         
             """ 
-    def index2filename(self,index):
+    def index2filename(self,index, client):
         #trick to pass mapitem.filename (string) as a integer (protocol blocks strings..)
-        return self.imagemap.data[index]['filename']
+        return self.imagemap[0].data[index]['filename']
 
     def create_and_add_item(self, client, index):
         th = self.index2thumb(index) 
-        thumb = self.imagemap.get_thumb(index)
+        thumb = self.imagemap[0].get_thumb(index)
         player_place = int(self.players[client]["place"])-1
         r,g,b = map_colors[ player_place ]
         thumb.color = [r/255.,g/255.,b/255.]
         thumb.pos = (0,-1000)
-        right_pos = self.imagemap.retrieve_pixels_location(thumb.item['filename'])
+        right_pos = self.imagemap[0].retrieve_pixels_location(thumb.item['filename'])
         if right_pos is not None : 
             thumb.right_pos = right_pos
         else : 
             thumb.right_pos = (0,0)
-        self.scat.add_widget(thumb)
+        self.scat[0].add_widget(thumb)
         if index in self.thumbs.keys() and thumb != None:
             thumb.center = self.thumbs[index][1]
         thumb.locked = True
@@ -300,13 +386,13 @@ class MapServer(KalScenarioServer):
             
         
     def index2thumb(self,index):
-        for child in self.scat.children:
+        for child in self.scat[0].children:
             if isinstance(child,MapThumbnail) and child.index == index:
                 return child
         return None
 
     def index2filename(self,index):
-        data = self.imagemap.data
+        data = self.imagemap[0].data
         return data[index]['filename'] 
 
     def do_client_scale(self, client, scale): 
@@ -315,7 +401,7 @@ class MapServer(KalScenarioServer):
     def do_client_rotate(self, client, rot):
         #anim = Animation(rotation = rot)
         #anim.start(self.scat)
-        self.scat.rotation += int(rot[0])
+        self.scat[0].rotation += int(rot[0])
 
     def do_client_exit(self, client, value):
         self.players[client]['want_to_play'] = False
@@ -370,7 +456,7 @@ class MapServer(KalScenarioServer):
                 self.send_to(cl, 'DISPLAYMAPITEM %s' % str(filename))
     
     def thumb_index_match_layer(self, index, client):
-        filename = self.imagemap.data[index]['filename']
+        filename = self.imagemap[0].data[index]['filename']
         return self.filename_match_layer(filename, client)
 
     def filename_match_layer(self, filename, client):
@@ -391,11 +477,11 @@ class MapServer(KalScenarioServer):
         #self clear as well
         self.mapitems = {}
         self.thumbs = {}
-        self.layout.remove_widget(self.scat)
-        self.scat.remove_widget(self.map_background)
-        self.scat.remove_widget(self.imagemap)
-        self.scat = ''
-        self.imagemap = ''
+        self.layout.remove_widget(self.scat[0])
+        self.scat[0].remove_widget(self.map_background)
+        self.scat[0].remove_widget(self.imagemap[0])
+        self.scat[0] = ''
+        self.imagemap[0] = ''
         self.map_background = ''
         self.layout = ''
         
@@ -486,7 +572,8 @@ class MapServer(KalScenarioServer):
         self.layers_given = {}
         
         affected = [-1]
-        self.imagemap.layers = []
+
+        self.imagemap[0].layers = []
         for client in self.controler.clients:
             if self.players[client]['want_to_play']:
                 place = int(self.players[client]['place']) - 1
@@ -507,7 +594,7 @@ class MapServer(KalScenarioServer):
                     #print affected
                     place = r 
                     layer = str(layers[place])
-                self.imagemap.layers = self.imagemap.layers + [layer] 
+                self.imagemap[0].layers = self.imagemap[0].layers + [layer] 
                 self.send_to(client, 'LAYER %s' % layer)
                 self.layers_given[client] = layer 
                 self.send_to(client, 'MAPSIZE %d %d' % map_coordinates[1] )
@@ -520,7 +607,7 @@ class MapServer(KalScenarioServer):
         
 
         # deliver randomly index
-        litems = len(self.imagemap.data)
+        litems = len(self.imagemap[0].data)
         if litems:
             r = range(litems)
             allfinished = False
@@ -539,7 +626,7 @@ class MapServer(KalScenarioServer):
                             continue 
                         if self.thumb_index_match_layer(index, client) == True :
                             #print r, litems
-                            item = self.imagemap.data[index]
+                            item = self.imagemap[0].data[index]
                             # tmp.append(item)
                             self.send_to(client, 'GIVE %d' % index)
                             player['count'] += 1
@@ -570,14 +657,14 @@ class MapServer(KalScenarioServer):
         '''
         # order !
         index_sent = []
-        for thumb in self.scat.children:
+        for thumb in self.scat[0].children:
             if not isinstance(thumb, MapThumbnail):
                 continue
             #print thumb.item
             # are we far ? Check if thumb matches the place
             x,y = thumb.pos
             x += thumb.width/2. 
-            filename = self.imagemap.pos2mapitem(x,y)
+            filename = self.imagemap[0].pos2mapitem(x,y)
             if filename is False :
                 continue
             if filename == thumb.item['filename'] : #, thumb.item['filename']
@@ -620,24 +707,24 @@ class MapServer(KalScenarioServer):
         #move all thumbs to the right location on map
         
         #delete all existing items
-        for child in self.scat.children[:]:
+        for child in self.scat[0].children[:]:
             if isinstance(child,MapThumbnail) or isinstance(child,MapItem):
-                self.scat.remove_widget(child)
-        for child in self.imagemap.children[:]:
+                self.scat[0].remove_widget(child)
+        for child in self.imagemap[0].children[:]:
             if isinstance(child,MapItem):
-                self.imagemap.remove_widget(child)
+                self.imagemap[0].remove_widget(child)
         #place all thumbs on the map
         index = -1
         clients = self.controler.clients
         #add all items to the map 
-        for item in self.imagemap.data:
+        for item in self.imagemap[0].data:
             # print item
             index +=1
             if not self.index_given(index):
                 continue
             filename = item['filename']
-            if self.imagemap.filename_match_layer(filename):
-                self.imagemap.display_mapitem(filename, True, (0,0,0,1))    
+            if self.imagemap[0].filename_match_layer(filename):
+                self.imagemap[0].display_mapitem(filename, True, (0,0,0,1))    
             item = self.create_and_add_item(clients.keys()[0] ,index)
 
             item.auto_color = False

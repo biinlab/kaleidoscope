@@ -82,13 +82,13 @@ class ChooseClient(KalScenarioClient):
                     continue
 
                 button.bind(on_release=partial(place_press, idx))
-        elif self.container.couleur_auto == 'vert':
+        elif self.container.couleur_auto == 'vert 1':
             self.send('PLACE 1')
-        elif self.container.couleur_auto == 'bleu':
+        elif self.container.couleur_auto == 'bleu 3':
             self.send('PLACE 3')
-        elif self.container.couleur_auto == 'orange':
+        elif self.container.couleur_auto == 'orange 2':
             self.send('PLACE 2')
-        elif self.container.couleur_auto == 'violet':
+        elif self.container.couleur_auto == 'violet 4':
             self.send('PLACE 4')
         elif self.container.couleur_auto == 'auto':
             idx = choice(available)
@@ -119,7 +119,8 @@ class ChooseClient(KalScenarioClient):
                 ('revolution', 'Revolution'),
                 #('anglais', 'Anglais'),
                 ('geography', 'Geography'),
-                ('pompier', 'Pompier')
+                ('pompier', 'Pompier'),
+                ('archeologie', 'Archeologie')
             ):
                 button = PlaceButton(text=name, size=(350, 100),
                                 pos=(cx - 350 / 2., py - 100))
@@ -128,7 +129,7 @@ class ChooseClient(KalScenarioClient):
 
                 button.bind(on_release=partial(scenario_press, scenario))
         elif self.container.scenario_auto == 'auto':
-            self.send('SCENARIO %s' % choice(["pentaminos", "revolution", "geography", "pompier"]))
+            self.send('SCENARIO %s' % choice(["pentaminos", "revolution", "geography", "pompier", "archeologie"]))
         else:
             self.send('SCENARIO %s' % self.container.scenario_auto)
     def handle_beready(self, args):

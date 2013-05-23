@@ -1,0 +1,356 @@
+#:kivy 1.0.8
+
+
+<ScenarioSelectorButton>:
+	pos:self.pos
+	canvas:
+		Color:
+			rgb: (1,1,1)
+		BorderImage:
+			pos:self.pos
+			size: self.size
+			source: self.source	
+
+<ScenarioSelector>:		
+	cols:2
+	size_hint:(None,None)
+	size:(512,163)
+	center: self.center
+	spacing:0
+	padding:0
+	x: 1500
+
+<MapHandler>:
+	cols:2
+	size_hint:(None,None)
+	size: (128,56)
+	pos_hint:{'right':0.98,'y':0.03}
+	auto_bring_to_front: True
+
+<MapThumbnail>:
+	do_scale: False
+	do_rotation: False
+	size_hint: (None, None)
+	size: (100,100)	
+
+	length_flag: (root.imagemap.center_y - self.center_y)
+
+	Image:
+		size_hint: (None,None)
+		source: root.media_picture_thumbnail
+		pos: 0,0
+		size: 100,100
+
+		canvas:
+			Color:
+				rgb: root.color
+			Line:
+				circle: self.width/2, self.height/2, self.width/2-3, 0, 360
+				width: 3
+			Color:
+				rgba: root.color +  [1- ((root.scale - .3)/.7)] #if not isinstance(root.parent.parent, MapServer) else (1,1,1,0)
+			Line:
+				circle: self.width/2, self.height/2, 0, 0, 360
+				width: self.width/2
+
+	Label:
+		text: root.current_country #if root.scale == 1 else ''
+		font_size: 12
+		# color: (0,0,0,1)
+		y: root.height -5
+		x: 0
+		valign: 'bottom'
+		canvas.before:
+			Color:
+				rgba: root.color + [1] if self.text != '' else (1,1,1,0)
+			Rectangle:
+				source: 'data/etiquettes.png'
+				size: 180, 60
+				pos: self.width/2 - 90 , root.height + 5
+	
+<MapEmptyPlace>:
+	size_hint: (None, None)
+	size: (130,60)
+	canvas.before:
+		Rectangle:
+			size: self.size
+			source: 'data/freeplace.png'
+			# source: 'freeplace.png'
+			pos: self.pos
+
+<MapMenu>:
+	launchGameButton: launchGameButton
+	helpButton: helpButton
+	canvas.before:
+		Color:
+			rgb: self.color
+		Rectangle:
+			size: self.size
+			pos: self.pos
+			source: 'data/background.jpg'
+
+		Color:
+			rgba: self.color + [.3] #(1,1,1,0.3)
+		Line:
+			circle: self.width/2, self.height/2, 210
+			width: 10
+
+
+		Color:
+			rgba: root.color+[1] if root.time != 0 else (0,0,0,0)
+		Line:
+			circle: self.width/2, self.height/2, 210, 0, (360-root.time/root.timeout*360)
+			cap: 'square'
+			width: 11
+	Button:
+		id:launchGameButton
+		size_hint: (None,None)
+		background_down: 'data/btn-start_active.png'
+		background_normal: 'data/btn-start.png'
+		size: (180, 40)
+		text: "jouer" 
+		color: root.color + [1]
+		center_x: 1280/2
+		center_y: 360 + 10
+		font_size: 14
+		font_name: 'data/fonts/myra_regular.ttf'
+
+	Button:
+		id:helpButton
+		size_hint: (None,None)
+		background_down: 'data/btn-start_active.png'
+		background_normal: 'data/btn-start.png'
+		size: (180, 40)
+		text: "aide" 
+		color: root.color + [1]
+		center_x: 1280/2
+		center_y: 320
+		font_size: 14
+		font_name: 'data/fonts/myra_regular.ttf'
+	
+	Label:
+		size_hint: None,None
+		font_size: 120
+		color: root.color+[1] 
+		valign: 'top'
+		text: str(int(root.time)) if root.time != 0 else ''
+		center_x: 1280/2
+		center_y: 450 
+		# y: root.top - self.height - 10 - 300
+		font_name: 'data/fonts/myra_regular.ttf'
+
+<MapClientLayout>:
+	imagemap: imagemap
+	exitButton: exitButton
+	img_description: img_description
+	content_description: content_description
+	cluePanel: cluePanel
+	clueArea: clueArea
+	clueBarPanel: clueBarPanel
+
+	canvas.before:
+		Color:
+			rgb: self.color or (1, 1, 1)
+		Rectangle:
+			size: self.size
+			pos: self.pos
+			source: 'data/background.jpg'
+
+	Button:
+		id:exitButton
+		size_hint: (None,None)
+		background_down: 'data/btn-back.png'
+		background_normal: 'data/btn-back.png'
+		size: (176, 24)
+		# color: (1,1,1,1) if self.state == 'down' else root.color + [1]
+		pos: 100, root.height - self.height - 50
+		canvas:
+			Color:
+				rgb: root.color
+
+	Image:
+		size_hint:(None,None)
+		source: 'casque-bar.png'
+		color: root.color + [1] or (1,1,1,1) if root.color else (0,0,0,1)
+		pos: 100,50
+		size: 980, 134
+
+	Label:
+		size_hint: (None, None)
+		font_size: 16
+		text_size: (214, 52)
+		# height: 43
+		y: 70
+		x: 190
+		color: (1, 1, 1, 1)
+		text: 'place les casques sur la carte'
+		font_name: 'data/fonts/myra_regular.ttf'
+
+	Label:
+		size_hint: (None, None)
+		font_size: 13
+		height: 13
+		y: root.top - 74
+		x: root.right - 150 - self.texture_size[0]
+
+		color: (1,1,1,1)
+		text: 'temps restant : ' + str(int(root.time)) + '"'
+		font_name: 'data/fonts/myra_regular.ttf'
+
+	Map:
+		id: imagemap
+		
+	Scatter:
+		id: clueArea
+		pos: 1280-200, 360	
+		size_hint:None,None
+		size: 200, 360
+		center_y: 400
+		do_scale: False
+		do_rotation: False
+		do_translation: False
+
+		Image:
+			size_hint: None,None
+			pos: 0,0
+			source: 'data/indice-bar.png'
+			size:200, 360
+			color: root.color + [1]
+		
+		Image:
+			size_hint: None,None
+			pos: 0,0
+			source: 'data/indice-bar_info.png'
+			size:200, 360
+
+	Scatter:
+		id: cluePanel
+		# pos: 1280 -320, 0
+		pos: 1280, 0
+		size_hint: None,None
+		size: 275, 800
+		do_scale: False
+		do_rotation: False
+		do_translation: False
+		auto_bring_to_front: True
+		
+		Image:
+			id: clueBarPanel
+			size_hint: None,None
+			pos: self.pos
+			source:'data/indice-bar-open.png'
+			size: 275, 800
+			color: root.color + [1]
+
+		Image:
+			id: img_description
+			size_hint: None,None
+			source: 'casque_max.jpg'			
+			size:255,255
+			pos: 10, 520
+
+		Label:
+			id: content_description
+			size_hint: None,None
+			font_size: 15
+			width: 255
+			text_size: (200, 500)
+			valign: 'top'
+			font_name: 'data/fonts/myra_regular.ttf'
+			text: ''
+			x: 30
+			y: 180
+
+<MapDescription>:
+	layout: layout
+
+	Image:
+		size_hint: (None,None)
+		source: 'panneau-droite-active.png'
+		pos: 0,0
+		size: 320, 800
+
+
+<MapServerLayout>:
+
+	# canvas.before:
+	# 	Color:
+	# 		rgb: 1, 1, 1
+	# 	Rectangle:
+	# 		size: self.size
+	# 		pos: self.pos
+	# 		source: 'data/background.jpg'
+
+<MapServerMenu>:
+<<<<<<< HEAD
+	canvas.before:
+		Color:
+			rgb: 1, 1, 1
+		Rectangle:
+			size: self.size
+			pos: self.pos
+			source: 'data/background.jpg'
+	
+=======
+	# canvas.before:
+	# 	Color:
+	# 		rgb: 1, 1, 1
+	# 	Rectangle:
+	# 		size: self.size
+	# 		pos: self.pos
+	# 		source: 'data/background.jpg'
+	Image:
+		size_hint: None, None
+		size: 1920, 1080
+		pos: 0,0
+		anim_delay: .001
+		source: 'anim_server.gif'
+
+
+>>>>>>> 5b94a779a3422cc5f3faf59023ec50205c66ee17
+
+	Scatter:
+		pos: 640,400 #1280/2 - self.width/2, 400 - self.height/2
+		size_hint: None, None
+		size: 50,50
+		# center_x: 1280/2
+		# center_y: 400
+		rotation: root.time/15*360
+		canvas:
+			Color:
+				rgba: 1,1,0,0
+			Rectangle:
+				pos: 0,0
+				size: 50,50
+		Label:
+			size_hint: None,None
+			# center_x: 0
+			# center_y: 0 #self.parent.center_y
+			pos: - self.texture_size[0]/2 +25 + 5, -self.texture_size[1]/2 +25+10
+			font_size: 150
+			text: str(int(root.time)) if root.time != 0 else ''
+			halign: 'center'
+			valign: 'top'
+
+			# center_x: self.parent.width/2
+			# center_y: self.parent.height/2
+			# y: root.top - self.height - 10 - 300
+			font_name: 'data/fonts/myra_regular.ttf'
+			canvas.before:
+				Color:
+					rgba: 1,0,1, 0
+				Rectangle:
+					pos: self.pos
+					size: self.texture_size
+
+
+<MapAudio>:
+	AnchorLayout:
+		pos: root.x, root.y + 50
+		size_hint: (None, None)
+		size: root.width, root.height - 50
+		Button:
+			size_hint: (None, None)
+			size: (200, 100)
+			text: 'Lire le fichier audio'
+			on_release: root.play_audio()
