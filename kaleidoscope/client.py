@@ -108,6 +108,7 @@ class KalClientChannel(asynchat.async_chat):
         try:
             func = getattr(self, 'handle_%s' % cmd.lower())
             func(args)
+            print args
         except:
             traceback.print_exc()
             #self.failed(client, 'Invalid command <%s>' % cmd.lower())

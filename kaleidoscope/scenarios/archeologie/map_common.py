@@ -504,6 +504,15 @@ class Map(FloatLayout):
             data = load(fd)
         self.data = data['items']
 
+        tmp = []
+
+        for item in self.data:
+            if self.filename_match_layer(item['filename']):
+                tmp.append(item)
+
+        self.data = tmp
+
+
     def get_thumb(self, index):
         if self.thumb_index_match_layer(index): 
             item = self.data[index]
@@ -614,6 +623,7 @@ class Map(FloatLayout):
     def filename_match_layer(self,filename):
         # print self.f1(self.layers)
         parts = filename.rsplit('-', 1)
+
         if len(parts) != 2 or parts[0] not in self.f1(self.layers):
             return False
         else : 
@@ -671,7 +681,7 @@ class MapMenu(FloatLayout):
 
 class MapClientLayout(FloatLayout):
     json_filename = StringProperty('')
-    layers = ListProperty( ["continent"] )
+    layers = ''#ListProperty( [""] )
     layer = NumericProperty(-2)
     selector = ObjectProperty(None)
     imagemap = ObjectProperty(None)
@@ -698,7 +708,9 @@ class MapClientLayout(FloatLayout):
         resource_add_path(curdir)
         with open(json_filename, 'r') as fd:
             data = load(fd)
-        self.layers = data['layers']           
+        self.layers = data['layers']
+
+
 
     def create_selector(self): 
         scenarii = self.layers
@@ -725,7 +737,8 @@ class MapClientLayout(FloatLayout):
         thumb_width = 0#130 #scale the map to the right 
         # pos = (cx - size[0]/2. + thumb_width,cy - size[1]/2.)
         pos = self.mappos
-        #the map cannot have relative position .. 
+        #the map cannot have relative position ..
+
         self.imagemap = imagemap = Map( 
                  layers = self.layers,
                  layout = self, 

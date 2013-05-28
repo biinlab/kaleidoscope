@@ -27,6 +27,14 @@ class MapClient(KalScenarioClient):
         Clock.schedule_interval(self.update_graphics_timer, 1.)
         # Clock.schedule_interval(self.update_graphics_timer, 1 / 10.)
         self.index_list = []
+        if self.container.couleur_auto == 'vert 1':
+            self.place = 1
+        elif self.container.couleur_auto == 'bleu 3':
+            self.place = 3
+        elif self.container.couleur_auto == 'orange 2':
+            self.place = 2
+        elif self.container.couleur_auto == 'violet 4':
+            self.place = 4
 
     # RECEIVE COMMANDS FROM SERVER
     
@@ -67,6 +75,9 @@ class MapClient(KalScenarioClient):
 
     def handle_layer(self, args):
         self.layout.layers = args
+        # print "******************************************************"
+        # print self.layout.layers
+        # print "******************************************************"
 
     def handle_mapsize(self, args):
         # print 'handle mapsize'
@@ -101,9 +112,10 @@ class MapClient(KalScenarioClient):
         self.layout.exitButton.bind(state= self.send_exitgame)
 
     def handle_map(self, args):
+        print '========================================'
         self.imagemap = imagemap = self.layout.imagemap = self.layout.create_map()
         # self.imagemap.update_images(0)
-        
+        print '========================================'
         #control the main map rotation with a controler
         # self.map_handler = self.layout.create_map_handler()
         # self.map_handler.bind(rotation = self.send_rotatemap)
@@ -116,6 +128,7 @@ class MapClient(KalScenarioClient):
         self.layout.hide_places()
 
     def handle_give(self, args):
+        print 'handle_give'
         # create thumbnail in the gridlayout
         self.count += 1
         #print args
@@ -124,11 +137,13 @@ class MapClient(KalScenarioClient):
         item_data = self.layout.imagemap.data[index]
         item_data["id"] = str(index)
         filename = item_data["filename"]
+
         parts = filename.rsplit('-', 1)
         self.layout.imagemap.display_mapitem(filename, False, self.color)
 
         #Create MapThumbnail
         item = self.layout.create_and_add_item(index)
+
         if item is not None :
             item.bind(mapitem = self.send_pos)
 
@@ -228,7 +243,6 @@ class MapClient(KalScenarioClient):
 
     def send_color(self, instance, value):
         value = self.color
-        print self.color
         self.send('COLOR %d %d %d %d' % (instance.index, value[0]*255,value[1]*255,value[2]*255) )
 
     def send_flag_change(self, mapitem, flag_id):
