@@ -75,9 +75,7 @@ class MapClient(KalScenarioClient):
 
     def handle_layer(self, args):
         self.layout.layers = args
-        # print "******************************************************"
-        # print self.layout.layers
-        # print "******************************************************"
+
 
     def handle_mapsize(self, args):
         # print 'handle mapsize'
@@ -112,10 +110,8 @@ class MapClient(KalScenarioClient):
         self.layout.exitButton.bind(state= self.send_exitgame)
 
     def handle_map(self, args):
-        print '========================================'
-        self.imagemap = imagemap = self.layout.imagemap = self.layout.create_map()
+        self.imagemap = imagemap = self.layout.imagemap = self.layout.create_map(self.place - 1)
         # self.imagemap.update_images(0)
-        print '========================================'
         #control the main map rotation with a controler
         # self.map_handler = self.layout.create_map_handler()
         # self.map_handler.bind(rotation = self.send_rotatemap)
@@ -137,12 +133,14 @@ class MapClient(KalScenarioClient):
         item_data = self.layout.imagemap.data[index]
         item_data["id"] = str(index)
         filename = item_data["filename"]
+        item = None
 
         parts = filename.rsplit('-', 1)
         self.layout.imagemap.display_mapitem(filename, False, self.color)
 
         #Create MapThumbnail
-        item = self.layout.create_and_add_item(index)
+        if item_data['valide'] == 'oui':
+            item = self.layout.create_and_add_item(index)
 
         if item is not None :
             item.bind(mapitem = self.send_pos)
@@ -239,6 +237,7 @@ class MapClient(KalScenarioClient):
         x -= self.layout.imagemap.pos[0]
         y -= self.layout.imagemap.pos[1]
         self.send('POS %d %d %d' % (instance.index, x, y))
+        print 'POS %d %d %d' % (instance.index, x, y)
         #print "CLIENT : send POS"
 
     def send_color(self, instance, value):
@@ -246,6 +245,7 @@ class MapClient(KalScenarioClient):
         self.send('COLOR %d %d %d %d' % (instance.index, value[0]*255,value[1]*255,value[2]*255) )
 
     def send_flag_change(self, mapitem, flag_id):
+        print 'send flagchange', flag_id
         if flag_id is None:
             flag_id = -1
         filename_index = self.filename2index(mapitem.filename) 

@@ -23,6 +23,9 @@ from json import load
 
 from os.path import dirname, join, splitext
 
+
+
+
 class ScenarioSelectorButton(Button):
     source = StringProperty('cities.png')
     source_location = StringProperty('data/btn/')
@@ -137,6 +140,7 @@ class MapThumbnail(Scatter):
         filename = parts[1]
         media = mediath = splitext(filename)[0]
         media = mediath = media.replace("_active", "")
+        media = mediath = media.replace("_ancrage", "")
 
         if media:
             media += '_casque.png'
@@ -231,7 +235,7 @@ class MapThumbnail(Scatter):
                 else : 
                     if self.mapitem!=mapitem :
                         self.mapitem = mapitem
-                    self.scale = .3
+                    self.scale = 1
                 self.current_country = ''
                 self.controled = False
         return ret
@@ -254,14 +258,14 @@ class MapThumbnail(Scatter):
         # print self.media_picture_thumbnail
         
 
-        if cluePanel.x == 1280:
-            if clueArea.collide_point(*(x,y)):
-                # cluePanel.x = 1280 - width
-                self.launchAnimPanel(cluePanel, True)
-        else:
-            if layout.clueBarPanel.collide_point(*(x,y)) or x < 1280-width:
-                # cluePanel.x = 1280
-                self.launchAnimPanel(cluePanel, False)
+        # if cluePanel.x == 1280:
+        #     if clueArea.collide_point(*(x,y)):
+        #         # cluePanel.x = 1280 - width
+        #         self.launchAnimPanel(cluePanel, True)
+        # else:
+        #     if layout.clueBarPanel.collide_point(*(x,y)) or x < 1280-width:
+        #         # cluePanel.x = 1280
+        #         self.launchAnimPanel(cluePanel, False)
 
         x -= self.imagemap.x
         y -= self.imagemap.y
@@ -377,7 +381,6 @@ class MapItem(Image):
         if self.flagged and flag_id != self.flag_id :
             # print "1" 
             return False
-        
         if self.pixel(x, y) is False : 
             # print "2"
             # p = self.parent.unflag(flag_id)
@@ -568,6 +571,8 @@ class Map(FloatLayout):
             child.unbind(active=self.on_child_active)
             self.remove_widget(child)
         for item in (data for data in self.data): #use a GENERATOR here
+            # if item['valide'] == oui:
+            #     continue
             filename = item["filename"]
 
             #exclude unallowed layers (rivers etc etc)
@@ -730,7 +735,7 @@ class MapClientLayout(FloatLayout):
             if isinstance(child, MapEmptyPlace):
                 self.remove_widget(child)
 
-    def create_map(self):
+    def create_map(self, place):
         size = self.mapsize
         #print size
         cx,cy = Window.center
@@ -747,7 +752,7 @@ class MapClientLayout(FloatLayout):
                  pos = pos
                  )
         self.map_background = Image(
-                 source = 'data/map.png',
+                 source = 'data/map-animaux.png',
                  size_hint = (None, None), 
                  size= size,
                  pos = pos
@@ -788,13 +793,13 @@ class MapClientLayout(FloatLayout):
         #rows_space = count_in_rows * h + (count_in_rows - 1 * margin)
 
         # starting point
-        x = 420
+        x = 150
         # oy = y = margin #(self.height - rows_space) / 2
-        y = 68
+        y = 600
         for item in items:
             item.pos = item.origin = x, y
             # y += item.size[1] + margin
-            x += item.size[0] + margin
+            y -= item.size[1] + margin
             # if x > self.width - margin * 2:
             #     x = oy
 

@@ -210,6 +210,7 @@ class MapServer(KalScenarioServer):
         self.players[client]['want_to_play'] = True
 
     def do_client_flagchange(self, client, args):
+        print 'flagchange'
         filename = self.index2filename( int(args[0]) )
         thumb_index = int(args[1])
         #print "SERVER : do_client_flagchange: "+ str(client)+','+str(filename)+str(thumb_index)

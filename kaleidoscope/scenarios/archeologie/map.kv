@@ -31,7 +31,7 @@
 	do_scale: False
 	do_rotation: False
 	size_hint: (None, None)
-	size: (100,100)	
+	size: (160,160)	
 
 	length_flag: (root.imagemap.center_y - self.center_y)
 
@@ -39,19 +39,19 @@
 		size_hint: (None,None)
 		source: root.media_picture_thumbnail
 		pos: 0,0
-		size: 100,100
+		size: 160,160
 
-		canvas:
-			Color:
-				rgb: root.color
-			Line:
-				circle: self.width/2, self.height/2, self.width/2-3, 0, 360
-				width: 3
-			Color:
-				rgba: root.color +  [1- ((root.scale - .3)/.7)] if not root.imagemap.server else root.color + [0] #if not isinstance(root.parent.parent, MapServer) else (1,1,1,0)
-			Line:
-				circle: self.width/2, self.height/2, 0, 0, 360
-				width: self.width/2
+		# canvas:
+		# 	Color:
+		# 		rgb: root.color
+		# 	Line:
+		# 		circle: self.width/2, self.height/2, self.width/2-3, 0, 360
+		# 		width: 3
+		# 	Color:
+		# 		rgba: root.color +  [1- ((root.scale - .3)/.7)] if not root.imagemap.server else root.color + [0] #if not isinstance(root.parent.parent, MapServer) else (1,1,1,0)
+		# 	Line:
+		# 		circle: self.width/2, self.height/2, 0, 0, 360
+		# 		width: self.width/2
 
 	Label:
 		text: root.current_country #if root.scale == 1 else ''
@@ -171,21 +171,26 @@
 			Color:
 				rgb: root.color
 
+	Map:
+		id: imagemap
+
 	Image:
 		size_hint:(None,None)
-		source: 'casque-bar.png'
+		source: 'data/volet.png'
 		color: root.color + [1] or (1,1,1,1) if root.color else (0,0,0,1)
-		pos: 100,50
-		size: 980, 134
+		# color: (0,0,0,1)
+		pos: 0,0
+		size: 450, 800
+
 
 	Label:
 		size_hint: (None, None)
 		font_size: 16
 		text_size: (170, 52)
 		# height: 43
-		y: 70
-		x: 190
-		color: (1, 1, 1, 1)
+		x: 70
+		y: 700
+		color: (0,0,0, 1)
 		text: 'place les casques sur la carte'
 		font_name: 'data/fonts/myra_regular.ttf'
 
@@ -196,12 +201,11 @@
 		y: root.top - 74
 		x: root.right - 150 - self.texture_size[0]
 
-		color: (1,1,1,1)
+		color: (0,0,0,1)
 		text: 'temps restant : ' + str(int(root.time)) + '"'
 		font_name: 'data/fonts/myra_regular.ttf'
 
-	Map:
-		id: imagemap
+
 		
 	Scatter:
 		id: clueArea
@@ -284,6 +288,7 @@
 	# 		pos: self.pos
 	# 		source: 'data/background.jpg'
 	size: 1920,1080
+	pos: 0,0
 
 <MapServerMenu>:
 	# canvas.before:

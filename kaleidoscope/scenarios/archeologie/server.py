@@ -47,8 +47,8 @@ map_colors = (
 layers = ["alpha", "beta", "charlie", "delta"]
 
 map_coordinates = (
-    (100,234),
-    (980,484)
+    (0,0),
+    (1280,800)
 )#pos, size
 
 scenariol = -2
@@ -163,7 +163,9 @@ class MapServer(KalScenarioServer):
     def init_ui(self):   
         size = map_coordinates[1]
         cx,cy = Window.center
-        pos = (cx - size[0]/3.,cy - size[1]/3.)
+        # pos = (cx - size[0]/3.,cy - size[1]/3.)
+        pos = (cx,cy)
+
         if scenariol == -2 : layers2 = []
         elif scenariol == -1 : layers2 = layers
         else : layers2 = layers
@@ -176,23 +178,23 @@ class MapServer(KalScenarioServer):
         self.imagemap[0] = imagemap = Map(
                 server=True, 
                 size_hint=(None, None),
-                size = (980,484),
+                size = (1280,800),
                 layers = layers2[0]
                 )
         self.imagemap[1] = imagemap2 = Map(
                 server=True, 
                 size_hint=(None, None),
-                size = (980,484),
+                size = (1280,800),
                 layers = layers2[1]
                 )
         self.map_background[0] = ImageWidget(
-                 source = 'data/map.png',
+                 source = 'data/map-animaux.png',
                  size_hint = imagemap.size_hint,
                  size = imagemap.size,
                  pos=(0,0)
                  )
         self.map_background[1] = ImageWidget(
-                 source = 'data/map.png',
+                 source = 'data/map-animaux.png',
                  size_hint = imagemap2.size_hint,
                  size = imagemap2.size,
                  pos=(0,0)
@@ -200,8 +202,8 @@ class MapServer(KalScenarioServer):
         self.scat[0] = Scatter(
                 size_hint = imagemap.size_hint,
                 size = imagemap.size,
-                center = (pos[0]*1/2, pos[1]*3/2),
-                scale = .5,
+                pos = (0,540),
+                scale = .6,
                 rotation = 0,
                 do_translation = False,
                 do_scale = False   
@@ -209,8 +211,8 @@ class MapServer(KalScenarioServer):
         self.scat[1] = Scatter(
                 size_hint = imagemap2.size_hint,
                 size = imagemap2.size,
-                center = (pos[0]*3/2, pos[1]*3/2),
-                scale = .5,
+                pos = (960,540),
+                scale = .6,
                 rotation = 0,
                 do_translation = False,
                 do_scale = False   
@@ -218,23 +220,23 @@ class MapServer(KalScenarioServer):
         self.imagemap[2] = imagemap3 = Map(
                 server=True, 
                 size_hint=(None, None),
-                size = (980,484),
+                size = (1280,800),
                 layers = layers2[2]
                 )
         self.imagemap[3] = imagemap4 = Map(
                 server=True, 
                 size_hint=(None, None),
-                size = (980,484),
+                size = (1280,800),
                 layers = layers2[3]
                 )
         self.map_background[2] = ImageWidget(
-                 source = 'data/map.png',
+                 source = 'data/map-animaux.png',
                  size_hint = imagemap3.size_hint,
                  size = imagemap3.size,
                  pos=(0,0)
                  )
         self.map_background[3] = ImageWidget(
-                 source = 'data/map.png',
+                 source = 'data/map-animaux.png',
                  size_hint = imagemap4.size_hint,
                  size = imagemap4.size,
                  pos=(0,0)
@@ -242,8 +244,8 @@ class MapServer(KalScenarioServer):
         self.scat[2] = Scatter(
                 size_hint = imagemap3.size_hint,
                 size = imagemap3.size,
-                center = (pos[0]/2, pos[1]/2),
-                scale = .5,
+                pos = (0, 0),
+                scale = .6,
                 rotation = 0,
                 do_translation = False,
                 do_scale = False   
@@ -251,8 +253,8 @@ class MapServer(KalScenarioServer):
         self.scat[3] = Scatter(
                 size_hint = imagemap4.size_hint,
                 size = imagemap4.size,
-                center = (pos[0]*3/2, pos[1]/2),
-                scale = .5,
+                pos = (960, 0),
+                scale = .6,
                 rotation = 0,
                 do_translation = False,
                 do_scale = False   
@@ -295,6 +297,7 @@ class MapServer(KalScenarioServer):
 
 
     def do_client_flagchange(self, client, args):
+        print 'flagchange'
         filename = self.index2filename( int(args[0]), client)
         thumb_index = int(args[1])
         #print "SERVER : do_client_flagchange: "+ str(client)+','+str(filename)+str(thumb_index)
@@ -365,14 +368,17 @@ class MapServer(KalScenarioServer):
         return thumb
 
     def do_client_pos(self, client, args):
+        print 'do_client_pos'
         index = int(args[0])
         x = int(args[1])
         y = int(args[2])
         thumb = self.index2thumb(index, client)
+        print thumb, index
         if thumb is not None :
             thumb.center = (x,y)
+            print thumb.center
             self.thumbs[index] = [client, (x,y)]
-            thumb.scale = .5
+            thumb.scale = 1
 
     def do_client_color(self, client, args):
         index = int(args[0])
@@ -385,7 +391,10 @@ class MapServer(KalScenarioServer):
             
         
     def index2thumb(self,index, client):
+        print self.controler.metadata[client]['place'] - 1
+
         for child in self.scat[self.controler.metadata[client]['place'] - 1].children:
+            print child
             if isinstance(child,MapThumbnail) and child.index == index:
                 return child
         return None
@@ -646,6 +655,9 @@ class MapServer(KalScenarioServer):
                     continue
                 for i in range(0, MAX_CLIENT_ITEMS):
                     item = self.imagemap[player['place']-1].data[i]
+                    # if item['valide'] == 'non':
+                    #     # self.send_to(client, 'DISPLAYMAPITEM %s' % str(item['filename']))
+                    #     continue
                     self.send_to(client, 'GIVE %d' % i)
                     player['count'] += 1
                     self.items_given.append((client, i))
@@ -753,6 +765,9 @@ class MapServer(KalScenarioServer):
                 filename = item['filename']
                 if self.imagemap[i].filename_match_layer(filename):
                     self.imagemap[i].display_mapitem(filename, True, (0,0,0,1))
+                if item['valide'] == 'non':
+                    continue
+                
                 item = self.create_and_add_item(client ,index)
                 item.auto_color = False
 
