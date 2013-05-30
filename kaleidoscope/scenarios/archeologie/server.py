@@ -23,7 +23,7 @@ TIMER_0 = 1
 TIMER_1 = 10
 TIMER_2 = 10
 
-TIMER_3 = 10
+TIMER_3 = 100
 MAX_CLIENT_ITEMS = 5
 
 background = Image(join(dirname(__file__), 'background.jpg'))
@@ -372,13 +372,14 @@ class MapServer(KalScenarioServer):
         index = int(args[0])
         x = int(args[1])
         y = int(args[2])
+        angle = int(args[3])
         thumb = self.index2thumb(index, client)
-        print thumb, index
         if thumb is not None :
+            thumb.rotation= angle
             thumb.center = (x,y)
-            print thumb.center
             self.thumbs[index] = [client, (x,y)]
             thumb.scale = 1
+
 
     def do_client_color(self, client, args):
         index = int(args[0])

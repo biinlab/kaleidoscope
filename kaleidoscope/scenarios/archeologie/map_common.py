@@ -23,7 +23,7 @@ from json import load
 
 from os.path import dirname, join, splitext
 
-
+map_path = ('data/map-animaux.png', 'data/map.png', 'data/map.png', 'data/map.png')
 
 
 class ScenarioSelectorButton(Button):
@@ -112,6 +112,7 @@ class MapDescription(FloatLayout):
 
 class MapThumbnail(Scatter):
     title = StringProperty('')
+    filename = StringProperty('')
     origin = ListProperty([0, 0])
     imagemap = ObjectProperty(None)
     item = ObjectProperty(None)
@@ -135,7 +136,7 @@ class MapThumbnail(Scatter):
         super(MapThumbnail, self).__init__(**kwargs)
         self.media_content = self.item.get('content', '')
         self.title = self.item.get('title', '') 
-        filename = self.item.get('filename', '')
+        self.filename = filename = self.item.get('filename', '')
         parts = filename.rsplit('-', 1)
         filename = parts[1]
         media = mediath = splitext(filename)[0]
@@ -151,6 +152,20 @@ class MapThumbnail(Scatter):
             self.media_picture = media
             self.media_picture_thumbnail = mediath
     
+    def pixel(self, x, y):
+        x = int(x)
+        y = self.height - int(y)
+        coreimage = self.imageth._coreimage
+        try:
+            color = coreimage.read_pixel(x, y)
+        except IndexError:
+            return False
+        # print self.filename, ' color : ', x,y,color
+        if len(color) > 0:
+            if color[-1] <= 0.003:
+                return False
+        return True
+
     def update_color(self, win):
         color = Color(71 / 360., 71 / 100., 87 / 100., mode='hsv')
         if self.auto_color == True :
@@ -189,29 +204,50 @@ class MapThumbnail(Scatter):
         self.color = [color.rgba[0], color.rgba[1], color.rgba[2]]
 
     def launchAnimPanel(self, panel = None, op = True):
-            layout = self.imagemap.layout
-            width = layout.cluePanel.width
+            # layout = self.imagemap.layout
+            # width = layout.cluePanel.width
             Animation.stop_all(panel)
             if op:
-                anim = Animation(x=1280-width, d=.2)
+                anim = Animation(x=-450, d=.2)
             else:
-                anim = Animation(x=1280, d=.2)
+                anim = Animation(x=0, d=.2)
             anim.start(panel)
         
     def on_touch_down(self, touch):
         if self.locked: return
+        x = touch.x - self.pos[0]
+        y = touch.y - self.pos[1]
+        if not self.pixel(x,y):
+            return
         if not super(MapThumbnail, self).on_touch_down(touch):
             return
+
+        layout = self.imagemap.layout
+        # width = layout.cluePanel.width
+        volet = layout.volet
+        # clueArea = layout.clueArea
+        # print self.media_picture_thumbnail
+        if volet.x == 0:
+            volet.x = -450
+            # self.launchAnimPanel(volet, True)
+
+        parent = self.parent
+        if not isinstance(parent, MapClientLayout):
+            parentMCL = parent.parent
+            parent.remove_widget(self)
+            parentMCL.add_widget(self)
+
         Animation.stop_all(self, 'pos')
         self.controled = True
         self.scale = 1
  
-        self.imagemap.parent.img_description.source = self.media_picture
-        self.imagemap.parent.content_description.text = self.media_content
-        self.imagemap.layout.remove_widget(self.imagemap.layout.cluePanel)
-        self.imagemap.layout.add_widget(self.imagemap.layout.cluePanel)
-        self.imagemap.layout.remove_widget(self)
-        self.imagemap.layout.add_widget(self)
+        # self.imagemap.parent.img_description.source = self.media_picture
+        # self.imagemap.parent.content_description.text = self.media_content
+        # self.imagemap.layout.remove_widget(self.imagemap.layout.cluePanel)
+        # self.imagemap.layout.add_widget(self.imagemap.layout.cluePanel)
+        
+        # self.imagemap.layout.remove_widget(self)
+        # self.imagemap.layout.add_widget(self)
         return True
 
     def on_touch_up(self, touch):
@@ -219,6 +255,14 @@ class MapThumbnail(Scatter):
         Si oui, enregistre le-dit mapItem, si non, le renvoi a sa place. Si on le 
         bouge sur le même mapItem, on ne fait rien'''
         if self.locked: return
+        if not self.controled: return
+
+        layout = self.imagemap.layout
+        volet = layout.volet
+        if volet.x == -450:
+            volet.x = 0
+            # self.launchAnimPanel(volet, False)
+
         ret = super(MapThumbnail, self).on_touch_up(touch)
         if not self._touches and ret: 
                 #test if th is on a mapitem
@@ -228,20 +272,36 @@ class MapThumbnail(Scatter):
                 # print x,y
                 mapitem = self.imagemap.flag(self.index, x, y)
                 if mapitem == '': 
+
+                    parent = self.parent
+                    if isinstance(parent, MapClientLayout):
+                        parent.remove_widget(self)
+                        parent.volet.add_widget(self)
+
                     self.move_to_origin()
                     self.mapitem = ''
                     self.scale = 1            
-                    self.launchAnimPanel(self.imagemap.layout.cluePanel, False)
+                    # self.launchAnimPanel(self.imagemap.layout.cluePanel, False)
                 else : 
-                    if self.mapitem!=mapitem :
-                        self.mapitem = mapitem
+                    # if self.mapitem!=mapitem :
+                    
+                    item = self.imagemap.get_child_by_filename(mapitem)
+                    # posx, posy = item.right_pos
+                    # posx -= self.width/2
+                    # posy -= self.height/2
+                    self.rotation = item.angle
+                    self.center = item.right_pos
+                    self.mapitem = mapitem
+
                     self.scale = 1
+
                 self.current_country = ''
                 self.controled = False
         return ret
     
     def on_touch_move(self,touch):
         if self.locked: return
+        if not self.controled: return
         ret = super(MapThumbnail, self).on_touch_move(touch)
         if not ret:
             return
@@ -251,12 +311,8 @@ class MapThumbnail(Scatter):
         x += self.width / 2
         y += self.height / 2
 
-        layout = self.imagemap.layout
-        width = layout.cluePanel.width
-        cluePanel = layout.cluePanel
-        clueArea = layout.clueArea
-        # print self.media_picture_thumbnail
-        
+
+
 
         # if cluePanel.x == 1280:
         #     if clueArea.collide_point(*(x,y)):
@@ -322,6 +378,7 @@ class MapItem(Image):
     source_active = StringProperty(None)
     source_original = StringProperty(None)
     right_pos = ObjectProperty((0,0))
+    angle = NumericProperty(0)
 
     def on_touch_down(self, touch):
         if not self.collide_point(*touch.pos):
@@ -547,10 +604,12 @@ class Map(FloatLayout):
                     if filename == item["filename"]:
                         right_pos = item["rightpos"].split('x', 1)
                         right_pos =  (int(right_pos[0]), int(right_pos[1]))
+                        angle = int(item["rotation"])
                 image = MapItem(source=source, 
                     id = filename,
                     filename = filename,
                     right_pos = right_pos,
+                    angle = angle,
                     pos_hint={'x': 0, 'y': 0},
                     source_original=filename,
                     source_active=filename_suffix) 
@@ -690,6 +749,7 @@ class MapClientLayout(FloatLayout):
     layer = NumericProperty(-2)
     selector = ObjectProperty(None)
     imagemap = ObjectProperty(None)
+    map_background = ObjectProperty(None)
     scattermap = ObjectProperty(None)
     inner_layout = ObjectProperty(None)
     logo = StringProperty('')
@@ -744,6 +804,13 @@ class MapClientLayout(FloatLayout):
         pos = self.mappos
         #the map cannot have relative position ..
 
+        self.map_background = Image(
+                 source = map_path[place],
+                 size_hint = (None, None), 
+                 size= size,
+                 pos = pos
+                 )
+
         self.imagemap = imagemap = Map( 
                  layers = self.layers,
                  layout = self, 
@@ -751,14 +818,11 @@ class MapClientLayout(FloatLayout):
                  size= size,
                  pos = pos
                  )
-        self.map_background = Image(
-                 source = 'data/map-animaux.png',
-                 size_hint = (None, None), 
-                 size= size,
-                 pos = pos
-                 )
-        self.add_widget(self.map_background)
-        self.add_widget(self.imagemap)
+
+        self.add_widget(self.map_background, 15)
+        self.add_widget(self.imagemap, 1)
+        # self.remove_widget(self.volet)
+        # self.add_widget(self.volet)
 
         return imagemap
 
@@ -769,13 +833,13 @@ class MapClientLayout(FloatLayout):
         thumb = self.imagemap.get_thumb(index)
         if thumb is None : return None
         thumb.color = self.color
-        place = self.create_emptyplace()
-        place.size = thumb.size
+        # place = self.create_emptyplace()
+        # place.size = thumb.size
         thumb.right_pos = self.imagemap.retrieve_pixels_location(thumb.item['filename'])
-        self.add_widget(place)
-        self.add_widget(thumb)
+        # self.volet.add_widget(place)
+        self.volet.add_widget(thumb)
         self.items.append(thumb)
-        self.emptyplaces.append(place)
+        # self.emptyplaces.append(place)
         #self.do_layout_all()
         return thumb
 
@@ -788,18 +852,18 @@ class MapClientLayout(FloatLayout):
         if not items:
             return
         #w, h = items[0].size
-        margin = 30
+        margin = 150
         #count_in_rows = int(self.width * 0.6 / (h + margin))
         #rows_space = count_in_rows * h + (count_in_rows - 1 * margin)
 
         # starting point
-        x = 150
+        x = 0
         # oy = y = margin #(self.height - rows_space) / 2
-        y = 600
+        y = 500
         for item in items:
             item.pos = item.origin = x, y
             # y += item.size[1] + margin
-            y -= item.size[1] + margin
+            y -= item.size[1] - margin
             # if x > self.width - margin * 2:
             #     x = oy
 
@@ -843,13 +907,15 @@ class MapClientLayout(FloatLayout):
                 x,y = pos
                 x += self.imagemap.x #- child.width/2.
                 y += self.imagemap.y #- child.height/2
-                x -= child.width/2
-                y -= child.height/2
+                # x -= child.width/2
+                # y -= child.height/2
 
                 #print x,y
                 child.locked = True
                 if pos is not None and child.current_country2 != child.title:
-                    child.move_to_pos( (x,y) )
+                    item = self.imagemap.get_child_by_filename(child.filename)
+                    child.rotation = item.angle
+                    child.center = (x,y)
                 #convert to green 
                 child.auto_color = False
                 child.update_color(True)

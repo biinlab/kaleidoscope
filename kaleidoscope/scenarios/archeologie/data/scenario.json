@@ -5,176 +5,201 @@
 			"title": "Cheval",
 			"filename": "animaux-cheval_ancrage.png",
 			"content": "poil",
-			"rightpos": "988x397",
-			"valide": "oui"
+			"rightpos": "950x390",
+			"valide": "oui",
+			"rotation": "-5"
 		},
 		{
 			"title": "Chevre",
 			"filename": "animaux-chevre_ancrage.png",
 			"content": "poil",
-			"rightpos": "612x673",
-			"valide": "oui"
+			"rightpos": "1013x676",
+			"valide": "oui",
+			"rotation": "0"
 		},
 		{
 			"title": "Dindon",
 			"filename": "animaux-dindon_ancrage.png",
 			"content": "poil",
-			"rightpos": "329x168",
-			"valide": "non"
+			"rightpos": "517x143",
+			"valide": "non",
+			"rotation": "0"
 		},
 		{
 			"title": "Vache",
 			"filename": "animaux-vache_ancrage.png",
 			"content": "poil",
-			"rightpos": "441x710",
-			"valide": "oui"
+			"rightpos": "404x676",
+			"valide": "oui",
+			"rotation": "30"
 		},
 		{
 			"title": "Coq",
 			"filename": "animaux-coq_ancrage.png",
 			"content": "poil",
-			"rightpos": "1110x377",
-			"valide": "oui"
+			"rightpos": "1098x353",
+			"valide": "oui",
+			"rotation": "15"
 		},
 		{
 			"title": "Afrique du Sud",
 			"filename": "alpha-afriquedusud_active.png",
 			"content": "Dans le nom de mon pays, un point cardinal indique ma position sur le continent.",
 			"rightpos": "524x49",
-			"valide": "oui"
+			"valide": "oui",
+			"rotation": "0"
 		},
 		{
 			"title": "Allemagne",
 			"filename": "alpha-allemagne_active.png",
 			"content": "Le pays d’où je viens a longtemps été coupé en deux, et moi, je viens de l’Ouest.",
 			"rightpos": "487x297",
-			"valide": "oui"
+			"valide": "oui",
+			"rotation": "0"
 		},
 		{
 			"title": "Angleterre",
 			"filename": "alpha-angleterre_active.png",
 			"content": "Je suis presque une copie des casques français sous Napoléon. Les pompes à vapeur, en revanche, ont bien été inventées dans mon pays.",
 			"rightpos": "455x304",
-			"valide": "oui"
+			"valide": "oui",
+			"rotation": "0"
 		},
 		{
 			"title": "Argentine",
 			"filename": "alpha-argentine_active.png",
 			"content": "Pas le temps de danser le tango, le pompier qui me porte a fort à faire dans un pays muy caliente !",
 			"rightpos": "280x64",
-			"valide": "oui"
+			"valide": "oui",
+			"rotation": "0"
 		},
 		{
 			"title": "Australie",
 			"filename": "alpha-australie_active.png",
 			"content": "L’équipe de rugby de mon pays est surnommée « wallabies », et ses joueurs portent un short de la même couleur que moi.",
 			"rightpos": "828x67",
-			"valide": "oui"
+			"valide": "oui",
+			"rotation": "0"
 		},
 		{
 			"title": "Bielorussie",
 			"filename": "beta-bielorussie_active.png",
 			"content": "Quand j’étais utilisé dans les années 1950, mon pays faisait partie de l’URSS.",
 			"rightpos": "535x309",
-			"valide": "oui"
+			"valide": "oui",
+			"rotation": "0"
 		},
 		{
 			"title": "Canada",
 			"filename": "beta-canada_active.png",
 			"content": "Les températures descendent souvent à  – 25 °C dans mon pays. Les pompiers doivent alors casser la glace qui recouvre tout pour pouvoir accéder aux flammes.",
 			"rightpos": "209x346",
-			"valide": "oui"
+			"valide": "oui",
+			"rotation": "0"
 		},		
 		{
 			"title": "Chine",
 			"filename": "beta-chine_active.png",
 			"content": "Je suis aussi vert que le thé qui est consommé dans mon pays.",
 			"rightpos": "750x234",
-			"valide": "oui"
+			"valide": "oui",
+			"rotation": "0"
 		},
 		{
 			"title": "Espagne",
 			"filename": "charlie-espagne_active.png",
 			"content": "L’ours représenté sur ma plaque est le symbole de ma ville. Ce sont pourtant les taureaux qui sont mis à l’honneur dans nos corridas !",
 			"rightpos": "451x256",
-			"valide": "oui"
+			"valide": "oui",
+			"rotation": "0"
 		},
 		{
 			"title": "Etats-Unis",
 			"filename": "charlie-etatsunis_active.png",
 			"content": "Ma forme peut rappeler le chapeau d’un cow boy, c’est bien naturel quand on sait d’où je viens.",
 			"rightpos": "186x293",
-			"valide": "oui"
+			"valide": "oui",
+			"rotation": "0"
 		},
 		{
 			"title": "Finlande",
 			"filename": "charlie-finlande_active.png",
 			"content": "Proche du pôle nord, mon pays est un des rares où l’on peut admirer des aurores boréales.",
 			"rightpos": "533x372",
-			"valide": "oui"
+			"valide": "oui",
+			"rotation": "0"
 		},
 		{
 			"title": "Irlande",
 			"filename": "delta-irlande_active.png",
 			"content": "Mon pays est l’Eire. S’il y a un feu le 17 mars, l’eau utilisée par nos pompiers risque d’être verte ! ",
 			"rightpos": "437x309",
-			"valide": "oui"
+			"valide": "oui",
+			"rotation": "0"
 		},
 		{
 			"title": "Italie",
 			"filename": "delta-italie_active.png",
 			"content": "Dans mon pays, les pompiers étaient désignés sous le nom de Vigili sous l’Antiquité, puis Pompieri pendant très longtemps, et à nouveau Vigili au siècle dernier.",
 			"rightpos": "493x263",
-			"valide": "oui"
+			"valide": "oui",
+			"rotation": "0"
 		},
 		{
 			"title": "Japon",
 			"filename": "delta-japon_active.png",
 			"content": "Dans mon pays, pompiers et samouraï portaient le même type de casque.",
 			"rightpos": "829x238",
-			"valide": "oui"
+			"valide": "oui",
+			"rotation": "0"
 		},
 		{
 			"title": "Kenya",
 			"filename": "beta-kenya_active.png",
 			"content": "Hop ! Hop ! Hop ! Les pompiers se faufilent entre les girafes et les éléphants tels des marathoniens dans mon pays. ",
 			"rightpos": "564x136",
-			"valide": "oui"
+			"valide": "oui",
+			"rotation": "0"
 		},
 		{
 			"title": "Mexique",
 			"filename": "beta-mexique_active.png",
 			"content": "Aïe Caramba ! Il fait tellement chaud dans mon pays que je suis percé pour aérer la tête du pompier qui me porte !",
 			"rightpos": "178x243",
-			"valide": "oui"
+			"valide": "oui",
+			"rotation": "0"
 		},
 		{
 			"title": "Norvège",
 			"filename": "charlie-norvege_active.png",
 			"content": "Je porte la couleur de notre long hiver arctique : pendant des mois, il fait toujours noir, même le jour.",
 			"rightpos": "501x385",
-			"valide": "oui"
+			"valide": "oui",
+			"rotation": "0"
 		},
 		{
 			"title": "Nouvelle Zélande",
 			"filename": "delta-nouvellezelande_active.png",
 			"content": "Un phénix me décore. Comme lui, nos chers All Blacks sont immortels !",
 			"rightpos": "931x29",
-			"valide": "oui"
+			"valide": "oui",
+			"rotation": "0"
 		},
 		{
 			"title": "Pérou",
 			"filename": "delta-perou_active.png",
 			"content": "J’ai un oiseau sur la tête ! Regardez bien, c’est le grand condor des mystérieuses cités d’or…",
 			"rightpos": "255x149",
-			"valide": "oui"
+			"valide": "oui",
+			"rotation": "0"
 		},
 		{
 			"title": "Suède",
 			"filename": "charlie-suede_active.png",
 			"content": "Notre célèbre fabricant de meubles démontre chaque jour combien nous sommes rationnels et organisés…",
 			"rightpos": "503x363",
-			"valide": "oui"
+			"valide": "oui",
+			"rotation": "0"
 		}
 		]
 }

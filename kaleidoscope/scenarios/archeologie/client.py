@@ -9,7 +9,7 @@ from kivy.resources import resource_add_path
 from kivy.lang import Builder
 from kivy.properties import ListProperty
 
-from map_common import MapClientLayout, Map, MapMenu
+from map_common import MapClientLayout, Map, MapMenu, MapThumbnail
 
 resource_add_path(dirname(__file__))
 Builder.load_file(join(dirname(__file__), 'map.kv'))
@@ -205,7 +205,16 @@ class MapClient(KalScenarioClient):
         self.layout.imagemap.hide_mapitem(filename)
 
     def handle_placethumbs(self, args):
+
+        for child in self.layout.volet.children:
+            if isinstance(child, MapThumbnail):
+                self.layout.volet.remove_widget(child)
+                self.layout.add_widget(child) 
+
+
+
         self.layout.place_thumbs()
+        self.layout.volet.x = -450
         #send pos to server then
         for th in self.layout.items:
             th.locked = True
@@ -236,8 +245,8 @@ class MapClient(KalScenarioClient):
         x,y = value
         x -= self.layout.imagemap.pos[0]
         y -= self.layout.imagemap.pos[1]
-        self.send('POS %d %d %d' % (instance.index, x, y))
-        print 'POS %d %d %d' % (instance.index, x, y)
+        self.send('POS %d %d %d %d' % (instance.index, x, y, instance.rotation))
+        print 'POS %d %d %d %d' % (instance.index, x, y, instance.rotation)
         #print "CLIENT : send POS"
 
     def send_color(self, instance, value):

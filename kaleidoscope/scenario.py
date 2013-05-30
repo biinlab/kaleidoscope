@@ -59,6 +59,7 @@ class KalScenarioServer(object):
         c = args.split()
         if len(c) == 0:
             return
+        print args
         cmd = c[0].lower()
         getattr(self, 'do_client_%s' % cmd)(client, c[1:])
 
