@@ -202,18 +202,18 @@ class MapServer(KalScenarioServer):
         self.scat[0] = Scatter(
                 size_hint = imagemap.size_hint,
                 size = imagemap.size,
-                pos = (0,540),
+                pos = (800,1000),
                 scale = .6,
-                rotation = 0,
+                rotation = 180,
                 do_translation = False,
                 do_scale = False   
                 )
         self.scat[1] = Scatter(
                 size_hint = imagemap2.size_hint,
                 size = imagemap2.size,
-                pos = (960,540),
+                pos = (1800,1000),
                 scale = .6,
-                rotation = 0,
+                rotation = 180,
                 do_translation = False,
                 do_scale = False   
                 )        
@@ -244,7 +244,7 @@ class MapServer(KalScenarioServer):
         self.scat[2] = Scatter(
                 size_hint = imagemap3.size_hint,
                 size = imagemap3.size,
-                pos = (0, 0),
+                pos = (480, 0),
                 scale = .6,
                 rotation = 0,
                 do_translation = False,
@@ -253,7 +253,7 @@ class MapServer(KalScenarioServer):
         self.scat[3] = Scatter(
                 size_hint = imagemap4.size_hint,
                 size = imagemap4.size,
-                pos = (960, 0),
+                pos = (1920, 1080),
                 scale = .6,
                 rotation = 0,
                 do_translation = False,

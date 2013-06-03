@@ -24,7 +24,7 @@ class MapClient(KalScenarioClient):
         self.isPlaying = False
         #self.logo = ''
         self.color = (1,1,1,0)
-        Clock.schedule_interval(self.update_graphics_timer, 1/ 10.)
+        Clock.schedule_interval(self.update_graphics_timer, 1/ 100.)
         # Clock.schedule_interval(self.update_graphics_timer, 1 / 10.)
         self.index_list = []
         if self.container.couleur_auto == 'vert 1':
@@ -43,6 +43,8 @@ class MapClient(KalScenarioClient):
         # self.layout.create_selector()
         # for val in self.layout.selector.buttons.itervalues():
         #     val.bind(on_release = self.validate)
+        Clock.unschedule(self.update_graphics_timer)
+        Clock.schedule_interval(self.update_graphics_timer, 1.)
         self.send('SCENARIO 0') 
         
     def handle_removeselector(self, args):
