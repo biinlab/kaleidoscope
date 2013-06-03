@@ -20,10 +20,10 @@ from kivy.properties import ListProperty, DictProperty, StringProperty, NumericP
 from kivy.clock import Clock
 
 TIMER_0 = 1
-TIMER_1 = 10
-TIMER_2 = 10
+TIMER_1 = 30
+TIMER_2 = 30
 
-TIMER_3 = 100
+TIMER_3 = 10
 MAX_CLIENT_ITEMS = 5
 
 background = Image(join(dirname(__file__), 'background.jpg'))
@@ -32,9 +32,9 @@ btnbg = Image(join(dirname(__file__), 'buttonbackground.png')).texture
 
 # vert, jaune, bleu, rose
 map_colors = (
-    (213, 219, 15),
-    (40, 116, 255),
-    (40, 194, 185),
+    (24, 175, 193),
+    (214, 95, 29),
+    (29, 214, 90),
     (227, 53, 119),
 )
 
@@ -44,7 +44,7 @@ map_colors = (
 #     'plane',
 #     'ying',
 # )
-layers = ["alpha", "beta", "charlie", "delta"]
+layers = ["animaux", "carpologue", "poterie", "delta"]
 
 map_coordinates = (
     (0,0),
@@ -194,7 +194,7 @@ class MapServer(KalScenarioServer):
                  pos=(0,0)
                  )
         self.map_background[1] = ImageWidget(
-                 source = 'data/map-animaux.png',
+                 source = 'data/map-carpologue.png',
                  size_hint = imagemap2.size_hint,
                  size = imagemap2.size,
                  pos=(0,0)
@@ -230,7 +230,7 @@ class MapServer(KalScenarioServer):
                 layers = layers2[3]
                 )
         self.map_background[2] = ImageWidget(
-                 source = 'data/map-animaux.png',
+                 source = 'data/map-poterie.png',
                  size_hint = imagemap3.size_hint,
                  size = imagemap3.size,
                  pos=(0,0)
@@ -392,10 +392,7 @@ class MapServer(KalScenarioServer):
             
         
     def index2thumb(self,index, client):
-        print self.controler.metadata[client]['place'] - 1
-
         for child in self.scat[self.controler.metadata[client]['place'] - 1].children:
-            print child
             if isinstance(child,MapThumbnail) and child.index == index:
                 return child
         return None

@@ -24,7 +24,7 @@ class MapClient(KalScenarioClient):
         self.isPlaying = False
         #self.logo = ''
         self.color = (1,1,1,0)
-        Clock.schedule_interval(self.update_graphics_timer, 1.)
+        Clock.schedule_interval(self.update_graphics_timer, 1/ 10.)
         # Clock.schedule_interval(self.update_graphics_timer, 1 / 10.)
         self.index_list = []
         if self.container.couleur_auto == 'vert 1':
@@ -89,7 +89,7 @@ class MapClient(KalScenarioClient):
         pass
 
     def handle_menu(self, args):
-        self.menu = MapMenu(color=self.color)
+        self.menu = MapMenu(color=self.color, place=(self.place-1))
         self.container.clear_widgets()
         self.container.add_widget(self.menu)  
         self.menu.launchGameButton.bind(state = self.send_launchGame)
@@ -107,7 +107,7 @@ class MapClient(KalScenarioClient):
         self.layout = MapClientLayout(mapclient = self) 
         self.container.clear_widgets()
         self.container.add_widget(self.layout)
-        self.layout.exitButton.bind(state= self.send_exitgame)
+        # self.layout.exitButton.bind(state= self.send_exitgame)
 
     def handle_map(self, args):
         self.imagemap = imagemap = self.layout.imagemap = self.layout.create_map(self.place - 1)
@@ -206,7 +206,7 @@ class MapClient(KalScenarioClient):
 
     def handle_placethumbs(self, args):
 
-        for child in self.layout.volet.children:
+        for child in self.layout.volet.children[:]:
             if isinstance(child, MapThumbnail):
                 self.layout.volet.remove_widget(child)
                 self.layout.add_widget(child) 
@@ -214,12 +214,14 @@ class MapClient(KalScenarioClient):
 
 
         self.layout.place_thumbs()
-        self.layout.volet.x = -450
+        
         #send pos to server then
         for th in self.layout.items:
             th.locked = True
             self.send_pos(th,0)
             self.send_color(th,0)
+
+        self.layout.volet.x = -450
 
     def handle_clear(self, args):
         self.layout.clear()
