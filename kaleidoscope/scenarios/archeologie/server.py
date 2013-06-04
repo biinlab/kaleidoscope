@@ -19,11 +19,11 @@ from kivy.animation import Animation
 from kivy.properties import ListProperty, DictProperty, StringProperty, NumericProperty, BooleanProperty
 from kivy.clock import Clock
 
-TIMER_0 = 1
-TIMER_1 = 30
-TIMER_2 = 30
+TIMER_0 = 15
+TIMER_1 = 60
+TIMER_2 = 1
 
-TIMER_3 = 10
+TIMER_3 = 15
 MAX_CLIENT_ITEMS = 5
 
 background = Image(join(dirname(__file__), 'background.jpg'))

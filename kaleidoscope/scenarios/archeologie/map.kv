@@ -57,21 +57,21 @@
 		# 		circle: self.width/2, self.height/2, 0, 0, 360
 		# 		width: self.width/2
 
-	Label:
-		text: root.current_country #if root.scale == 1 else ''
-		font_size: 14
-		font_name: 'data/fonts/FuturaLT-Bold.ttf'
-		# color: (0,0,0,1)
-		y: root.height -5
-		x: 0
-		valign: 'bottom'
-		canvas.before:
-			Color:
-				rgba: root.color + [1] if self.text != '' else (1,1,1,0)
-			Rectangle:
-				source: 'data/etiquettes.png'
-				size: 180, 60
-				pos: self.width/2 - 90 , root.height + 5
+	# Label:
+	# 	text: root.current_country #if root.scale == 1 else ''
+	# 	font_size: 14
+	# 	font_name: 'data/fonts/FuturaLT-Bold.ttf'
+	# 	# color: (0,0,0,1)
+	# 	y: root.height -5
+	# 	x: 0
+	# 	valign: 'bottom'
+	# 	canvas.before:
+	# 		Color:
+	# 			rgba: root.color + [1] if self.text != '' else (1,1,1,0)
+	# 		Rectangle:
+	# 			source: 'data/etiquettes.png'
+	# 			size: 180, 60
+	# 			pos: self.width/2 - 90 , root.height + 5
 	
 <MapEmptyPlace>:
 	size_hint: (None, None)
@@ -121,7 +121,7 @@
 		color: root.color + [1]
 		size_hint: (None, None)
 		size: (300, 100)
-		center_x: 1280/3
+		center_x: 400
 		center_y: 400
 		text: root.titre
 		font_size: 30
