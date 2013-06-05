@@ -44,6 +44,8 @@
 		source: root.media_picture_thumbnail
 		pos: 0,0
 		size: 300,300
+		color: root.color + [1]
+
 
 		# canvas:
 		# 	Color:
@@ -89,7 +91,7 @@
 
 	canvas.before:
 		Color:
-			rgb: 224/255., 224/255., 224/255.
+			rgb: 228/255., 228/255., 228/255.
 		Rectangle:
 			size: self.size
 			pos: self.pos
@@ -203,7 +205,7 @@
 	canvas.before:
 		Color:
 			# rgb: self.color or (1, 1, 1)
-			rgb: (228/255.,228/255.,228/255.)
+			rgba: (228/255.,228/255.,228/255., 1)
 		Rectangle:
 			size: self.size
 			pos: self.pos
@@ -235,6 +237,7 @@
 		do_rotation: False
 		do_translation: False
 		do_scale: False
+		auto_bring_to_front: True
 		Image:
 			size_hint:(None,None)
 			source: 'data/volet.png'
@@ -377,7 +380,16 @@
 			size: self.size
 			pos: self.pos
 			# source: 'data/background.jpg'
+# <MapServer>
+# 	scatter0: scatter0
 
+# 	Scatter:
+# 		id: scatter0
+# 		Color:
+# 			rgba: 1,0,0,0.3
+# 		Rectangle:
+# 			pos: self.pos
+# 			size: self.size
 
 <MapServerMenu>:
 	# canvas.before:

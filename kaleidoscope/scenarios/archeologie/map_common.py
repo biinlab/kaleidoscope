@@ -25,7 +25,7 @@ from kivy.vector import Vector
 
 from os.path import dirname, join, splitext
 
-map_path = ('data/map-animaux.png', 'data/map-carpologue.png', 'data/map-poterie.png', 'data/map.png')
+map_path = ('data/map-animaux-game.png', 'data/map-carpologue-game.png', 'data/map-poterie-game.png', 'data/map-animaux-game.png')
 map_titre = ( 'ARCHEOZOOLOGUE', 'CARPOLOGUE', 'CERAMOLOGUE', 'INSTRUMENTOLOGUE')
 
 
@@ -121,7 +121,7 @@ class MapThumbnail(Scatter):
     item = ObjectProperty(None)
     mapitem = StringProperty('')
     index = NumericProperty(-1)
-    color = ListProperty([92 / 255., 145 / 255., 179 / 255.])
+    color = ListProperty([1, 1, 1])
     auto_color = BooleanProperty(False)
     controled = BooleanProperty(False)
     locked = BooleanProperty(False)
@@ -185,23 +185,20 @@ class MapThumbnail(Scatter):
         try:
             color = coreimage.read_pixel(x, y)
         except IndexError:
-            print "IndexError"
             return False
         # print self.filename, ' color : ', x,y,color
-        print "pixel 1"
+
         if len(color) > 0:
-            print "pixel 2"
-            print self, color
             if color[-1] <= 0.003:
                 return False
-        print "pixel 3"
+
         return True
 
     def update_color(self, win):
         color = Color(71 / 360., 71 / 100., 87 / 100., mode='hsv')
         if self.auto_color == True :
-            x1,y1 = self.pos
-            # x1, y1 = self.center
+            # x1,y1 = self.pos
+            x1, y1 = self.center
             x2,y2 = self.right_pos
             x1 -= self.imagemap.x 
             y1 -= self.imagemap.y
@@ -245,23 +242,18 @@ class MapThumbnail(Scatter):
             anim.start(panel)
         
     def on_touch_down(self, touch):
-        print "Nom: ", self.title 
-        print "debut DOWN"
         if not super(MapThumbnail, self).on_touch_down(touch):
             return
-        print "1"
         if self.locked: return
-        print "2"
         x,y = self.to_local(touch.x, touch.y)
         # x = touch.x - self.pos[0]
         # y = touch.y - self.pos[1]
-        print self.title, x,y
         
 
         if not self.pixel(x,y):
             return
     
-        print "milieu DOWN"
+
         layout = self.imagemap.layout
         # width = layout.cluePanel.width
         volet = layout.volet
@@ -273,7 +265,6 @@ class MapThumbnail(Scatter):
 
         parent = self.parent
         if not isinstance(parent, MapClientLayout):
-            print "passage vers le MCL"
             parentMCL = parent.parent
             parent.remove_widget(self)
             parentMCL.add_widget(self)
@@ -282,7 +273,7 @@ class MapThumbnail(Scatter):
         # self.rotation = 0
         self.controled = True
         self.scale = 1
-        print "fin DOWN"
+
         # self.imagemap.parent.img_description.source = self.media_picture
         # self.imagemap.parent.content_description.text = self.media_content
         # self.imagemap.layout.remove_widget(self.imagemap.layout.cluePanel)
@@ -299,8 +290,6 @@ class MapThumbnail(Scatter):
         ret = super(MapThumbnail, self).on_touch_up(touch)
         if not ret:
             return
-        print "Nom: ", self.title
-        print "debut UP"
 
         if self.locked: return
         if not self.controled: return
@@ -310,27 +299,28 @@ class MapThumbnail(Scatter):
         if volet.x == -360:
             layout.anim_volet()
             # self.launchAnimPanel(volet, False)
-        print "milieu UP"
-        print self._touches
+
         if not self._touches and ret: 
-                print "coucou"
                 #test if th is on a mapitem
                 # x,y = self.pos
 
                 # x += self.width / 2
                 # y += self.height / 2
                 # print x,y
-                mapitem = self.imagemap.flag(self.index, touch.x, touch.y)
+                mapitem = self.imagemap.flag(self.index, self.center_x, self.center_y)
                 if mapitem == '': 
 
                     parent = self.parent
                     if isinstance(parent, MapClientLayout):
-                        print "passage vers le volet"
                         parent.remove_widget(self)
                         parent.volet.add_widget(self)
 
                     self.rotation = 0
                     self.move_to_origin()
+                    if self.auto_color:
+                        color = Color(0 / 360., 71 / 100., 87 / 100., mode='hsv')
+                        self.color = [color.rgba[0], color.rgba[1], color.rgba[2]]
+                        print color.rgba
                     self.mapitem = ''
                     self.scale = 1            
                     # self.launchAnimPanel(self.imagemap.layout.cluePanel, False)
@@ -350,8 +340,6 @@ class MapThumbnail(Scatter):
 
                 self.current_country = ''
                 self.controled = False
-        print "fin UP"
-        print self.parent
         return ret
     
     def on_touch_move(self,touch):
@@ -366,7 +354,6 @@ class MapThumbnail(Scatter):
         ret = super(MapThumbnail, self).on_touch_move(touch)
         if not ret:
             return
-        print "move"
         #mapitem = self.imagemap.flag(self.index, touch.x, touch.y)
         #print mapitem
         x,y = self.pos
@@ -903,7 +890,7 @@ class MapClientLayout(FloatLayout):
     def create_and_add_item(self, index):
         thumb = self.imagemap.get_thumb(index)
         if thumb is None : return None
-        thumb.color = self.color
+        # thumb.color = self.color
         # place = self.create_emptyplace()
         # place.size = thumb.size
         thumb.right_pos = self.imagemap.retrieve_pixels_location(thumb.item['filename'])

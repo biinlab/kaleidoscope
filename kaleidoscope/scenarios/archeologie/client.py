@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from os.path import join, dirname
 from time import time
 import thread
@@ -8,6 +10,8 @@ from kivy.clock import Clock
 from kivy.resources import resource_add_path
 from kivy.lang import Builder
 from kivy.properties import ListProperty
+from kivy.uix.label import Label
+from kivy.graphics import Color, Rectangle, Canvas
 
 from map_common import MapClientLayout, Map, MapMenu, MapThumbnail
 
@@ -120,7 +124,22 @@ class MapClient(KalScenarioClient):
 
     def handle_game2(self, args):
         self.layout.auto_color_thumbs()
+        
+    def handle_popup(self, args):
+        self.layout.clear()
+        print self.color
+        label = Label(text= ' L’archéologue en déduit les modes de culture,\nd’élevage et d’alimentation sur le site de Montout\nà l’époque médiévale',pos=(0,0), 
+            size=(1280,800), 
+            font_size=45, 
+            font_name='data/fonts/FuturaLT-Bold.ttf',
+            halign= 'center',
+            valign= 'middle',
+            color = self.color + [1])
+        
+        self.layout.add_widget(label)
 
+
+        
     def handle_game3(self, args):
         self.layout.lock_thumbs(True)
         self.layout.hide_places()
@@ -213,7 +232,7 @@ class MapClient(KalScenarioClient):
                 self.layout.volet.remove_widget(child)
                 self.layout.add_widget(child) 
 
-
+        self.layout.map_background.source = self.layout.map_background.source.replace("-game", "")
 
         self.layout.place_thumbs()
         
@@ -250,12 +269,13 @@ class MapClient(KalScenarioClient):
         x -= self.layout.imagemap.pos[0]
         y -= self.layout.imagemap.pos[1]
         self.send('POS %d %d %d %d' % (instance.index, x, y, instance.rotation))
-        print 'POS %d %d %d %d' % (instance.index, x, y, instance.rotation)
+
         #print "CLIENT : send POS"
 
     def send_color(self, instance, value):
-        value = self.color
-        self.send('COLOR %d %d %d %d' % (instance.index, value[0]*255,value[1]*255,value[2]*255) )
+        value = [1,1,1]
+        self.send('COLOR %d %d %d %d' % (instance.index, 255,255,255 ))
+        # self.send('COLOR %d %d %d %d' % (instance.index, value[0]*255,value[1]*255,value[2]*255) )
 
     def send_flag_change(self, mapitem, flag_id):
         print 'send flagchange', flag_id

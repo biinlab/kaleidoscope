@@ -19,11 +19,14 @@ from kivy.animation import Animation
 from kivy.properties import ListProperty, DictProperty, StringProperty, NumericProperty, BooleanProperty
 from kivy.clock import Clock
 
-TIMER_0 = 15
-TIMER_1 = 60
+
+TIMER_0 = 1
+TIMER_1 = 1
 TIMER_2 = 1
 
-TIMER_3 = 15
+TIMER_3 = 1
+
+TIMER_4 = 10
 MAX_CLIENT_ITEMS = 5
 
 background = Image(join(dirname(__file__), 'background.jpg'))
@@ -188,32 +191,33 @@ class MapServer(KalScenarioServer):
                 layers = layers2[1]
                 )
         self.map_background[0] = ImageWidget(
-                 source = 'data/map-animaux.png',
+                 source = 'data/map-animaux-game.png',
                  size_hint = imagemap.size_hint,
                  size = imagemap.size,
                  pos=(0,0)
                  )
         self.map_background[1] = ImageWidget(
-                 source = 'data/map-carpologue.png',
+                 source = 'data/map-carpologue-game.png',
                  size_hint = imagemap2.size_hint,
                  size = imagemap2.size,
                  pos=(0,0)
                  )
-        self.scat[0] = Scatter(
+        self.scat[0] = scatter0 = Scatter(
                 size_hint = imagemap.size_hint,
+                pos_hint = {'center_x': 0.5, 'center_y': 0.25},
                 size = imagemap.size,
-                pos = (800,1000),
                 scale = .6,
-                rotation = 180,
+                rotation = 0,
                 do_translation = False,
                 do_scale = False   
                 )
+
         self.scat[1] = Scatter(
                 size_hint = imagemap2.size_hint,
                 size = imagemap2.size,
-                pos = (1800,1000),
+                pos_hint = {'center_x': 1650/1920., 'center_y': 0.5},
                 scale = .6,
-                rotation = 180,
+                rotation = 90,
                 do_translation = False,
                 do_scale = False   
                 )        
@@ -230,13 +234,13 @@ class MapServer(KalScenarioServer):
                 layers = layers2[3]
                 )
         self.map_background[2] = ImageWidget(
-                 source = 'data/map-poterie.png',
+                 source = 'data/map-poterie-game.png',
                  size_hint = imagemap3.size_hint,
                  size = imagemap3.size,
                  pos=(0,0)
                  )
         self.map_background[3] = ImageWidget(
-                 source = 'data/map-animaux.png',
+                 source = 'data/map-animaux-game.png',
                  size_hint = imagemap4.size_hint,
                  size = imagemap4.size,
                  pos=(0,0)
@@ -244,37 +248,42 @@ class MapServer(KalScenarioServer):
         self.scat[2] = Scatter(
                 size_hint = imagemap3.size_hint,
                 size = imagemap3.size,
-                pos = (480, 0),
+                pos_hint = {'center_x': 0.5, 'center_y': 0.75},
                 scale = .6,
-                rotation = 0,
+                rotation = 180,
                 do_translation = False,
                 do_scale = False   
                 )
         self.scat[3] = Scatter(
                 size_hint = imagemap4.size_hint,
                 size = imagemap4.size,
-                pos = (1920, 1080),
+                pos_hint = {'center_x': 270/1920., 'center_y': 0.5},
                 scale = .6,
-                rotation = 0,
+                rotation = 270,
                 do_translation = False,
                 do_scale = False   
                 )
-        self.layout.add_widget(self.scat[0])
+        # self.layout.add_widget(self.scat[0])
         self.scat[0].add_widget(self.map_background[0])
         self.scat[0].add_widget(self.imagemap[0])
-        self.layout.add_widget(self.scat[1])
+        # self.layout.add_widget(self.scat[1])
         self.scat[1].add_widget(self.map_background[1])
         self.scat[1].add_widget(self.imagemap[1])
-        self.layout.add_widget(self.scat[2])
+        # self.layout.add_widget(self.scat[2])
         self.scat[2].add_widget(self.map_background[2])
         self.scat[2].add_widget(self.imagemap[2])
-        self.layout.add_widget(self.scat[3])
+        # self.layout.add_widget(self.scat[3])
         self.scat[3].add_widget(self.map_background[3])
         self.scat[3].add_widget(self.imagemap[3])
 
+        for client in self.controler.clients:
+            if self.players[client]['want_to_play']:
+                self.layout.add_widget(self.scat[self.players[client]['place'] - 1])
+
+
         self.controler.app.show(self.layout)
 
-
+        print self.map_background
 
 
     #
@@ -340,6 +349,7 @@ class MapServer(KalScenarioServer):
                 #display mapitem on main screen
                 self.imagemap[self.controler.metadata[client]['place'] - 1].display_mapitem(filename, True, (0,0,0,1))
             thumb = self.create_and_add_item(client, thumb_index)
+            thumb.color = (1,1,1)
             """
             #hide thumb on clients except client
             self.hide_thumb(client, thumb_index)
@@ -547,7 +557,7 @@ class MapServer(KalScenarioServer):
 
         self.timeout = time() + TIMER_1
 
-        self.timeoutfinal = time() + TIMER_1 + TIMER_2 + TIMER_3
+        self.timeoutfinal = time() + TIMER_1 + TIMER_2 + TIMER_3 + TIMER_4
 
         for player in self.players.itervalues():
             if player['want_to_play']:
@@ -793,9 +803,20 @@ class MapServer(KalScenarioServer):
                 self.send_to(player['client'],'PLACETHUMBS')
                 # self.send_to(player['client'],'GAME2')
                 self.send_to(player['client'],'TIME %d %d' % (time(), int(self.timeout)))
-        self.state = 'game3'
+        self.state = 'game2bis'
         
-        
+        for i in range(0,4):
+            self.map_background[i].source = self.map_background[i].source.replace("-game", "")
+    
+
+    def run_game2bis(self):
+        if time() > self.timeout:
+            for player in self.players.itervalues():
+                if player['want_to_play']:
+                    self.send_to(player['client'],'POPUP')
+
+            self.timeout = time() + TIMER_4
+            self.state = "game3"
         
     def run_game3(self):
         if time() > self.timeout:
