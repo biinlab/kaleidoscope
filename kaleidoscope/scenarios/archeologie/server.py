@@ -283,7 +283,6 @@ class MapServer(KalScenarioServer):
 
         self.controler.app.show(self.layout)
 
-        print self.map_background
 
 
     #

@@ -4,122 +4,138 @@
 		{
 			"title": "Cheval",
 			"filename": "animaux-cheval_ancrage.png",
-			"content": "poil",
+			"content": "Il aidait au transport des hommes et du matériel",
 			"rightpos": "950x390",
 			"valide": "oui",
-			"rotation": "-5"
+			"rotation": "-5",
+			"media": "cheval.png"
 		},
 		{
 			"title": "Chevre",
 			"filename": "animaux-chevre_ancrage.png",
-			"content": "poil",
+			"content": "Animal portant des sonnailles permettant à l’agriculteur de le retrouver",
 			"rightpos": "1013x676",
 			"valide": "oui",
-			"rotation": "0"
+			"rotation": "0",
+			"media": "chevre.png"
 		},
 		{
 			"title": "Dindon",
 			"filename": "animaux-dindon_ancrage.png",
-			"content": "poil",
+			"content": "Volaille très prisée pour les repas de fête",
 			"rightpos": "517x143",
 			"valide": "non",
-			"rotation": "0"
+			"rotation": "0",
+			"media": "dindon.png"
 		},
 		{
 			"title": "Vache",
 			"filename": "animaux-vache_ancrage.png",
-			"content": "poil",
+			"content": "Animal utilisé notamment par l’agriculteur dans le travail des champs",
 			"rightpos": "404x676",
 			"valide": "oui",
-			"rotation": "30"
+			"rotation": "30",
+			"media": "vache.png"
 		},
 		{
 			"title": "Coq",
 			"filename": "animaux-coq_ancrage.png",
-			"content": "poil",
+			"content": "Volaille de basse cour réveillant la maisonnée avec le lever du soleil",
 			"rightpos": "1098x353",
 			"valide": "oui",
-			"rotation": "15"
+			"rotation": "15",
+			"media": "coq.png"
 		},
 		{
 			"title": "Seigle",
 			"filename": "graine-seigle_ancrage.png",
-			"content": "poil",
+			"content": "Céréale utilisée pour l’alimentation et le fourrage",
 			"rightpos": "665x268",
 			"valide": "oui",
-			"rotation": "0"
+			"rotation": "0",
+			"media": "seigle.png"
 		},
 		{
 			"title": "Feves",
 			"filename": "graine-feves_ancrage.png",
-			"content": "poil",
+			"content": "Légumineuse dont la cosse ressemble à celle du petit pois",
 			"rightpos": "237x450",
 			"valide": "oui",
-			"rotation": "0"
+			"rotation": "0",
+			"media": "feves.png"
+
 		},
 		{
 			"title": "Lentille",
 			"filename": "graine-lentille_ancrage.png",
-			"content": "poil",
+			"content": "Légumineuse aujourd’hui verte, blonde ou corail",
 			"rightpos": "1067x309",
 			"valide": "oui",
-			"rotation": "0"
+			"rotation": "0",
+			"media": "lentilles.png"
 		},
 		{
 			"title": "Poire",
 			"filename": "graine-poire_ancrage.png",
-			"content": "poil",
+			"content": "Pépin de fruit poussant dans un verger",
 			"rightpos": "480x198",
 			"valide": "oui",
-			"rotation": "0"
+			"rotation": "0",
+			"media": "poire.png"
 		},
 		{
 			"title": "Tomate",
 			"filename": "graine-tomate_ancrage.png",
-			"content": "poil",
+			"content": "Pépin de fruit cultivé dans un potager",
 			"rightpos": "115x104",
 			"valide": "non",
-			"rotation": "0"
+			"rotation": "0",
+			"media": ""
 		},
 		{
 			"title": "Poterie1",
 			"filename": "poterie-poterie1_ancrage.png",
-			"content": "poil",
+			"content": "Utilisée par chacun pour étancher sa soif",
 			"rightpos": "184x473",
 			"valide": "oui",
-			"rotation": "17"
+			"rotation": "17",
+			"media": "tasse.png"
 		},
 		{
 			"title": "Poterie2_1",
 			"filename": "poterie-poterie2_1_ancrage.png",
-			"content": "poil",
+			"content": "Poterie pour cuire la soupe",
 			"rightpos": "533x566",
 			"valide": "non",
-			"rotation": "-5"
+			"rotation": "-5",
+			"media": "pot.png"
 		},
 		{
 			"title": "Poterie2_2",
 			"filename": "poterie-poterie2_2_ancrage.png",
-			"content": "poil",
+			"content": "Vase",
 			"rightpos": "663x249",
 			"valide": "oui",
-			"rotation": "-5"
+			"rotation": "-5",
+			"media": ""
 		},
 		{
 			"title": "Poterie3",
 			"filename": "poterie-poterie3_ancrage.png",
-			"content": "poil",
+			"content": "Utilisé pour présenter des mets ou les consommer",
 			"rightpos": "690x80",
 			"valide": "oui",
-			"rotation": "11"
+			"rotation": "11",
+			"media": "plat.png"
 		},
 		{
 			"title": "Poterie4",
 			"filename": "poterie-poterie4_ancrage.png",
-			"content": "poil",
+			"content": "Poterie ornementée avec anse",
 			"rightpos": "1134x600",
 			"valide": "oui",
-			"rotation": "-16"
+			"rotation": "-16",
+			"media": "pichet.png"
 		},
 		{
 			"title": "Afrique du Sud",

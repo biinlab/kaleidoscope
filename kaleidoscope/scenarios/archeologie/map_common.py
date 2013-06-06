@@ -109,8 +109,8 @@ class MapDescription(FloatLayout):
     layout = ObjectProperty(None)
     media = ObjectProperty(None)
 
-    def __init__(self, **kwargs):
-        super(MapDescription, self).__init__(**kwargs)
+    # def __init__(self, **kwargs):
+    #     super(MapDescription, self).__init__(**kwargs)
 
 
 class MapThumbnail(Scatter):
@@ -119,6 +119,7 @@ class MapThumbnail(Scatter):
     origin = ListProperty([0, 0])
     imagemap = ObjectProperty(None)
     item = ObjectProperty(None)
+    popup = ObjectProperty(None)
     mapitem = StringProperty('')
     index = NumericProperty(-1)
     color = ListProperty([1, 1, 1])
@@ -254,6 +255,10 @@ class MapThumbnail(Scatter):
             return
     
 
+        if touch.is_double_tap:
+            self.show_popup()
+            return True
+
         layout = self.imagemap.layout
         # width = layout.cluePanel.width
         volet = layout.volet
@@ -320,7 +325,6 @@ class MapThumbnail(Scatter):
                     if self.auto_color:
                         color = Color(0 / 360., 71 / 100., 87 / 100., mode='hsv')
                         self.color = [color.rgba[0], color.rgba[1], color.rgba[2]]
-                        print color.rgba
                     self.mapitem = ''
                     self.scale = 1            
                     # self.launchAnimPanel(self.imagemap.layout.cluePanel, False)
@@ -389,6 +393,58 @@ class MapThumbnail(Scatter):
         if self.auto_color : 
             self.update_color(False)
         return ret
+
+    def show_popup(self):
+        if self.popup is not None:
+            self.popup.dismiss()
+        desc = MapDescription(item=self.item)
+
+        count = 0
+
+        media = self.item.get('media', '')
+        if media:
+            ext = media.rsplit('.', 1)[-1].lower()
+            media = join(dirname(__file__), 'data', media)
+            mediawidget = None
+            if ext in ('mp3', 'wav', 'ogg'):
+                mediawidget = MapAudio(source=media)
+            elif ext in ('jpg', 'png', 'jpeg', 'gif', 'bmp', 'tga'):
+                mediawidget = Image(source=media)
+            else:
+                pass
+            if mediawidget:
+                count += 1
+                scatter = Scatter(do_translation=False, do_rotation=False, do_scale=False)
+                scatter.add_widget(mediawidget)
+                scatter.bind(size=mediawidget.setter('size'))
+                desc.layout.add_widget(scatter)
+                desc.media = mediawidget
+
+        content = self.item.get('content', '')
+        if content:
+            label = Label(text=content, valign='middle', halign='center')
+            label.bind(size=update_size)
+            desc.layout.add_widget(label)
+            count += 1
+
+        desc.layout.rows = max(1, count)
+        desc.layout.height = 500
+
+        self.popup = popup = Popup(
+            title='Indice',
+            content=desc,
+            size_hint=(.7, .7))
+        self.popup.bind(on_dismiss=self.stop_media)
+        popup.open()
+
+    def stop_media(self, instance):
+        content = instance.content
+        if not content.media:
+            return
+        try:
+            content.media.stop()
+        except Exception, e:
+            print e
     
     def move_to_origin(self):
         Animation(pos=self.origin, t='out_elastic').start(self)

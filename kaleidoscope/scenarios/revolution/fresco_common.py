@@ -175,7 +175,7 @@ class FrescoThumbnail(Scatter):
                         min_scale=.4, max_scale=2)
                 scatter.add_widget(mediawidget)
                 scatter.bind(size=mediawidget.setter('size'))
-                desc.layout.add_widget(mediawidget)
+                desc.layout.add_widget(scatter)
                 desc.media = mediawidget
 
         desc.layout.cols = max(1, count)

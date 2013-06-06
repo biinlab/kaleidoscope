@@ -106,6 +106,8 @@ class MapClient(KalScenarioClient):
 
     def handle_wait_game(self, args):
         self.menu.launchGameButton.opacity = 0
+        self.menu.labelLaunchGame.text = 'ATTENDRE'
+        self.menu.launchGameButton.unbind(state = self.send_launchGame)
         # Changer lecran : le joueur doit attendre la prochaine partie
 
     def handle_game1(self, args):
@@ -127,7 +129,7 @@ class MapClient(KalScenarioClient):
         
     def handle_popup(self, args):
         self.layout.clear()
-        print self.color
+
         label = Label(text= ' L’archéologue en déduit les modes de culture,\nd’élevage et d’alimentation sur le site de Montout\nà l’époque médiévale',pos=(0,0), 
             size=(1280,800), 
             font_size=45, 
@@ -329,6 +331,7 @@ class MapClient(KalScenarioClient):
     def send_launchGame(self, instance, value):
         if value == 'down':
             self.menu.launchGameButton.opacity = 0
+            self.menu.labelLaunchGame.text = ''
             self.send('WANT_TO_PLAY')
 
     def send_thheld(self, instance, th_index):

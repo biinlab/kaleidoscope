@@ -88,6 +88,7 @@
 
 <MapMenu>:
 	launchGameButton: launchGameButton
+	labelLaunchGame: labelLaunchGame
 	# helpButton: helpButton
 
 	canvas.before:
@@ -111,6 +112,12 @@
 			circle: self.width/2, self.height/2, 50, 0, (root.time/root.timeout*360)
 			width: 3
 			# 0, 0, 150, 150, 90, 180
+
+		Color:
+			rgba: root.color + [1] if root.time == 0 else (0,0,0,0)
+		Line:
+			circle: self.center_x, self.center_y, 50
+			width: 3
 		# Line:
 		# 	circle: self.width/2, self.height/2, 15, #0, (360-root.time/root.timeout*360)
 		# 	width: 30
@@ -133,12 +140,25 @@
 		font_name: 'data/fonts/FuturaLT-Bold.ttf'
 
 	Label:
+		id: labelLaunchGame
 		color: root.color + [1]
 		size_hint: (None, None)
 		size: (300, 100)
 		center_x: 2*1280/3
 		center_y: 400
-		text: "JOUER" if root.time == 0 else str(int(root.time)) + ' "'
+		text: "JOUER"
+		font_size: 30
+		valign: 'middle'
+		halign: 'center'
+		font_name: 'data/fonts/FuturaLT-Bold.ttf'
+
+	Label:
+		color: root.color + [1]
+		size_hint: (None, None)
+		size: (100,100)
+		center_x: 640
+		center_y: 400
+		text: str(int(root.time)) + ' "' if root.time != 0 else ''
 		font_size: 30
 		valign: 'middle'
 		halign: 'center'
@@ -148,22 +168,22 @@
 	Button:
 		id:launchGameButton
 		size_hint: (None,None)
-		size: (100, 100)
+		size: (300, 100)
 		background_color: 0,0,0,0
 		# background_down: 'data/btn-start_active.png'
 		# background_normal: 'data/btn-start.png'
 		# text: "JOUER" 
 		opacity: 1 
-		center_x: 1280/2
+		center_x: 2*1280/3
 		center_y: 400
 		font_size: 0
 
-		canvas: 
-			Color:
-				rgba: root.color + [1]
-			Line:
-				circle: self.center_x, self.center_y, 50
-				width: 3
+		# canvas: 
+			# Color:
+			# 	rgba: root.color + [1]
+			# Line:
+			# 	circle: self.center_x, self.center_y, 50
+			# 	width: 3
 	# Button:
 	# 	id:helpButton
 	# 	size_hint: (None,None)
@@ -254,9 +274,20 @@
 			# text_size: (170, 52)
 			# height: 13
 			x: 150
-			y: 700
+			y: 720
 			color: root.color + [1]
 			text: root.titre
+			font_name: 'data/fonts/FuturaLT-Bold.ttf'
+
+		Label:
+			size_hint: (None, None)
+			font_size: 16
+			# text_size: (170, 52)
+			# height: 13
+			x: 150
+			y: 690
+			color: root.color + [1]
+			text: 'Double-tap pour avoir un indice'
 			font_name: 'data/fonts/FuturaLT-Bold.ttf'
 
 		Scatter:
@@ -362,11 +393,24 @@
 <MapDescription>:
 	layout: layout
 
-	Image:
-		size_hint: (None,None)
-		source: 'panneau-droite-active.png'
-		pos: 0,0
-		size: 320, 800
+	ScrollView:
+		pos: root.pos
+		size: root.width, root.height - 50
+		do_scroll_x: False
+		do_scroll_y: False
+		GridLayout:
+			rows: 2
+			cols: 1
+			size_hint: (1, None)
+			padding: 50
+			spacing: 10
+			id: layout
+
+	Button:
+		size_hint: (None, None)
+		size: (100, 40)
+		text: '<< Retour'
+		pos: root.x - 5, root.y - 50
 
 
 <MapServerLayout>:
