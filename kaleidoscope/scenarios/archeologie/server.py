@@ -20,13 +20,13 @@ from kivy.properties import ListProperty, DictProperty, StringProperty, NumericP
 from kivy.clock import Clock
 
 
-TIMER_0 = 1
-TIMER_1 = 1
-TIMER_2 = 1
+TIMER_0 = 5
+TIMER_1 = 60
+TIMER_2 = 60
 
-TIMER_3 = 1
+TIMER_3 = 20
 
-TIMER_4 = 10
+TIMER_4 = 15
 MAX_CLIENT_ITEMS = 5
 
 background = Image(join(dirname(__file__), 'background.jpg'))
