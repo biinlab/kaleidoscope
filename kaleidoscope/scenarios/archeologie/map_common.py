@@ -120,6 +120,7 @@ class MapThumbnail(Scatter):
     imagemap = ObjectProperty(None)
     item = ObjectProperty(None)
     popup = ObjectProperty(None)
+    popup_open = BooleanProperty(False)
     mapitem = StringProperty('')
     index = NumericProperty(-1)
     color = ListProperty([1, 1, 1])
@@ -241,7 +242,9 @@ class MapThumbnail(Scatter):
             else:
                 anim = Animation(x=0, d=.2)
             anim.start(panel)
-        
+
+
+    
     def on_touch_down(self, touch):
         if not super(MapThumbnail, self).on_touch_down(touch):
             return
@@ -255,18 +258,19 @@ class MapThumbnail(Scatter):
             return
     
 
-        if touch.is_double_tap:
-            self.show_popup()
-            return True
 
         layout = self.imagemap.layout
         # width = layout.cluePanel.width
         volet = layout.volet
+        indice = layout.cluePanel
         # clueArea = layout.clueArea
         # print self.media_picture_thumbnail
         if volet.x == 0:
             layout.anim_volet()
             # self.launchAnimPanel(volet, True)
+
+        if indice.scale <= 1:
+            layout.launchCluePanel(indice, False)
 
         parent = self.parent
         if not isinstance(parent, MapClientLayout):
@@ -296,14 +300,23 @@ class MapThumbnail(Scatter):
         if not ret:
             return
 
+        if self.popup_open == True:
+            self.popup.dismiss()
+
+
+
         if self.locked: return
         if not self.controled: return
 
         layout = self.imagemap.layout
         volet = layout.volet
+        indice = layout.cluePanel
         if volet.x == -360:
             layout.anim_volet()
             # self.launchAnimPanel(volet, False)
+
+        if indice.scale >= 0:
+            layout.launchCluePanel(indice, True)
 
         if not self._touches and ret: 
                 #test if th is on a mapitem
@@ -360,6 +373,19 @@ class MapThumbnail(Scatter):
             return
         #mapitem = self.imagemap.flag(self.index, touch.x, touch.y)
         #print mapitem
+        
+        if touch.x > 1080 and touch.y < 200:
+            if self.popup_open == False:
+                self.show_popup()
+                return True
+
+        elif self.popup_open == True:
+            self.popup.dismiss()
+            # self.popup = None
+            return True
+
+
+
         x,y = self.pos
         x += self.width / 2
         y += self.height / 2
@@ -395,6 +421,14 @@ class MapThumbnail(Scatter):
         return ret
 
     def show_popup(self):
+
+        def on_open(popup):
+            self.popup_open = True
+
+        def on_dismiss(popup):
+            self.popup_open = False
+
+
         if self.popup is not None:
             self.popup.dismiss()
         desc = MapDescription(item=self.item)
@@ -422,7 +456,7 @@ class MapThumbnail(Scatter):
 
         content = self.item.get('content', '')
         if content:
-            label = Label(text=content, valign='middle', halign='center')
+            label = Label(text=content, valign='middle', halign='center', font_size=32)
             label.bind(size=update_size)
             desc.layout.add_widget(label)
             count += 1
@@ -433,8 +467,11 @@ class MapThumbnail(Scatter):
         self.popup = popup = Popup(
             title='Indice',
             content=desc,
-            size_hint=(.7, .7))
-        self.popup.bind(on_dismiss=self.stop_media)
+            size_hint=(.7, .7),
+            separato_color= self.imagemap.layout.color)
+        # self.popup.bind(on_dismiss=self.stop_media)
+        self.popup.bind(on_open = on_open )
+        self.popup.bind(on_dismiss = on_dismiss )
         popup.open()
 
     def stop_media(self, instance):
@@ -1060,6 +1097,15 @@ class MapClientLayout(FloatLayout):
             self.volet.x = 0
         else:
             self.volet.x = -360
+
+
+    def launchCluePanel(self, panel, op = True):
+        Animation.stop_all(panel)
+        if op:
+            anim = Animation(scale= 0.01, d=.2)
+        else:
+            anim = Animation(scale= 1, d=.2)
+        anim.start(panel)
 
 
 from kivy.factory import Factory

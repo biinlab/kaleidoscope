@@ -113,11 +113,11 @@
 		{
 			"title": "Poterie2_2",
 			"filename": "poterie-poterie2_2_ancrage.png",
-			"content": "Vase",
+			"content": "Poterie pour cuire la soupe",
 			"rightpos": "663x249",
 			"valide": "oui",
 			"rotation": "-5",
-			"media": ""
+			"media": "pot.png"
 		},
 		{
 			"title": "Poterie3",

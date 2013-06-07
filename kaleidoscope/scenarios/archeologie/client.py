@@ -130,7 +130,7 @@ class MapClient(KalScenarioClient):
     def handle_popup(self, args):
         self.layout.clear()
 
-        label = Label(text= ' L’archéologue en déduit les modes de culture,\nd’élevage et d’alimentation sur le site de Montout\nà l’époque médiévale',pos=(0,0), 
+        label = Label(text= ' L’archéologue en déduit les modes de culture,\nd’élevage et d’alimentation sur le site de Montout\nà l’époque médiévale.',pos=(0,0), 
             size=(1280,800), 
             font_size=45, 
             font_name='data/fonts/FuturaLT-Bold.ttf',
