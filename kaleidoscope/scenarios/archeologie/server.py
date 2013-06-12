@@ -47,7 +47,7 @@ map_colors = (
 #     'plane',
 #     'ying',
 # )
-layers = ["animaux", "carpologue", "poterie", "delta"]
+layers = ["animaux", "carpologue", "poterie", "instrumentum"]
 
 map_coordinates = (
     (0,0),
@@ -73,7 +73,7 @@ Factory.register('MapServerLayout', cls=MapServerLayout)
 class MapServer(KalScenarioServer):
     json_filename = StringProperty('')
     scenariol = NumericProperty(-2)
-    layers = ListProperty( ["alpha", "beta", "charlie", "delta"] )
+    layers = ListProperty( ["animaux", "carpologue", "poterie", "instrumentum"] )
 
     def search_data_files(self):
         blacklist = ('__init__.py', )
@@ -240,7 +240,7 @@ class MapServer(KalScenarioServer):
                  pos=(0,0)
                  )
         self.map_background[3] = ImageWidget(
-                 source = 'data/map-animaux-game.png',
+                 source = 'data/map-instrumentum-game.png',
                  size_hint = imagemap4.size_hint,
                  size = imagemap4.size,
                  pos=(0,0)
