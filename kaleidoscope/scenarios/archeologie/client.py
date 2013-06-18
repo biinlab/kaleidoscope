@@ -106,7 +106,7 @@ class MapClient(KalScenarioClient):
 
     def handle_wait_game(self, args):
         self.menu.launchGameButton.opacity = 0
-        self.menu.labelLaunchGame.text = 'ATTENDRE'
+        self.menu.labelLaunchGame.text = 'ATTENDRE LA FIN DE PARTIE EN COURS'
         self.menu.launchGameButton.unbind(state = self.send_launchGame)
         # Changer lecran : le joueur doit attendre la prochaine partie
 
@@ -115,6 +115,7 @@ class MapClient(KalScenarioClient):
         self.layout = MapClientLayout(mapclient = self) 
         self.container.clear_widgets()
         self.container.add_widget(self.layout)
+        self.layout.labelStatus.text = 'ASSOCIATION'
         # self.layout.exitButton.bind(state= self.send_exitgame)
 
     def handle_map(self, args):
@@ -126,6 +127,9 @@ class MapClient(KalScenarioClient):
 
     def handle_game2(self, args):
         self.layout.auto_color_thumbs()
+        self.layout.labelStatus.text = 'CORRECTION'
+        for th in self.layout.items:
+            self.send_pos(th,0)
         
     def handle_popup(self, args):
         self.layout.clear()
@@ -242,9 +246,11 @@ class MapClient(KalScenarioClient):
         for th in self.layout.items:
             th.locked = True
             self.send_pos(th,0)
-            self.send_color(th,0)
+            # self.send_color(th,th.color)
 
         self.layout.volet.x = -450
+
+        self.layout.labelStatus.text = 'SOLUTION'
 
     def handle_clear(self, args):
         self.layout.clear()
@@ -264,6 +270,7 @@ class MapClient(KalScenarioClient):
 
     def send_pos(self, instance, value):
         value = instance.center
+        print instance.color
         if value is None:
             value = (-1,-1)
             return
@@ -271,13 +278,16 @@ class MapClient(KalScenarioClient):
         x -= self.layout.imagemap.pos[0]
         y -= self.layout.imagemap.pos[1]
         self.send('POS %d %d %d %d' % (instance.index, x, y, instance.rotation))
+        self.send_color(instance, instance.color)
+
+        # self.send_color(instance, instance.color)
 
         #print "CLIENT : send POS"
 
     def send_color(self, instance, value):
-        value = [1,1,1]
-        self.send('COLOR %d %d %d %d' % (instance.index, 255,255,255 ))
-        # self.send('COLOR %d %d %d %d' % (instance.index, value[0]*255,value[1]*255,value[2]*255) )
+        # self.send('COLOR %d %d %d %d' % (instance.index, 255,255,255 ))
+        print value
+        self.send('COLOR %d %d %d %d' % (instance.index, int(value[0]*255),int(value[1]*255),int(value[2]*255) ))
 
     def send_flag_change(self, mapitem, flag_id):
         print 'send flagchange', flag_id

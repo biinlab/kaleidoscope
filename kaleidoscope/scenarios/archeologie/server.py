@@ -24,7 +24,7 @@ TIMER_0 = 5
 TIMER_1 = 60
 TIMER_2 = 60
 
-TIMER_3 = 20
+TIMER_3 = 30
 
 TIMER_4 = 15
 MAX_CLIENT_ITEMS = 5
@@ -99,6 +99,7 @@ class MapServer(KalScenarioServer):
         super(MapServer, self).__init__(*largs)
         self.layout = None
         Clock.schedule_interval(self.update_graphics_timer, 1 / 100.)
+        Clock.max_iteration = 100
 
         self.timeout = 0
         self.timemsg = 0
@@ -226,17 +227,23 @@ class MapServer(KalScenarioServer):
                 size_hint=(None, None),
                 size = (1280,800),
                 layers = layers2[2]
-                )
+                )        
         self.imagemap[3] = imagemap4 = Map(
                 server=True, 
                 size_hint=(None, None),
                 size = (1280,800),
                 layers = layers2[3]
                 )
+        # self.imagemap[3] = imagemap4 = Map(
+        #         server=True, 
+        #         size_hint=(None, None),
+        #         size = (1280,800),
+        #         layers = layers2[3]
+        #         )
         self.map_background[2] = ImageWidget(
                  source = 'data/map-poterie-game.png',
-                 size_hint = imagemap3.size_hint,
-                 size = imagemap3.size,
+                 size_hint = imagemap4.size_hint,
+                 size = imagemap4.size,
                  pos=(0,0)
                  )
         self.map_background[3] = ImageWidget(
@@ -245,6 +252,12 @@ class MapServer(KalScenarioServer):
                  size = imagemap4.size,
                  pos=(0,0)
                  )
+        # self.map_background[3] = ImageWidget(
+        #          source = 'data/map-instrumentum-game.png',
+        #          size_hint = imagemap4.size_hint,
+        #          size = imagemap4.size,
+        #          pos=(0,0)
+        #          )
         self.scat[2] = Scatter(
                 size_hint = imagemap3.size_hint,
                 size = imagemap3.size,
@@ -255,14 +268,23 @@ class MapServer(KalScenarioServer):
                 do_scale = False   
                 )
         self.scat[3] = Scatter(
-                size_hint = imagemap4.size_hint,
-                size = imagemap4.size,
-                pos_hint = {'center_x': 270/1920., 'center_y': 0.5},
+                size_hint = imagemap3.size_hint,
+                size = imagemap3.size,
+                pos_hint = {'center_x': 0.14, 'center_y': 0.5},
                 scale = .6,
                 rotation = 270,
                 do_translation = False,
                 do_scale = False   
                 )
+        # self.scat[3] = Scatter(
+        #         size_hint = imagemap4.size_hint,
+        #         size = imagemap4.size,
+        #         pos_hint = {'center_x': 270/1920., 'center_y': 0.5},
+        #         scale = .6,
+        #         rotation = 270,
+        #         do_translation = False,
+        #         do_scale = False   
+        #         )
         # self.layout.add_widget(self.scat[0])
         self.scat[0].add_widget(self.map_background[0])
         self.scat[0].add_widget(self.imagemap[0])
@@ -536,7 +558,6 @@ class MapServer(KalScenarioServer):
 
 
     def run_menu1(self):
-
         want_to_play = False
         for player in self.players.itervalues():
             want_to_play = want_to_play or player['want_to_play']
@@ -550,10 +571,10 @@ class MapServer(KalScenarioServer):
         self.state ='menu2'
 
     def run_menu2(self):
-
+        
         if time() < self.timeout:
             return
-
+        print "run menu2"
         self.timeout = time() + TIMER_1
 
         self.timeoutfinal = time() + TIMER_1 + TIMER_2 + TIMER_3 + TIMER_4
@@ -576,19 +597,21 @@ class MapServer(KalScenarioServer):
         self.state = 'game0'  
 
     def run_game0(self):
-
+        
         if scenariol == -2:
             sleep(0.2)
             return
-
+        
         #self.layout.remove_widget(self.selector)
         # self.send_all('REMOVESELECTOR')
         self.init_ui()
+        print "apres init_ui"
+        sleep(1)
         self.items_given = []
         self.layers_given = {}
         
         affected = [-1]
-
+        print "ici"
         for i in range(0,4):
             self.imagemap[i].layers = []
         for client in self.controler.clients:
@@ -618,7 +641,7 @@ class MapServer(KalScenarioServer):
                 self.layers_given[client] = layers[place] 
                 self.send_to(client, 'MAPSIZE %d %d' % map_coordinates[1] )
                 self.send_to(client, 'MAPPOS %d %d' % map_coordinates[0])
-
+        print 'la'
         #create map
         for player in self.players.itervalues():
             if player['want_to_play']:
@@ -654,7 +677,7 @@ class MapServer(KalScenarioServer):
         #                     break
         #                 allfinished = allfinished and False
         #         if litems == 0 : allfinished = True       
-  
+        print "pouet"
         for client in self.controler.clients:
             player = self.players[client]
             if player['want_to_play']:
@@ -669,7 +692,7 @@ class MapServer(KalScenarioServer):
                     player['count'] += 1
                     self.items_given.append((client, i))
 
-
+        print "peut etre"
         # print self.items_given
 
         # self.imagemap.data = tmp
@@ -684,6 +707,7 @@ class MapServer(KalScenarioServer):
     def run_game1(self):
         '''First game, place items on the imagemap without ordering
         '''
+
         if time() > self.timeout:
             self.state = 'reset_for_game2'
             return

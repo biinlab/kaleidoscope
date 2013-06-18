@@ -26,7 +26,7 @@ from kivy.vector import Vector
 from os.path import dirname, join, splitext
 
 map_path = ('data/map-animaux-game.png', 'data/map-carpologue-game.png', 'data/map-poterie-game.png', 'data/map-instrumentum-game.png')
-map_titre = ( 'ARCHEOZOOLOGUE', 'CARPOLOGUE', 'CERAMOLOGUE', 'INSTRUMENTOLOGUE')
+map_titre = ( 'ARCHEOZOOLOGUE', 'CARPOLOGUE', 'CERAMOLOGUE', 'SPECIALISTE DE L\'INSTRUMENTUM')
 
 
 class ScenarioSelectorButton(Button):
