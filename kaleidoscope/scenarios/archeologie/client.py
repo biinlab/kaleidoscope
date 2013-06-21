@@ -129,7 +129,7 @@ class MapClient(KalScenarioClient):
         self.layout.auto_color_thumbs()
         self.layout.labelStatus.text = 'CORRECTION'
         for th in self.layout.items:
-            self.send_pos(th,0)
+            self.send_color(th, th.color)
         
     def handle_popup(self, args):
         self.layout.clear()
@@ -151,7 +151,7 @@ class MapClient(KalScenarioClient):
         self.layout.hide_places()
 
     def handle_give(self, args):
-        print 'handle_give'
+        # print 'handle_give'
         # create thumbnail in the gridlayout
         self.count += 1
         #print args
@@ -270,7 +270,7 @@ class MapClient(KalScenarioClient):
 
     def send_pos(self, instance, value):
         value = instance.center
-        print instance.color
+
         if value is None:
             value = (-1,-1)
             return
@@ -286,11 +286,10 @@ class MapClient(KalScenarioClient):
 
     def send_color(self, instance, value):
         # self.send('COLOR %d %d %d %d' % (instance.index, 255,255,255 ))
-        print value
         self.send('COLOR %d %d %d %d' % (instance.index, int(value[0]*255),int(value[1]*255),int(value[2]*255) ))
 
     def send_flag_change(self, mapitem, flag_id):
-        print 'send flagchange', flag_id
+        # print 'send flagchange', flag_id
         if flag_id is None:
             flag_id = -1
         filename_index = self.filename2index(mapitem.filename) 

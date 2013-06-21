@@ -103,11 +103,11 @@
 		},
 		{
 			"title": "Poterie2_1",
-			"filename": "poterie-poterie2_1_ancrage.png",
-			"content": "Poterie pour cuire la soupe",
-			"rightpos": "533x566",
+			"filename": "poterie-theiere_ancrage.png",
+			"content": "On sait pas trop",
+			"rightpos": "268x127",
 			"valide": "non",
-			"rotation": "-5",
+			"rotation": "0",
 			"media": "pot.png"
 		},
 		{

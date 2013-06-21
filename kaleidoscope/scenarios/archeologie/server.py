@@ -327,7 +327,7 @@ class MapServer(KalScenarioServer):
 
 
     def do_client_flagchange(self, client, args):
-        print 'flagchange'
+        # print 'flagchange'
         filename = self.index2filename( int(args[0]), client)
         thumb_index = int(args[1])
         #print "SERVER : do_client_flagchange: "+ str(client)+','+str(filename)+str(thumb_index)
@@ -399,7 +399,7 @@ class MapServer(KalScenarioServer):
         return thumb
 
     def do_client_pos(self, client, args):
-        print 'do_client_pos'
+        # print 'do_client_pos'
         index = int(args[0])
         x = int(args[1])
         y = int(args[2])
@@ -574,7 +574,7 @@ class MapServer(KalScenarioServer):
         
         if time() < self.timeout:
             return
-        print "run menu2"
+
         self.timeout = time() + TIMER_1
 
         self.timeoutfinal = time() + TIMER_1 + TIMER_2 + TIMER_3 + TIMER_4
@@ -605,13 +605,13 @@ class MapServer(KalScenarioServer):
         #self.layout.remove_widget(self.selector)
         # self.send_all('REMOVESELECTOR')
         self.init_ui()
-        print "apres init_ui"
+
         sleep(1)
         self.items_given = []
         self.layers_given = {}
         
         affected = [-1]
-        print "ici"
+
         for i in range(0,4):
             self.imagemap[i].layers = []
         for client in self.controler.clients:
@@ -641,7 +641,7 @@ class MapServer(KalScenarioServer):
                 self.layers_given[client] = layers[place] 
                 self.send_to(client, 'MAPSIZE %d %d' % map_coordinates[1] )
                 self.send_to(client, 'MAPPOS %d %d' % map_coordinates[0])
-        print 'la'
+
         #create map
         for player in self.players.itervalues():
             if player['want_to_play']:
@@ -677,7 +677,6 @@ class MapServer(KalScenarioServer):
         #                     break
         #                 allfinished = allfinished and False
         #         if litems == 0 : allfinished = True       
-        print "pouet"
         for client in self.controler.clients:
             player = self.players[client]
             if player['want_to_play']:
@@ -692,7 +691,7 @@ class MapServer(KalScenarioServer):
                     player['count'] += 1
                     self.items_given.append((client, i))
 
-        print "peut etre"
+
         # print self.items_given
 
         # self.imagemap.data = tmp
