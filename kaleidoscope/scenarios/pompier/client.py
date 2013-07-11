@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from os.path import join, dirname
 from time import time
 import thread
@@ -9,7 +11,7 @@ from kivy.resources import resource_add_path
 from kivy.lang import Builder
 from kivy.properties import ListProperty
 
-from map_common import MapClientLayout, Map, MapMenu
+from map_common import MapClientLayout, Map, MapMenu, MapThumbnail
 
 resource_add_path(dirname(__file__))
 Builder.load_file(join(dirname(__file__), 'map.kv'))
@@ -22,11 +24,15 @@ class MapClient(KalScenarioClient):
         self.layout = None
         self.menu = None
         self.isPlaying = False
+        self.score = 0
         #self.logo = ''
         self.color = (1,1,1,0)
         Clock.schedule_interval(self.update_graphics_timer, 1.)
         # Clock.schedule_interval(self.update_graphics_timer, 1 / 10.)
         self.index_list = []
+
+        # liste des items deja compté pour le score
+        self.thcompte = []
 
     # RECEIVE COMMANDS FROM SERVER
     
@@ -111,7 +117,20 @@ class MapClient(KalScenarioClient):
     def handle_game2(self, args):
         self.layout.auto_color_thumbs()
 
+        for item in self.layout.children:
+            if not isinstance(item, MapThumbnail):
+                continue
+
+            if item.current_country2 == item.title and item.pos != item.origin and item.index not in self.thcompte:
+                self.score += 2
+                item.locked = True
+                self.thcompte.append(item.index)
+
+        print 'score :', self.score
+        self.send('SCORE %d' % self.score)
+
     def handle_game3(self, args):
+
         self.layout.lock_thumbs(True)
         self.layout.hide_places()
 
@@ -192,6 +211,19 @@ class MapClient(KalScenarioClient):
         self.layout.imagemap.hide_mapitem(filename)
 
     def handle_placethumbs(self, args):
+        for item in self.layout.children:
+            if not isinstance(item, MapThumbnail):
+                continue
+
+            if item.current_country2 == item.title and item.pos != item.origin and item.index not in self.thcompte:
+                self.score += 1
+                item.locked = True
+                self.thcompte.append(item.index)
+
+        print 'score :', self.score
+        self.send('SCORE %d' % self.score)
+        self.send('SYNC_SCORE')
+
         self.layout.place_thumbs()
         #send pos to server then
         for th in self.layout.items:

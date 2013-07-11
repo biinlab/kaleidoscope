@@ -275,6 +275,207 @@
 
 
 <MapServerLayout>:
+	sctj1: sctj1
+	lblj1: lblj1
+	flj1: flj1
+	flj2: flj2
+	flj3: flj3
+	sctj2: sctj2
+	sctj3: sctj3
+	imgj1: imgj1
+	imgj2: imgj2
+	imgj3: imgj3
+
+	Scatter:
+		id: sctj1
+		# pos_hint: (None, None)
+		pos: 0,0
+		size_hint: None, None
+		size: 1920,1080
+		# center_x: 1280/2
+		# center_y: 400
+		rotation: 0
+		opacity: 0
+		# do_translation: False
+		# do_rotation: False
+		# do_scale: False
+
+		# canvas.before:
+		# 	Color: 
+		# 		rgba: 1,0,1,1
+		# 	Rectangle:
+		# 		size: self.size
+		# 		pos: 0,0
+
+		FloatLayout:
+			id: flj1
+			size: 350,48
+			pos: 785,110
+			size_hint: None, None
+			pos_hint: None, None
+
+			canvas:
+				Color:
+					rgba: 213/255., 219/255., 15/255., 1
+				Line:
+					points: 785,110 , 785+350,110 ,785+350,110+48, 785,110+48
+					width: 2
+					close: True
+					joint: 'round'
+				Rectangle:
+					pos: 785 + 4, 110 + 4
+					size: root.scorej1*290/10, 40 
+
+			Label:
+				id: lblj1
+				pos: 930, 108
+				size: 100,100
+				text_size: 100,100
+				halign: 'center'
+				valign: 'middle'
+				text: str(int(root.scorej1))
+				font_size: 32 
+				font_name: 'data/fonts/myra_regular.ttf'
+
+			Image:
+				id: imgj1
+				color: 213/255., 219/255., 15/255., 1
+				pos: 785, 110
+				size: 350,48
+				opacity: 0
+				source: 'data/winner.png'
+
+
+
+
+
+	Scatter:
+		id: sctj2
+		# pos_hint: (None, None)
+		pos: 0,0
+		size_hint: None, None
+		size: 1920,1080
+		# center_x: 1280/2
+		# center_y: 400
+		rotation: 120
+		opacity: 0
+		# do_translation: False
+		# do_rotation: False
+		# do_scale: False
+
+		FloatLayout:
+			id: flj2
+			size: 350,48
+			pos: 785,110
+			size_hint: None, None
+			pos_hint: None, None
+
+			canvas:
+				Color:
+					rgba: 40/255., 116/255., 255/255., 1
+				Line:
+					points: 785,110 , 785+350,110 ,785+350,110+48, 785,110+48
+					width: 2
+					close: True
+					joint: 'round'
+				Rectangle:
+					pos: 785 + 4, 110 + 4
+					size: root.scorej2*290/10, 40 
+
+			Label:
+				pos: 930, 108
+				size: 100,100
+				text_size: 100,100
+				halign: 'center'
+				valign: 'middle'
+				text: str(int(root.scorej2))
+				font_size: 32 
+				font_name: 'data/fonts/myra_regular.ttf'
+
+			Image:
+				id: imgj2
+				color: 40/255., 116/255., 255/255., 1
+				pos: 785, 110
+				size: 350,48
+				opacity: 0
+				source: 'data/winner.png'
+
+	Scatter:
+		id: sctj3
+		# pos_hint: (None, None)
+		pos: 0,0
+		size_hint: None, None
+		size: 1920,1080
+		# center_x: 1280/2
+		# center_y: 400
+		rotation: 240
+		opacity: 0
+		# do_translation: False
+		# do_rotation: False
+		# do_scale: False
+
+		FloatLayout:
+			id: flj3
+			size: 350,48
+			pos: 785,110
+			size_hint: None, None
+			pos_hint: None, None
+
+			canvas:
+				Color:
+					rgba: 40/255., 194/255., 185/255., 1
+				Line:
+					points: 785,110 , 785+350,110 ,785+350,110+48, 785,110+48
+					width: 2
+					close: True
+					joint: 'round'
+				Rectangle:
+					pos: 785 + 4, 110 + 4
+					size: root.scorej3*290/10, 40 
+
+			Label:
+				pos: 930, 108
+				size: 100,100
+				text_size: 100,100
+				halign: 'center'
+				valign: 'middle'
+				text: str(int (root.scorej3))
+				font_size: 32 
+				font_name: 'data/fonts/myra_regular.ttf'
+
+			Image:
+				id: imgj3
+				color: 40/255., 194/255., 185/255., 1
+				pos: 785, 110
+				size: 350,48
+				opacity: 0
+				source: 'data/winner.png'
+
+	# Scatter:
+	# 	id: sctj1
+	# 	# pos_hint: (None, None)
+	# 	pos: 785, 110
+	# 	size_hint: None, None
+	# 	size: 350, 200
+	# 	# center_x: 1280/2
+	# 	# center_y: 400
+	# 	rotation: 120
+	# 	# do_translation: False
+	# 	# do_rotation: False
+	# 	# do_scale: False
+
+	# 	canvas.before:
+	# 		Color: 
+	# 			rgba: 1,0,1,1
+	# 		Rectangle:
+	# 			size: self.size
+	# 			pos: 0,0
+
+
+
+
+
+
 
 	# canvas.before:
 	# 	Color:

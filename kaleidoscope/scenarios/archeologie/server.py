@@ -20,9 +20,10 @@ from kivy.properties import ListProperty, DictProperty, StringProperty, NumericP
 from kivy.clock import Clock
 
 
-TIMER_0 = 5
+TIMER_0 = 15
 TIMER_1 = 60
 TIMER_2 = 60
+
 
 TIMER_3 = 30
 

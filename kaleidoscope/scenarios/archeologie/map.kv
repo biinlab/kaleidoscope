@@ -345,14 +345,30 @@
 	# 		source: 'data/indice-bar_info.png'
 	# 		size:200, 360
 
+
+	Label:
+		id: labelStatus
+		size_hint: (None, None)
+		font_size: 25
+		text_size: (400, 50)
+		# height: 13
+		center_x: 640
+		center_y: 775
+		auto_bring_to_front: False
+		valign: 'middle'
+		halign: 'center'
+		color: root.color + [1]
+		text: ''
+		font_name: 'data/fonts/FuturaLT-Bold.ttf'
+
 	Scatter:
 		id: cluePanel
 		# pos: 1280 -320, 0
-		pos: 1080, 0
+		pos: 513, 800
 		size_hint: None,None
-		size: 200,200
+		size: 254,144
 		do_scale: False
-		scale: 0.01
+		scale: 1
 		do_rotation: False
 		do_translation: False
 		auto_bring_to_front: True
@@ -361,9 +377,10 @@
 			# id: clueBarPanel
 			size_hint: None,None
 			pos: self.pos
-			source:'data/indice-btn.png'
-			size: 200,200
-			color: root.color + [1]
+			source:'data/volet-indice.png'
+			size: 254,144
+			# color: 0,0,0,1
+			# color: root.color + [1]
 
 		# Image:
 		# 	id: img_description
@@ -384,19 +401,7 @@
 		# 	x: 30
 		# 	y: 180
 
-	Label:
-		id: labelStatus
-		size_hint: (None, None)
-		font_size: 25
-		text_size: (400, 50)
-		# height: 13
-		center_x: 640
-		center_y: 775
-		valign: 'middle'
-		halign: 'center'
-		color: root.color + [1]
-		text: ''
-		font_name: 'data/fonts/FuturaLT-Bold.ttf'
+
 
 
 <MapDescription>:

@@ -23,6 +23,10 @@ TIMER_0 = 15
 TIMER_1 = 150
 TIMER_2 = 90
 
+# TIMER_0 = 3
+# TIMER_1 = 10
+# TIMER_2 = 10
+
 TIMER_3 = 45
 MAX_CLIENT_ITEMS = 5
 
@@ -62,15 +66,31 @@ class MapServerMenu(FloatLayout):
         super(MapServerMenu, self).__init__(**kwargs)
 
 class MapServerLayout(FloatLayout):
-    pass
+    score = ListProperty([0,0,0])
+    nb_score_sync = NumericProperty(0)
+    scorej1 = NumericProperty(0)
+    scorej2 = NumericProperty(0)
+    scorej3 = NumericProperty(0)
 
-from kivy.factory import Factory
-Factory.register('MapServerLayout', cls=MapServerLayout)
+
+    def __init__(self, **kwargs):
+        super(MapServerLayout, self).__init__(**kwargs)
+
+# from kivy.factory import Factory
+# Factory.register('MapServerLayout', cls=MapServerLayout)
 
 class MapServer(KalScenarioServer):
     json_filename = StringProperty('')
     scenariol = NumericProperty(-2)
     layers = ListProperty( ["pays"] )
+
+    
+
+
+
+
+
+
 
     def search_data_files(self):
         blacklist = ('__init__.py', )
@@ -101,6 +121,7 @@ class MapServer(KalScenarioServer):
         self.timemsg = 0
         self.players = {}
 
+
         # init client table
         for client in self.controler.clients:
             self.players[client] = {
@@ -110,7 +131,8 @@ class MapServer(KalScenarioServer):
                 'want_to_play': False,
                 'done': False,
                 'place': self.controler.metadata[client]['place'],
-                'count': 0
+                'count': 0,
+                'score': 0
             }
         #store mapitems and thumbs in order to display them on main screen
         #or remove them from clients
@@ -166,6 +188,14 @@ class MapServer(KalScenarioServer):
         else : layers2 = layers[int(scenariol)]
 
         self.layout = MapServerLayout()
+
+        scat = [self.layout.sctj1, self.layout.sctj2, self.layout.sctj3]
+
+        for client in self.controler.clients:
+            if self.players[client]['want_to_play']:
+                scat[self.players[client]['place']-1].opacity = 1
+
+
         self.imagemap = imagemap = Map(
                 server=True, 
                 size_hint=(None, None),
@@ -299,6 +329,49 @@ class MapServer(KalScenarioServer):
         if thumb is not None :
             thumb.color = (a,b,c)
             
+    def do_client_score(self, client, args):
+
+        self.players[client]['score'] = int (args[0])
+        tmp = self.players[client]['place']-1
+        scoretmp = int (args[0])
+        self.layout.score[tmp] = scoretmp
+
+        if tmp == 0:
+            anim = Animation(scorej1 = scoretmp, d=0.5 )
+        elif tmp == 1:
+            anim = Animation(scorej2 = scoretmp, d=0.5 )
+        else: 
+            anim = Animation(scorej3 = scoretmp, d=0.5 )
+
+        anim.start(self.layout)
+
+    def do_client_sync_score(self, client, args):
+        nb_client = 0
+        for client in self.controler.clients:
+            if self.players[client]['want_to_play']:
+                nb_client += 1
+        
+        self.layout.nb_score_sync += 1
+
+        if self.layout.nb_score_sync == nb_client:
+            self.affiche_winner()
+
+
+    def affiche_winner(self):
+        print 'score max: ',max(self.layout.score)
+
+        scat = [self.layout.sctj1, self.layout.sctj2, self.layout.sctj3]
+        img = [self.layout.imgj1, self.layout.imgj2, self.layout.imgj3]
+
+        for client in self.controler.clients:
+            if self.players[client]['want_to_play']:
+                if self.layout.score[self.players[client]['place'] - 1] == max(self.layout.score):
+                    anim = Animation(y=170, opacity = 1, d=1 )
+                    anim.start(img[self.players[client]['place'] - 1])
+
+
+
+
         
     def index2thumb(self,index):
         for child in self.scat.children:
@@ -322,7 +395,8 @@ class MapServer(KalScenarioServer):
         self.players[client]['want_to_play'] = False
         self.send_to(client, 'MENU')
 
-
+        scat = [self.layout.sctj1, self.layout.sctj2, self.layout.sctj3]
+        scat[self.players[client]['place']-1].opacity = 0
 
         want_to_play = False
         for player in self.players.itervalues():
@@ -579,6 +653,8 @@ class MapServer(KalScenarioServer):
             x,y = thumb.pos
             x += thumb.width/2. 
             filename = self.imagemap.pos2mapitem(x,y)
+
+
             if filename is False :
                 continue
             if filename == thumb.item['filename'] : #, thumb.item['filename']
@@ -586,6 +662,7 @@ class MapServer(KalScenarioServer):
                     if self.players[client]['want_to_play']:
                         # thumb.update_color(True)
                         self.send_to(client, 'THVALID %d' % thumb.index)
+
             else :
                 for client in self.controler.clients:
                     if self.players[client]['want_to_play']:
@@ -594,7 +671,7 @@ class MapServer(KalScenarioServer):
                         self.send_to(client, 'THNOTVALID %d' % thumb.index)
             index_sent.append(thumb.index)
 
-
+        #item encore dans la barre
         for client, index in self.items_given:
             if index in index_sent:
                 continue
@@ -606,6 +683,7 @@ class MapServer(KalScenarioServer):
 
         for player in self.players.itervalues():
             if player['want_to_play']:
+ 
                 self.send_to(player['client'], 'TIME %d %d' % (time(), int(self.timeout)))
                 self.send_to(player['client'],'GAME2')
                 # self.send_to(player['client'],'GAME2')

@@ -427,6 +427,9 @@ class KalClientApp(App):
           "options": ["auto", "libre", "pentaminos", "revolution", "geography", "pompier", "archeologie"]}
         ]'''
 
+        # REMETTRE CETTE LIGNE POUR AVOIT TOUS LES SCENARIOS
+        # "options": ["auto", "libre", "pentaminos", "revolution", "geography", "pompier", "archeologie"]}
+
         # { "type": "numeric", "title": "TIMER 0",
         #   "desc": "Temps de lancement de la partie",
         #   "section": "param", "key": "TIMER0",

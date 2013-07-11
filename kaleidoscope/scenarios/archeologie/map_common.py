@@ -269,7 +269,7 @@ class MapThumbnail(Scatter):
             layout.anim_volet()
             # self.launchAnimPanel(volet, True)
 
-        if indice.scale <= 1:
+        if indice.y > 656 :
             layout.launchCluePanel(indice, False)
 
         parent = self.parent
@@ -315,7 +315,7 @@ class MapThumbnail(Scatter):
             layout.anim_volet()
             # self.launchAnimPanel(volet, False)
 
-        if indice.scale >= 0:
+        if indice.scale < 800:
             layout.launchCluePanel(indice, True)
 
         if not self._touches and ret: 
@@ -374,13 +374,14 @@ class MapThumbnail(Scatter):
         #mapitem = self.imagemap.flag(self.index, touch.x, touch.y)
         #print mapitem
         
-        if touch.x > 1080 and touch.y < 200:
+        if touch.y > 656 and touch.x > 513 and touch.x < 767:
             if self.popup_open == False:
                 self.show_popup()
                 return True
 
         elif self.popup_open == True:
             self.popup.dismiss()
+            self.popup_open = False
             # self.popup = None
             return True
 
@@ -1102,9 +1103,9 @@ class MapClientLayout(FloatLayout):
     def launchCluePanel(self, panel, op = True):
         Animation.stop_all(panel)
         if op:
-            anim = Animation(scale= 0.01, d=.2)
+            anim = Animation(y=800, d=.2)
         else:
-            anim = Animation(scale= 1, d=.2)
+            anim = Animation(y=656, d=.2)
         anim.start(panel)
 
 

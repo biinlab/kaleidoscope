@@ -250,6 +250,8 @@ class MapClient(KalScenarioClient):
 
         self.layout.volet.x = -450
 
+        self.layout.launchCluePanel(self.layout.cluePanel, True)
+
         self.layout.labelStatus.text = 'SOLUTION'
 
     def handle_clear(self, args):
