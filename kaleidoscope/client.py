@@ -253,6 +253,8 @@ class KPanelIdentity(FloatLayout):
     def increase_time(self, dt):
         self.time = Clock.get_boottime()
 
+
+
 class KPanelConnect(FloatLayout):
     ctrl = ObjectProperty(None)
     text = StringProperty('Connexion en cours...')
@@ -267,6 +269,8 @@ class KPanelConnect(FloatLayout):
 
     def increase_time(self, dt):
         self.time = Clock.get_boottime()
+
+
 
 class KalClientInteractive(FloatLayout):
     host = StringProperty('127.0.0.1')

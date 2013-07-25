@@ -1,6 +1,8 @@
 #:kivy 1.0.8
 
 <KPanelIdentity>:
+    btnConfig: btnConfig
+
     canvas:
         Color:
             hsv: (self.time % 25.) / 25., 1, 1
@@ -53,9 +55,16 @@
                 Button:
                     text: 'Se connecter'
                     on_release: root.ctrl.do_connect()
-                Button:
-                    text: 'Configuration'
-                    on_release: root.ctrl.app.open_settings()
+    Button:
+        id: btnConfig
+        pos: 0,750
+        opacity: 0
+        # pos_hint: None, None
+        size_hint: None, None
+        size: 200,50
+        text: 'Configuration'
+        on_release: root.ctrl.app.open_settings()
+
 
 <KPanelConnect>:
     canvas:
